@@ -1,5 +1,20 @@
 {
   "name": "nftcord",
   "version": "1.0.0",
-  "main": "index.js"
+  "license": "MIT",
+  "scripts": {
+    "start": "ts-node ./src/index.ts"
+  },
+  "dependencies": {
+    "chalk": "4.1.2",
+    "discord-api-types": "^0.32.1",
+    "discord.js": "^14.0.0-dev.1651493371-4ba0f56",
+    "glob": "^8.0.1"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.2.0",
+    "@types/node": "^17.0.32",
+    "types": "^0.1.1",
+    "typescript": "^4.6.4"
+  }
 }
