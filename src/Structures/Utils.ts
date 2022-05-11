@@ -47,7 +47,7 @@ export default class Util {
 		return `${parseFloat((bytes / Math.pow(1024, i)).toFixed(2))} ${sizes[i]}`
 	}
 
-	removeDuplicates(arr: []) {
+	removeDuplicates(arr: any[]) {
 		return [...new Set(arr)]
 	}
 
@@ -64,6 +64,16 @@ export default class Util {
 
 	comparePerms(member: GuildMember, target: GuildMember) {
 		return member.roles.highest.position < target.roles.highest.position
+	}
+
+	async fetchOwners(ids: string[]) {
+		let owners = []
+		for (const id of ids) {
+			let user = await this.client.users.fetch(id)
+			owners.push(user ? `**${user.username}**#${user.discriminator}` : "unknown")
+		}
+
+		return owners.join(", ")
 	}
 
 	formatDate(date: Date): string {
@@ -87,6 +97,27 @@ export default class Util {
 		return h
 			? `${String(h).length === 2 ? h : `0${h}`}:${String(m).length === 2 ? m : `0${m}`}:${String(s).length === 2 ? s : `0${s}`}`
 			: `${String(m).length === 2 ? m : `0${m}`}:${String(s).length === 2 ? s : `0${s}`}`;
+	}
+
+	time(s: number) {
+		function pad(n: number, z?: number) {
+			z = z || 2
+			return ('00' + n).slice(-z)
+		}
+		let ms = s % 1000
+		s = (s - ms) / 1000
+		let secs = s % 60
+		s = (s - secs) / 60
+		let mins = s % 60
+		let hrs = (s - mins) / 60
+	
+		let days = Number(Math.floor(hrs / 24))
+		hrs = Number(hrs % 24)
+		
+		let meses = Number(Math.floor(days / 30))
+		days = Number(days % 30)
+		
+		return (meses > 0 ? pad(meses) + 'm, ' : "") + (days > 0 ? pad(days) + 'd, ' : "") + (hrs > 0 ? pad(hrs) + 'h, ' : "") + (mins > 0 ? pad(mins) + 'm ' : "") + (pad(secs) + 's')
 	}
 
 

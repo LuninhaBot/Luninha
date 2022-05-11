@@ -18,9 +18,9 @@ export default class Command {
 
         this.client = client
         this.name = "" || "Não definido"
-        this.description = "" || "Não definido"
-        this.usage = "" || "Não definido"
-        this.category = "" || "Não definido"
+        this.description = "" || "Sem descrição"
+        this.usage = ""
+        this.category = "" || "Outros"
         this.userPerms = []
         this.botPerms = []
         this.ownerOnly = false
