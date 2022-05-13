@@ -1,6 +1,6 @@
 import Command, { type runCommand } from "../../Structures/Command"
 import type NFTCordClient from "../../Structures/NFTCordClient"
-import { EmbedBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle, UnsafeButtonBuilder, Interaction, InteractionType } from "discord.js"
+import { EmbedBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle, UnsafeButtonBuilder } from "discord.js"
 
 export default class HelpCommand extends Command {
     constructor(client: NFTCordClient) {
@@ -20,7 +20,7 @@ export default class HelpCommand extends Command {
                 iconURL: interaction.user.displayAvatarURL({ forceStatic: false ,size: 4096 })
             })
     
-            embed0.setColor("#3a6e99")
+            embed0.setColor("#f0d9e2")
             embed0.setDescription([
                 `👋 | Eu tenho atualmente **${this.client.commands.size}** comandos.`,
                 `:tools: | Você pode pedir suporte e ficar por dentro das novidades no meu [servidor oficial](https://linkfoda.com).`,
@@ -39,7 +39,7 @@ export default class HelpCommand extends Command {
             for (let i = 0; i < helpString.length; i++) {
     
                 let embed = new EmbedBuilder()
-                embed.setColor("#3a6e99")
+                embed.setColor("#f0d9e2")
                 embed.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL({ forceStatic: false ,size: 4096 }) })
                 embed.setDescription(helpString[i].join("\n"))
                 embed.setTitle(`Categoria: ${categories[i]} [${this.client.commands.filter(cmd => cmd.category === categories[i]).size}]`)
@@ -134,7 +134,7 @@ export default class HelpCommand extends Command {
                 iconURL: interaction.user.displayAvatarURL({ forceStatic: false ,size: 4096 })
             })
 
-            embed.setColor("#3a6e99")
+            embed.setColor("#f0d9e2")
             embed.setDescription([
                 `📚 | **Nome**: \`${command.name}\` → \`${command.description}\``,
                 `📋 | **Uso**: \`${this.client.prefix}${command.name} ${command.usage}\``,

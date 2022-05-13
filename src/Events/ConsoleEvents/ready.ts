@@ -11,12 +11,6 @@ export default class ReadyEvent extends Event {
     }
 
     async run() {
-        this.client.user?.setPresence({
-            activities: [{
-                name: `Hello ;D`,
-            }],
-            status: "idle"
-        })
 
         Logger.ready("Client is ready!")
     }

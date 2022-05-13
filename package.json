@@ -1,13 +1,17 @@
 {
-  "name": "nftcord",
+  "name": "nftcordclient",
   "version": "1.0.0",
   "license": "MIT",
+  "type": "commonjs",
+  "private": true,
   "scripts": {
-    "start": "ts-node ./src/index.ts"
+    "start": "node ./build/Cluster.js",
+    "build": "tsc -p ./tsconfig.json && yarn start"
   },
   "dependencies": {
     "chalk": "4.1.2",
-    "discord-api-types": "^0.32.1",
+    "discord-cross-hosting": "^2.2.1",
+    "discord-hybrid-sharding": "^1.5.3",
     "discord.js": "^14.0.0-dev.1651493371-4ba0f56",
     "glob": "^8.0.1"
   },

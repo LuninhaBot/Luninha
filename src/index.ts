@@ -1,6 +1,6 @@
-import * as Config from "./Utils/Config"
+import config from "./Utils/Config"
 import NFTCordClient from "./Structures/NFTCordClient"
 
-const client = new NFTCordClient(Config)
+const client = new NFTCordClient(config)
 
 client.start()

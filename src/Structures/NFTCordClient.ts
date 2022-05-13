@@ -1,4 +1,6 @@
-import { Client, Options, PermissionResolvable, Collection } from "discord.js"
+import { Client, Options, Collection } from "discord.js"
+import { Shard } from "discord-cross-hosting"
+import Cluster from "discord-hybrid-sharding"
 import Utils from "./Utils"
 import type Command from "./Command"
 import type Event from "./Event"
@@ -11,12 +13,14 @@ export default class NFTCordClient extends Client {
     commands: Collection<string, Command>
     events: Collection<string, Event>
     utils: Utils
+    cluster: Cluster.Client
+    machine: Shard
 
     constructor(options = {} as { token: string, prefix: string, owners: string[], defaultPerms: any[] }) {
         super({
             intents: 5635,
-            shards: "auto",
-            shardCount: 1,
+            shardCount: Cluster.data.TOTAL_SHARDS,
+            shards: Cluster.data.SHARD_LIST,
             allowedMentions: {
                 parse: [
                     "users",
@@ -40,6 +44,10 @@ export default class NFTCordClient extends Client {
         this.commands = new Collection()
 
         this.events = new Collection()
+
+        this.cluster = new Cluster.Client(this)
+
+        this.machine = new Shard(this.cluster)
 
         this.utils = new Utils(this)
     }

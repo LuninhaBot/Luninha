@@ -11,7 +11,6 @@ export default class Command {
     userPerms: PermissionResolvable[]
     botPerms: PermissionResolvable[]
     ownerOnly: boolean
-    guildOnly: boolean
     ephemeral: boolean
 
     constructor(client: NFTCordClient) {
@@ -24,7 +23,6 @@ export default class Command {
         this.userPerms = []
         this.botPerms = []
         this.ownerOnly = false
-        this.guildOnly = false
         this.ephemeral = false
     }
 

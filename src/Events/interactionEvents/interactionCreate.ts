@@ -25,11 +25,11 @@ export default class InteractionCreateEvent extends Event {
                     return interaction.followUp(":x: | Você não pode usar este comando!")
                 }
 
-                if (!command.guildOnly && !interaction.inGuild()) {
+                if (!interaction?.inGuild()) {
                     return interaction.followUp(":x: | Esté comando não pode ser usado fora de um servidor!")
                 }
 
-                if (interaction.inGuild()) {
+                if (interaction?.inGuild()) {
                     const userPermCheck = command.userPerms || this.client.defaultPerms
                     if (userPermCheck) {
                         const missing = interaction.channel?.permissionsFor(interaction?.member as GuildMember).missing(userPermCheck);

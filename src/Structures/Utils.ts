@@ -123,7 +123,7 @@ export default class Util {
 
 	async loadCommands() {
 
-		const commands = await glob(`./src/Commands/**/*.ts`, { absolute: true })
+		const commands = await glob(`./build/Commands/**/*.js`, { absolute: true })
 
 		Logger.log(`Loading a total of ${commands.length} commands`, "log")
 
@@ -149,7 +149,7 @@ export default class Util {
 
 	async loadEvents() {
 
-		const events = await glob(`./src/Events/**/*.ts`, { absolute: true })
+		const events = await glob(`./build/Events/**/*.js`, { absolute: true })
 
 		Logger.log(`Loading a total of ${events.length} events`, "log")
 		for (const eventFile of events) {
