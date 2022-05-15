@@ -20,7 +20,7 @@ const manager = new Cluster.Manager(`${__dirname}/index.js`, {
 })
 
 manager.on("clusterCreate", (cluster) => {
-    Logger.log(`Stated cluster ${cluster.id + 1}/${cluster.manager.clusterList.length}`)
+    Logger.log(`Started cluster ${cluster.id + 1}/${cluster.manager.clusterList.length}`)
 })
 
 client.listen(manager)
@@ -32,6 +32,6 @@ client.requestShardData().then(e => {
     manager.totalClusters = e.shardList.length
     manager.shardList = e.shardList
     manager.clusterList = e.clusterList
-    manager.spawn()
+    manager.spawn({ timeout: -1 })
 
 }).catch(e => console.log(e))

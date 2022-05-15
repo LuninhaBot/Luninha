@@ -15,6 +15,7 @@ export default class NFTCordClient extends Client {
     utils: Utils
     cluster: Cluster.Client
     machine: Shard
+    shardsInfoExtended: Collection<number, number>
 
     constructor(options = {} as { token: string, prefix: string, owners: string[], defaultPerms: any[] }) {
         super({
@@ -48,6 +49,8 @@ export default class NFTCordClient extends Client {
         this.cluster = new Cluster.Client(this)
 
         this.machine = new Shard(this.cluster)
+
+        this.shardsInfoExtended = new Collection()
 
         this.utils = new Utils(this)
     }

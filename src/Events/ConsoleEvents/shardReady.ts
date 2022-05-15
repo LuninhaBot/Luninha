@@ -16,10 +16,11 @@ export default class ShardReady extends Event {
             activities: [{
                 name: `Under development | Cluster ${this.client.cluster.id} [${shard}]`,
             }],
-            status: "idle",
             shardId: shard,
         })
+
+        this.client.shardsInfoExtended.set(shard, Date.now())
         
-        Logger.ready(`Shard ${shard} is ready!`)
+        Logger.ready(`Shard ${shard} => Cluster ${this.client.cluster.id} is ready!`)
     }
 }
