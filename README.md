@@ -1,4 +1,3 @@
-~~BUILD yarn build~~
-~~START yarn start~~
+Builda essa porra usando `yarn build` ele vai ligar sozinho depois disso
 
-~~#problemas_nodeais_pós_modernos~~
+Liga essa bomba usando `yarn start` depois de buildar ele liga sozinho
