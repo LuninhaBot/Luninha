@@ -9,6 +9,7 @@ export default class PingCommand extends Command {
         this.name = "ping"
         this.category = "Outros"
         this.description = "Mostra o ping do bot"
+        this.usage = "[cluster | shards]"
         this.ownerOnly = false
     }
 
@@ -24,26 +25,26 @@ export default class PingCommand extends Command {
             let s = await this.client.machine.broadcastEval(`this.ws.shards.size`)
 
             let all = s.flat(Infinity).reduce((a: number, b: number) => a + b, 0)
-            let allPings = pings.flat(Infinity)
-            let allGuilds = guilds.flat(Infinity)
-            let allUsers = users.flat(Infinity)
-            let allStats = stats.flat(Infinity)
+            let allPings: [] = pings.flat(Infinity)
+            let allGuilds: [] = guilds.flat(Infinity)
+            let allUsers: [] = users.flat(Infinity)
+            let allStats: [] = stats.flat(Infinity)
 
 
-            const status = [
-                "OK",
-                "CONECTANDO",
-                "RECONECTANDO",
-                "OCIOSO",
-                "INICIALIZANDO",
-                "DESCONECTADO",
-                "ESPERANDO SERVIDORES",
-                "IDENTIFICANDO",
-                "RETOMANDO"
-            ]
+            const status = {
+                0: "OK",
+                1: "CONECTANDO",
+                2: "RECONECTANDO",
+                3: "OCIOSO",
+                4: "INICIALIZANDO",
+                5: "DESCONECTADO",
+                6: "ESPERANDO SERVIDORES",
+                7: "IDENTIFICANDO",
+                8: "RETOMANDO"
+            }
 
             const data = [
-                ["SID", "Servidores", "Usuários", "Uptime", "Ping", "Status"]
+                ["ID", "Servidores", "Usuários", "Uptime", "Ping", "Status"]
             ]
 
             for (let i = 0; i < all; i++) {
@@ -57,16 +58,6 @@ export default class PingCommand extends Command {
                     status[allStats[i]]
                 ])
             }
-
-            data.push([
-                "TOTAL",
-                allGuilds.reduce((a: number, b: number) => a + b, 0),
-                allUsers.reduce((a: number, b: number) => a + b, 0),
-                "*",
-                "*",
-                "*"
-            ])
-
 
             const output = table(data, {
                 border: {
@@ -95,22 +86,24 @@ export default class PingCommand extends Command {
                 }
             })
 
-            interaction.followUp({
-                content: "```prolog\n" + output + "```"
-            })
 
+            this.client.utils.splitMessage(output, {
+                maxLength: 2000,
+                char: "\n"
+            }).forEach(m => interaction.followUp("```prolog\n" + m + "```"))
+    
             return;
         }
 
         if (interaction.options.getString("opção", false) == "cluster_value") {
 
             const clustersName = [
-                "Eclipse",
+                "Denky",
                 "Himari",
                 "Ayume",
                 "Nisruksha",
                 "Juh",
-                "Denky",
+                "Eclipse",
                 "Star",
                 "Zuly",
                 "Neeph",
@@ -123,19 +116,22 @@ export default class PingCommand extends Command {
             let guilds = await this.client.machine.broadcastEval(`this.guilds.cache.size`)
             let users = await this.client.machine.broadcastEval(`this.guilds.cache.map(g => g.memberCount).reduce((a, g) => a + g, 0)`)
             let shardsPerCluster = await this.client.machine.broadcastEval(`[...this.cluster.ids.keys()].length`)
+            let clusterCont = await this.client.machine.broadcastEval(`this.cluster.count`)
 
             let allUptime = uptime.flat(Infinity)
             let allMemory = memory.flat(Infinity)
             let allGuilds = guilds.flat(Infinity)
             let allUsers = users.flat(Infinity)
             let allShards = shardsPerCluster.flat(Infinity)
+            let allClusters = clusterCont.flat(Infinity).reduce((a: number, b: number) => a + b, 0)
 
 
             const data = [
-                ["SID", "Servidores", "Usuários", "Shards", "Uptime", "Memória"]
+                ["ID", "Servidores", "Usuários", "Shards", "Uptime", "Memória"]
             ]
 
-            for (let i = 0; i < this.client.cluster.count; i++) {
+
+            for (let i = 0; i < allClusters; i++) {
                 data.push([
                     `${[...this.client.cluster.ids.keys()].includes(interaction.guild?.shardId || 0) && this.client.cluster.id == i ? "»" : ""} ${i} (${clustersName[i]})`,
                     allGuilds[i],
@@ -145,14 +141,6 @@ export default class PingCommand extends Command {
                     this.client.utils.formatBytes(allMemory[i])
                 ])
             }
-
-            data.push([
-                "TOTAL",
-                allGuilds.reduce((a: number, g: number) => a + g, 0),
-                allUsers.reduce((a: number, g: number) => a + g, 0),
-                allShards.reduce((a: number, g: number) => a + g, 0),
-                "*",
-                this.client.utils.formatBytes(allMemory.reduce((a: number, g: number) => a + g, 0))])
 
 
             const output = table(data, {
@@ -182,9 +170,11 @@ export default class PingCommand extends Command {
                 }
             })
 
-            interaction.followUp({
-                content: "```prolog\n" + output + "```",
-            })
+            this.client.utils.splitMessage(output, {
+                maxLength: 2000,
+                char: "\n"
+            }).forEach(m => interaction.followUp("```prolog\n" + m + "```"))
+
             return;
         }
 
