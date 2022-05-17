@@ -12,16 +12,17 @@ export default class GuildDeleteEvent extends Event {
     }
 
     async run(guild: Guild) {
-        let owner = await guild.members.fetch(guild.ownerId).catch(() => null)
+        let owner = await guild.members.fetch(guild.ownerId).catch(() => { })
 
+        let totalServers = await this.client.machine.broadcastEval(`this.guilds.cache.size`)
         let embed = new EmbedBuilder()
-        embed.setTitle("Removida de um novo servidor!")
+        embed.setTitle("Removido de um servidor!")
         embed.setFields([
             {
                 name: "Informaçoes:",
                 value: [
                     `• Nome: ${guild.name}`,
-                    `• Dono: ${owner?.user.tag}`,
+                    `• Dono: ${owner?.user.tag ?? "Não encontrado"}`,
                     `• Canais: ${guild.channels.cache.size}`,
                     `• Membros: ${guild.memberCount}`
                 ].join("\n"),
@@ -35,15 +36,15 @@ export default class GuildDeleteEvent extends Event {
             }
         ])
         embed.setColor("Red")
-        embed.setFooter({ text: guild.id })
+        embed.setFooter({ text: `Cluster => ${this.client.cluster.id} (Shard => ${guild.shardId})` })
         embed.setThumbnail(guild.iconURL({ size: 2048, forceStatic: false }) || "https://cdn.discordapp.com/embed/avatars/0.png")
 
         new WebhookClient({
-            url: config.hooks.guildCreate.url,
+            url: config.hooks.guildDelete.url,
         }).send({
             username: this.client.user?.username,
             avatarURL: this.client.user?.displayAvatarURL(),
-            content: `<a:cry:974175503403581440> Total de servidores agora: ${this.client.guilds.cache.size}`,
+            content: `<a:cry:974175503403581440> Total de servidores agora: ${totalServers.flat(Infinity).length}`,
             embeds: [embed]
         })
     }

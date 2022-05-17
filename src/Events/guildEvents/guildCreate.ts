@@ -12,8 +12,9 @@ export default class GuildCreateEvent extends Event {
     }
 
     async run(guild: Guild) {
-        let owner = await guild.members.fetch(guild.ownerId).catch(() => null)
+        let owner = await guild.members.fetch(guild.ownerId).catch(() => { })
 
+        let totalServers = await this.client.machine.broadcastEval(`this.guilds.cache.size`)
         let embed = new EmbedBuilder()
         embed.setTitle("Adicionada em um novo servidor!")
         embed.setFields([
@@ -21,7 +22,7 @@ export default class GuildCreateEvent extends Event {
                 name: "Informaçoes:",
                 value: [
                     `• Nome: ${guild.name}`,
-                    `• Dono: ${owner?.user.tag}`,
+                    `• Dono: ${owner?.user.tag ?? "Não encontrado"}`,
                     `• Canais: ${guild.channels.cache.size}`,
                     `• Membros: ${guild.memberCount}`,
                     `• ID: ${guild.id}`
@@ -36,7 +37,7 @@ export default class GuildCreateEvent extends Event {
             }
         ])
         embed.setColor("Blue")
-        embed.setFooter({ text: `` })
+        embed.setFooter({ text: `Cluster => ${this.client.cluster.id} (Shard => ${guild.shardId})` })
         embed.setThumbnail(guild.iconURL({ size: 2048, forceStatic: false }) || "https://cdn.discordapp.com/embed/avatars/0.png")
 
         new WebhookClient({
@@ -44,7 +45,7 @@ export default class GuildCreateEvent extends Event {
         }).send({
             username: this.client.user?.username,
             avatarURL: this.client.user?.displayAvatarURL(),
-            content: `:heart: Total de servidores agora: ${this.client.guilds.cache.size}`,
+            content: `:heart: Total de servidores agora: ${totalServers.flat(Infinity).length}`,
             embeds: [embed]
         })
     }

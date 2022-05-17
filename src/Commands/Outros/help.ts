@@ -1,4 +1,4 @@
-import Command, { type runCommand } from "../../Structures/Command"
+import Command, { runCommand } from "../../Structures/Command"
 import EclipseClient from "../../Structures/EclipseClient"
 import { EmbedBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle, UnsafeButtonBuilder } from "discord.js"
 
@@ -20,7 +20,7 @@ export default class HelpCommand extends Command {
                 iconURL: interaction.user.displayAvatarURL({ forceStatic: false ,size: 4096 })
             })
     
-            embed0.setColor("#f0d9e2")
+            embed0.setColor("#80088b")
             embed0.setDescription([
                 `👋 | Eu tenho atualmente **${this.client.commands.size}** comandos.`,
                 `:tools: | Você pode pedir suporte e ficar por dentro das novidades no meu [servidor oficial](https://linkfoda.com).`,
@@ -32,14 +32,14 @@ export default class HelpCommand extends Command {
             const helpString = []
             let categories = this.client.utils.removeDuplicates(this.client.commands.filter(cmd => cmd.category !== "Desenvolvedor").map(cmd => cmd.category))
             for (let category of categories) {
-                helpString.push(this.client.commands.filter(cmd => cmd.category === category).map(cmd => `<:seta:974012084926959676> | \`/${cmd.name}\` → ${cmd.description}`))
+                helpString.push(this.client.commands.filter(cmd => cmd.category === category).map(cmd => `<:seta:974012084926959676> | \`/${cmd.name} ${cmd.usage}\` → ${cmd.description}`))
             }
     
             const pages: any[] = [embed0]
             for (let i = 0; i < helpString.length; i++) {
     
                 let embed = new EmbedBuilder()
-                embed.setColor("#f0d9e2")
+                embed.setColor("#80088b")
                 embed.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL({ forceStatic: false ,size: 4096 }) })
                 embed.setDescription(helpString[i].join("\n"))
                 embed.setTitle(`Categoria: ${categories[i]} [${this.client.commands.filter(cmd => cmd.category === categories[i]).size}]`)
@@ -134,7 +134,7 @@ export default class HelpCommand extends Command {
                 iconURL: interaction.user.displayAvatarURL({ forceStatic: false ,size: 4096 })
             })
 
-            embed.setColor("#f0d9e2")
+            embed.setColor("#80088b")
             embed.setDescription([
                 `📚 | **Nome**: \`${command.name}\` → \`${command.description}\``,
                 `📋 | **Uso**: \`${this.client.prefix}${command.name} ${command.usage}\``,

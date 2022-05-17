@@ -4,6 +4,7 @@ import Cluster from "discord-hybrid-sharding"
 import Utils from "./Utils"
 import Command from "./Command"
 import Event from "./Event"
+import EclipseLavalink from "../LavalinkManager"
 
 export default class EclipseClient extends Client {
 
@@ -16,10 +17,11 @@ export default class EclipseClient extends Client {
     cluster: Cluster.Client
     machine: Shard
     shardsInfoExtended: Collection<number, number>
+    music: EclipseLavalink
 
     constructor(options = {} as { token: string, prefix: string, owners: string[], defaultPerms: any[] }) {
         super({
-            intents: 5635,
+            intents: 5763,
             shardCount: Cluster.data.TOTAL_SHARDS,
             shards: Cluster.data.SHARD_LIST,
             allowedMentions: {
@@ -51,6 +53,8 @@ export default class EclipseClient extends Client {
         this.machine = new Shard(this.cluster)
 
         this.shardsInfoExtended = new Collection()
+
+        this.music = new EclipseLavalink(this)
 
         this.utils = new Utils(this)
     }

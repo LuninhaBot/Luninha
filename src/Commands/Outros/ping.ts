@@ -44,16 +44,19 @@ export default class PingCommand extends Command {
             }
 
             const data = [
-                ["ID", "Servidores", "Usuários", "Uptime", "Ping", "Status"]
+                ["ID", "Servidores", "Usuários", "Uptime", "Players","Ping", "Status"]
             ]
+
 
             for (let i = 0; i < all; i++) {
                 let uptime = this.client.shardsInfoExtended.get(i ?? 0)
+                let players = this.client.guilds.cache.map((g) => g.shardId == i ? this.client.music.players.filter(p => p.options.guild == g.id).size : 0).reduce((a, b) => a + b, 0) ?? 0
                 data.push([
                     `${interaction.guild?.shardId == i ? "»" : ""} ${i}`,
                     allGuilds[i] ?? 0,
                     allUsers[i] ?? 0,
                     this.client.utils.time(uptime ? Date.now() - uptime : 0),
+                    String(players),
                     allPings[i] + "ms",
                     status[allStats[i]]
                 ])
@@ -90,7 +93,7 @@ export default class PingCommand extends Command {
             this.client.utils.splitMessage(output, {
                 maxLength: 2000,
                 char: "\n"
-            }).forEach(m => interaction.followUp("```prolog\n" + m + "```"))
+            }).forEach(m => interaction.followUp("```apache\n" + m + "```"))
     
             return;
         }
@@ -116,18 +119,20 @@ export default class PingCommand extends Command {
             let guilds = await this.client.machine.broadcastEval(`this.guilds.cache.size`)
             let users = await this.client.machine.broadcastEval(`this.guilds.cache.map(g => g.memberCount).reduce((a, g) => a + g, 0)`)
             let shardsPerCluster = await this.client.machine.broadcastEval(`[...this.cluster.ids.keys()].length`)
-            let clusterCont = await this.client.machine.broadcastEval(`this.cluster.count`)
+            let clusterCount = await this.client.machine.broadcastEval(`this.cluster.count`)
+            let playersCount = await this.client.machine.broadcastEval(`this.music.players.size`)
 
             let allUptime = uptime.flat(Infinity)
             let allMemory = memory.flat(Infinity)
             let allGuilds = guilds.flat(Infinity)
             let allUsers = users.flat(Infinity)
             let allShards = shardsPerCluster.flat(Infinity)
-            let allClusters = clusterCont.flat(Infinity).reduce((a: number, b: number) => a + b, 0)
+            let allClusters = clusterCount.flat(Infinity).reduce((a: number, b: number) => a + b, 0)
+            let allPlayers = playersCount.flat(Infinity)
 
 
             const data = [
-                ["ID", "Servidores", "Usuários", "Shards", "Uptime", "Memória"]
+                ["ID", "Servidores", "Usuários", "Shards", "Players","Uptime", "Memória"]
             ]
 
 
@@ -137,6 +142,7 @@ export default class PingCommand extends Command {
                     allGuilds[i],
                     allUsers[i],
                     allShards[i],
+                    allPlayers[i],
                     this.client.utils.time(allUptime[i]),
                     this.client.utils.formatBytes(allMemory[i])
                 ])
@@ -173,7 +179,7 @@ export default class PingCommand extends Command {
             this.client.utils.splitMessage(output, {
                 maxLength: 2000,
                 char: "\n"
-            }).forEach(m => interaction.followUp("```prolog\n" + m + "```"))
+            }).forEach(m => interaction.followUp("```apache\n" + m + "```"))
 
             return;
         }
@@ -182,7 +188,7 @@ export default class PingCommand extends Command {
         await interaction.followUp({ content: "🏓" })
 
         await interaction.editReply({
-            content: `**Pong!** Meu ping é de \`${this.client.ws.ping}ms\`. A latencia da API é \`${Date.now() - interaction.createdTimestamp}ms\`\n**Uptime:** ${this.client.utils.time(this.client?.uptime || 0)}`
+            content: `**Pong!** Meu ping é de \`${this.client.ws.ping}ms\`. A latencia da API é \`${interaction.createdTimestamp - Date.now()}ms\`\n**Uptime:** ${this.client.utils.time(this.client?.uptime || 0)}`
         })
     }
 }

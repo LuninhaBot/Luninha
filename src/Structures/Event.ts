@@ -1,5 +1,4 @@
 import EclipseClient from "./EclipseClient"
-import { Awaitable } from "discord.js"
 
 export default class Event {
 
@@ -12,7 +11,7 @@ export default class Event {
 	}
 
 
-	async run(...args: any[]): Promise<Awaitable<any>> {
+	async run(...args: any[]): Promise<any> {
 		return { args }
 	}
 }

@@ -1,6 +1,7 @@
 import Event from "../../Structures/Event"
 import EclipseClient from "../../Structures/EclipseClient"
 import Logger from "../../Utils/Logger"
+import { ActivityType } from "discord.js"
 
 export default class ShardReady extends Event {
 
@@ -14,9 +15,9 @@ export default class ShardReady extends Event {
 
         this.client.user?.setPresence({
             activities: [{
-                name: `Under development | Cluster ${this.client.cluster.id} [${shard}]`,
-            }],
-            shardId: shard,
+                name: `Starting shard => ${shard}`,
+                type: ActivityType.Watching,
+            }]
         })
 
         this.client.shardsInfoExtended.set(shard, Date.now())

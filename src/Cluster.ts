@@ -18,7 +18,7 @@ const manager = new Cluster.Manager(`${__dirname}/index.js`, {
     totalClusters: "auto",
     token: config.client.token,
     queue: {
-        auto: false
+        auto: true
     }
 })
 
@@ -27,7 +27,7 @@ manager.on("clusterCreate", (cluster) => {
 })
 
 client.listen(manager)
-client.requestShardData().then(e => {
+client.requestShardData().then(async e => {
 
     if (!e) return
     if (!e.shardList) return
@@ -35,7 +35,5 @@ client.requestShardData().then(e => {
     manager.totalClusters = e.shardList.length
     manager.shardList = e.shardList
     manager.clusterList = e.clusterList
-    manager.spawn()
-    manager.queue.next()
-
+    manager.spawn({ timeout: -1, amount: "auto" })
 }).catch(e => console.log(e))

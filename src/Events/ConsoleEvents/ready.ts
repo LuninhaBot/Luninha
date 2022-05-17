@@ -12,6 +12,14 @@ export default class ReadyEvent extends Event {
 
     async run() {
 
+        this.client.music.init(this.client.user?.id)
+
+        this.client.user?.setPresence({
+            activities: [{
+                name: `Ready for attack!`,
+            }]
+        })
+
         Logger.ready("Client is ready!")
     }
 }

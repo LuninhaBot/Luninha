@@ -1,9 +1,10 @@
 import Event from "../../Structures/Event"
-import { Interaction, GuildMember } from "discord.js"
-import type { runCommand } from "../../Structures/Command"
+import { Interaction, GuildMember, ChatInputCommandInteraction, PermissionsBitField } from "discord.js"
+import Command, { runCommand } from "../../Structures/Command"
 import EclipseClient from "../../Structures/EclipseClient"
 
 export default class InteractionCreateEvent extends Event {
+
 
     constructor(client: EclipseClient) {
         super(client, {
@@ -30,21 +31,8 @@ export default class InteractionCreateEvent extends Event {
                 }
 
                 if (interaction?.inGuild()) {
-                    const userPermCheck = command.userPerms || this.client.defaultPerms
-                    if (userPermCheck) {
-                        const missing = interaction.channel?.permissionsFor(interaction?.member as GuildMember).missing(userPermCheck);
-                        if (missing?.length) {
-                            return interaction.followUp(`:x: | Você não tem permissão para usar este comando!\n\n${missing.map(this.client.utils.formatPerms)}`)
-                        }
-                    }
-    
-                    const botPermCheck = command.botPerms || this.client.defaultPerms
-                    if (botPermCheck) {
-                        const missing = interaction.channel?.permissionsFor(interaction.guild?.me as GuildMember).missing(botPermCheck)
-                        if (missing?.length) {
-                            return interaction.followUp(`:x: | Eu não consigo rodar o comando pois não tenho permissão para isso!\n\n${missing.map(this.client.utils.formatPerms)}`)
-                        }
-                    }
+                    if (!InteractionCreateEvent.checkBotPermissions(interaction, command)) return;
+                    if (!InteractionCreateEvent.checkMemberPermissions(interaction, command)) return;
                 }
 
                 try {
@@ -54,5 +42,37 @@ export default class InteractionCreateEvent extends Event {
                 }
             }
         }
+    }
+
+    static checkBotPermissions(interaction: ChatInputCommandInteraction, command: Command): boolean {
+        if (command.botPerms.length == 0) return true;
+        if (!interaction.guild?.members.me?.permissions.has(command.botPerms)) {
+            const permissions = new PermissionsBitField(command.botPerms)
+                .toArray()
+                .map(p => p)
+                .join(', ')
+            interaction.reply({
+                content: `❌ | Está me faltando permissões para rodar o comando \`${permissions.toString()}\``,
+                ephemeral: true
+            })
+            return false;
+        }
+        return true;
+    }
+
+    static checkMemberPermissions(interaction: ChatInputCommandInteraction, command: Command): boolean {
+        if (command.userPerms.length == 0) return true;
+        if (!(interaction.member as GuildMember).permissions.has(command.userPerms)) {
+            const permissions = new PermissionsBitField(command.userPerms)
+                .toArray()
+                .map(p => p)
+                .join(', ')
+            interaction.reply({
+                content: `❌ | Você não pode usar esté comando pois está te faltando permissões \`${permissions.toString()}\``,
+                ephemeral: true
+            })
+            return false;
+        }
+        return true;
     }
 }

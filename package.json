@@ -12,7 +12,8 @@
     "chalk": "4.1.2",
     "discord-cross-hosting": "^2.2.1",
     "discord-hybrid-sharding": "^1.5.3",
-    "discord.js": "^14.0.0-dev.1651493371-4ba0f56",
+    "discord.js": "^14.0.0-dev.1652702635-5e9b757",
+    "erela.js": "^2.3.3",
     "glob": "^8.0.1",
     "table": "^6.8.0"
   },

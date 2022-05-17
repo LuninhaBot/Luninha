@@ -1,12 +1,12 @@
 import { parse } from "path"
 import { promisify } from "util"
 import pkg from "glob"
+import { GuildMember } from "discord.js"
+import { Player } from "erela.js"
 
 import Command from "./Command"
 import Event from "./Event"
-
 import EclipseClient from "./EclipseClient"
-import { GuildMember } from "discord.js"
 import Logger from "../Utils/Logger"
 
 const glob = promisify(pkg)
@@ -96,6 +96,18 @@ export default class Util {
 		return h
 			? `${String(h).length === 2 ? h : `0${h}`}:${String(m).length === 2 ? m : `0${m}`}:${String(s).length === 2 ? s : `0${s}`}`
 			: `${String(m).length === 2 ? m : `0${m}`}:${String(s).length === 2 ? s : `0${s}`}`
+	}
+
+	formatDuration(duration: number) {
+		if (isNaN(duration) || typeof duration == undefined) return "00:00"
+		if (duration > 3600000000) return "LIVE"
+		return this.formatTime(duration)
+	}
+
+	getQueueDuration(player: Player) {
+		if (!player.queue.length) return player.queue.current?.duration ?? 0
+		// @ts-ignore
+		return player.queue.reduce((prev, curr) => prev + curr?.duration, 0) + player.queue.current?.duration
 	}
 
 	time(s: number) {
