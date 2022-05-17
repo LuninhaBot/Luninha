@@ -27,7 +27,7 @@ manager.on("clusterCreate", (cluster) => {
 })
 
 client.listen(manager)
-client.requestShardData().then(async e => {
+client.requestShardData().then(e => {
 
     if (!e) return
     if (!e.shardList) return
