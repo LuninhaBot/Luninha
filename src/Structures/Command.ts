@@ -1,9 +1,9 @@
 import { PermissionResolvable, ChatInputCommandInteraction, Awaitable } from "discord.js"
-import type NFTCordClient from "./NFTCordClient"
+import EclipseClient from "./EclipseClient"
 
 export default class Command {
 
-    client: NFTCordClient
+    client: EclipseClient
     name: string
     description: string
     usage: string
@@ -13,7 +13,7 @@ export default class Command {
     ownerOnly: boolean
     ephemeral: boolean
 
-    constructor(client: NFTCordClient) {
+    constructor(client: EclipseClient) {
 
         this.client = client
         this.name = "" || "Não definido"

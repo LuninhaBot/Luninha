@@ -1,9 +1,9 @@
 import Command, { type runCommand } from "../../Structures/Command"
-import type NFTCordClient from "../../Structures/NFTCordClient"
+import EclipseClient from "../../Structures/EclipseClient"
 import { EmbedBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle, UnsafeButtonBuilder } from "discord.js"
 
 export default class HelpCommand extends Command {
-    constructor(client: NFTCordClient) {
+    constructor(client: EclipseClient) {
         super(client)
         this.name = "help"
         this.description = "Mostra todos os comandos disponíveis."
@@ -26,7 +26,7 @@ export default class HelpCommand extends Command {
                 `:tools: | Você pode pedir suporte e ficar por dentro das novidades no meu [servidor oficial](https://linkfoda.com).`,
                 `:question: | Você pode pedir ajuda para um comando específico, usando o comando \`${this.client.prefix}help [comando]\`.`,
                 ``,
-                `👑 | Fui desenvolvida por ${await (this.client.utils.fetchOwners(this.client.owners))}.`,
+                `👑 | Fui desenvolvido por ${await (this.client.utils.fetchOwners(this.client.owners))}.`,
             ].join("\n"))
     
             const helpString = []

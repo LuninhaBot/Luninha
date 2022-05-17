@@ -1,11 +1,11 @@
 import { Guild, EmbedBuilder, WebhookClient } from "discord.js"
 import config from "../../Utils/Config"
 import Event from "../../Structures/Event"
-import type NFTCordClient from "../../Structures/NFTCordClient"
+import EclipseClient from "../../Structures/EclipseClient"
 
 export default class GuildDeleteEvent extends Event {
 
-    constructor(client: NFTCordClient) {
+    constructor(client: EclipseClient) {
         super(client, {
             name: "guildDelete"
         })

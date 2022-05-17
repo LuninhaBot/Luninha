@@ -2,10 +2,10 @@ import { Client, Options, Collection } from "discord.js"
 import { Shard } from "discord-cross-hosting"
 import Cluster from "discord-hybrid-sharding"
 import Utils from "./Utils"
-import type Command from "./Command"
-import type Event from "./Event"
+import Command from "./Command"
+import Event from "./Event"
 
-export default class NFTCordClient extends Client {
+export default class EclipseClient extends Client {
 
     owners: string[]
     prefix: string = "/"

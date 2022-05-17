@@ -1,11 +1,11 @@
 import { Guild, EmbedBuilder, WebhookClient } from "discord.js"
 import config from "../../Utils/Config"
 import Event from "../../Structures/Event"
-import type NFTCordClient from "../../Structures/NFTCordClient"
+import EclipseClient from "../../Structures/EclipseClient"
 
 export default class GuildCreateEvent extends Event {
 
-    constructor(client: NFTCordClient) {
+    constructor(client: EclipseClient) {
         super(client, {
             name: "guildCreate"
         })
@@ -23,7 +23,8 @@ export default class GuildCreateEvent extends Event {
                     `• Nome: ${guild.name}`,
                     `• Dono: ${owner?.user.tag}`,
                     `• Canais: ${guild.channels.cache.size}`,
-                    `• Membros: ${guild.memberCount}`
+                    `• Membros: ${guild.memberCount}`,
+                    `• ID: ${guild.id}`
                 ].join("\n"),
                 inline: false
             },
@@ -35,7 +36,7 @@ export default class GuildCreateEvent extends Event {
             }
         ])
         embed.setColor("Blue")
-        embed.setFooter({ text: guild.id })
+        embed.setFooter({ text: `` })
         embed.setThumbnail(guild.iconURL({ size: 2048, forceStatic: false }) || "https://cdn.discordapp.com/embed/avatars/0.png")
 
         new WebhookClient({

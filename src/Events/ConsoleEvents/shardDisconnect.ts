@@ -1,10 +1,10 @@
 import Event from "../../Structures/Event"
-import NFTCordClient from "../../Structures/NFTCordClient"
+import EclipseClient from "../../Structures/EclipseClient"
 import Logger from "../../Utils/Logger"
 
 export default class ShardDisconnect extends Event {
 
-    constructor(client: NFTCordClient) {
+    constructor(client: EclipseClient) {
         super(client, {
             name: "shardDisconnect",
         })

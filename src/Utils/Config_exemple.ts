@@ -1,10 +1,14 @@
 export default {
-    token: "",
-    prefix: "/",
-    owners: [""],
-    defaultPerms: [],
-    authToken: "",
-    host: "",
+    client: {
+        token: "",
+        prefix: "/",
+        owners: [""],
+        defaultPerms: [],
+    },
+    clusterManager: {
+        authToken: "",
+        host: "",
+    },
     hooks: {
         guildCreate: {
             url: ""
@@ -12,5 +16,14 @@ export default {
         guildDelete: {
             url: ""
         }
-    }
+    },
+    lavalink: [
+        {
+            host: "localhost", 
+            password: "", 
+            port: 2333, 
+            identifier: "", 
+            retryDelay: 500 ,
+        }
+    ]
 }

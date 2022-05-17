@@ -5,7 +5,7 @@ import pkg from "glob"
 import Command from "./Command"
 import Event from "./Event"
 
-import type NFTCordClient from "./NFTCordClient"
+import EclipseClient from "./EclipseClient"
 import { GuildMember } from "discord.js"
 import Logger from "../Utils/Logger"
 
@@ -13,9 +13,8 @@ const glob = promisify(pkg)
 
 export default class Util {
 
-	client: NFTCordClient
-
-	constructor(client: NFTCordClient) {
+	client: EclipseClient
+	constructor(client: EclipseClient) {
 		this.client = client
 	}
 

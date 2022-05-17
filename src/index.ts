@@ -1,6 +1,6 @@
 import config from "./Utils/Config"
-import NFTCordClient from "./Structures/NFTCordClient"
+import EclipseClient from "./Structures/EclipseClient"
 
-const client = new NFTCordClient(config)
+const client = new EclipseClient(config.client)
 
 client.start()

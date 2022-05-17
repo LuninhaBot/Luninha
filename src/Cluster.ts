@@ -5,9 +5,9 @@ import Logger from "./Utils/Logger"
 
 const client = new Client({
     agent: "bot",
-    host: config.host,
+    host: config.clusterManager.host,
     port: 3000,
-    authToken: config.authToken,
+    authToken: config.clusterManager.authToken,
     rollingRestarts: false,
 })
 
@@ -16,11 +16,14 @@ client.connect()
 const manager = new Cluster.Manager(`${__dirname}/index.js`, {
     totalShards: "auto",
     totalClusters: "auto",
-    token: config.token,
+    token: config.client.token,
+    queue: {
+        auto: false
+    }
 })
 
 manager.on("clusterCreate", (cluster) => {
-    Logger.log(`Started cluster ${cluster.id + 1}/${cluster.manager.clusterList.length}`)
+    Logger.log(`Started cluster ${cluster.id} with ${manager.totalShards} shards`)
 })
 
 client.listen(manager)
@@ -32,6 +35,7 @@ client.requestShardData().then(e => {
     manager.totalClusters = e.shardList.length
     manager.shardList = e.shardList
     manager.clusterList = e.clusterList
-    manager.spawn({ timeout: -1 })
+    manager.spawn()
+    manager.queue.next()
 
 }).catch(e => console.log(e))

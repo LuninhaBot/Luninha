@@ -1,11 +1,11 @@
 import Event from "../../Structures/Event"
 import { Interaction, GuildMember } from "discord.js"
 import type { runCommand } from "../../Structures/Command"
-import type NFTCordClient from "../../Structures/NFTCordClient"
+import EclipseClient from "../../Structures/EclipseClient"
 
 export default class InteractionCreateEvent extends Event {
 
-    constructor(client: NFTCordClient) {
+    constructor(client: EclipseClient) {
         super(client, {
             name: "interactionCreate",
         })

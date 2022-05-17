@@ -1,10 +1,10 @@
 import Command from "../../Structures/Command"
-import type NFTCordClient from "../../Structures/NFTCordClient"
+import type EclipseClient from "../../Structures/EclipseClient"
 import type { runCommand } from "../../Structures/Command"
 import { table } from "table"
 
 export default class PingCommand extends Command {
-    constructor(client: NFTCordClient) {
+    constructor(client: EclipseClient) {
         super(client)
         this.name = "ping"
         this.category = "Outros"
@@ -82,7 +82,7 @@ export default class PingCommand extends Command {
                 },
                 header: {
                     alignment: "center",
-                    content: "NFTCord Shards"
+                    content: "Eclipse Shards"
                 }
             })
 
@@ -166,7 +166,7 @@ export default class PingCommand extends Command {
                 },
                 header: {
                     alignment: "center",
-                    content: "NFTCord Clusters"
+                    content: "Eclipse Clusters"
                 }
             })
 
