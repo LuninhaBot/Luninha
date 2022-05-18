@@ -1,4 +1,4 @@
-import Command, { runCommand } from "../../Structures/Command"
+import Command, { RunCommand } from "../../Structures/Command"
 import EclipseClient from "../../Structures/EclipseClient"
 
 export default class InviteCommand extends Command {
@@ -10,7 +10,7 @@ export default class InviteCommand extends Command {
         this.category = "Outros"
     }
 
-    async run({ interaction }: runCommand) {
+    async run({ interaction }: RunCommand) {
 
         let subCommand = interaction.options.getSubcommand(false)
 

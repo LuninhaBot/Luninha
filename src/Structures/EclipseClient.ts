@@ -1,16 +1,15 @@
-import { Client, Options, Collection } from "discord.js"
 import { Shard } from "discord-cross-hosting"
 import Cluster from "discord-hybrid-sharding"
-import Utils from "./Utils"
+import { Client, Collection, GatewayIntentBits, Options, PermissionResolvable } from "discord.js"
+import EclipseLavalink from "../LavalinkManager"
 import Command from "./Command"
 import Event from "./Event"
-import EclipseLavalink from "../LavalinkManager"
+import Utils from "./Utils"
 
 export default class EclipseClient extends Client {
-
     owners: string[]
     prefix: string = "/"
-    defaultPerms: any[] | undefined
+    defaultPerms?: PermissionResolvable[]
     commands: Collection<string, Command>
     events: Collection<string, Event>
     utils: Utils
@@ -19,9 +18,17 @@ export default class EclipseClient extends Client {
     shardsInfoExtended: Collection<number, { uptime: number }>
     music: EclipseLavalink
 
-    constructor(options = {} as { token: string, prefix: string, owners: string[], defaultPerms: any[] }) {
+    constructor(options = {} as { token: string, prefix: string, owners: string[], defaultPerms: PermissionResolvable[] }) {
         super({
-            intents: 5763,
+            intents: [
+                GatewayIntentBits.Guilds,
+                GatewayIntentBits.GuildMembers,
+                GatewayIntentBits.GuildVoiceStates,
+                GatewayIntentBits.GuildMessages,
+                GatewayIntentBits.GuildMessageReactions,
+                GatewayIntentBits.DirectMessages,
+                GatewayIntentBits.MessageContent
+            ],
             shardCount: Cluster.data.TOTAL_SHARDS,
             shards: Cluster.data.SHARD_LIST,
             allowedMentions: {
@@ -41,25 +48,17 @@ export default class EclipseClient extends Client {
         })
 
         this.validate(options)
-
         this.owners = options.owners
-
         this.commands = new Collection()
-
         this.events = new Collection()
-
         this.cluster = new Cluster.Client(this)
-
         this.machine = new Shard(this.cluster)
-
         this.shardsInfoExtended = new Collection()
-
         this.music = new EclipseLavalink(this)
-
         this.utils = new Utils(this)
     }
 
-    validate(options = {} as { token: string, prefix: string, owners: string[], defaultPerms: any[] }) {
+    validate(options = {} as { token: string, prefix: string, owners: string[], defaultPerms: PermissionResolvable[] }) {
         if (typeof options !== "object") throw new TypeError("As opçoes so podem ser objetos")
 
 		if (!options.token) throw new Error("Defina um token")

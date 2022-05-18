@@ -1,5 +1,5 @@
-import { EmbedBuilder, VoiceChannel } from "discord.js"
-import Command, { runCommand } from "../../Structures/Command"
+import { EmbedBuilder } from "discord.js"
+import Command, { RunCommand } from "../../Structures/Command"
 import EclipseClient from "../../Structures/EclipseClient"
 
 export default class PlayCommand extends Command {
@@ -13,7 +13,7 @@ export default class PlayCommand extends Command {
         this.ownerOnly = false
     }
 
-    async run({ interaction }: runCommand) {
+    async run({ interaction }: RunCommand) {
         const play = this.client.music.players.get(interaction.guild?.id ?? "")
 
         let member = await interaction.guild?.members.fetch(interaction.user.id)

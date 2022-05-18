@@ -1,6 +1,6 @@
 import Command from "../../Structures/Command"
 import type EclipseClient from "../../Structures/EclipseClient"
-import type { runCommand } from "../../Structures/Command"
+import type { RunCommand } from "../../Structures/Command"
 import { table } from "table"
 
 export default class PingCommand extends Command {
@@ -13,7 +13,7 @@ export default class PingCommand extends Command {
         this.ownerOnly = false
     }
 
-    async run({ interaction }: runCommand) {
+    async run({ interaction }: RunCommand) {
 
         if (interaction.options.getString("opção", false) == "shards_value") {
 
@@ -141,7 +141,7 @@ export default class PingCommand extends Command {
 
             for (let i = 0; i < allClusters.length; i++) {
                 data.push([
-                    `${[...this.client.cluster.ids.keys()].includes(interaction.guild?.shardId || 0) && this.client.cluster.id == i ? "»" : ""} ${i} (${clustersName[i]})`,
+                    `${[...this.client.cluster.ids.keys()].includes(interaction.guild?.shardId ?? 0) && this.client.cluster.id == i ? "»" : ""} ${i} (${clustersName[i]})`,
                     allGuilds[i] ?? 0,
                     allUsers[i] ?? 0,
                     allShards[i] ?? 0,
@@ -200,7 +200,7 @@ export default class PingCommand extends Command {
         await interaction.followUp({ content: "🏓" })
 
         await interaction.editReply({
-            content: `**Pong!** Meu ping é de \`${this.client.ws.ping}ms\`. A latencia da API é \`${interaction.createdTimestamp - Date.now()}ms\`\n**Uptime:** ${this.client.utils.time(this.client?.uptime || 0)}`
+            content: `**Pong!** Meu ping é de \`${this.client.ws.ping}ms\`. A latencia da API é \`${interaction.createdTimestamp - Date.now()}ms\`\n**Uptime:** ${this.client.utils.time(this.client?.uptime ?? 0)}`
         })
     }
 }

@@ -30,7 +30,7 @@ export default class Util {
 		return perms.replace("_", " ").replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())
 	}
 
-	trimArray(arr: any[], maxLen = 10) {
+	trimArray(arr: unknown[], maxLen = 10) {
 		if (arr.length > maxLen) {
 			const len = arr.length - maxLen
 			arr = arr.slice(0, maxLen)
@@ -46,7 +46,7 @@ export default class Util {
 		return `${parseFloat((bytes / Math.pow(1024, i)).toFixed(2))} ${sizes[i]}`
 	}
 
-	removeDuplicates(arr: any[]) {
+	removeDuplicates(arr: unknown[]) {
 		return [...new Set(arr)]
 	}
 
@@ -99,7 +99,7 @@ export default class Util {
 	}
 
 	formatDuration(duration: number) {
-		if (isNaN(duration) || typeof duration == undefined) return "00:00"
+		if (isNaN(duration) ?? typeof duration == undefined) return "00:00"
 		if (duration > 3600000000) return "LIVE"
 		return this.formatTime(duration)
 	}
@@ -112,7 +112,7 @@ export default class Util {
 
 	time(s: number) {
 		function pad(n: number, z?: number) {
-			z = z || 2
+			z = z ?? 2
 			return ("00" + n).slice(-z)
 		}
 		let ms = s % 1000
@@ -135,14 +135,14 @@ export default class Util {
 	splitMessage(text: string, { maxLength = 2_000, char = "\n", prepend = "", append = "" } = {}) {
 
 		if (text.length <= maxLength) return [text]
-		let splitText: any[] = [text]
+		let splitText = [text]
 		if (Array.isArray(char)) {
 			while (char.length > 0 && splitText.some(elem => elem.length > maxLength)) {
 				const currentChar = char.shift()
 				if (currentChar instanceof RegExp) {
-					splitText = splitText.flatMap(chunk => chunk.match(currentChar))
+					splitText = splitText.flatMap(chunk => chunk.match(currentChar)) as string[]
 				} else {
-					splitText = splitText.flatMap(chunk => chunk.split(currentChar))
+					splitText = splitText.flatMap(chunk => chunk.split(currentChar)) as string[]
 				}
 			}
 		} else {
@@ -174,10 +174,10 @@ export default class Util {
 
 				const rawFile = await import(commandFile)
 				const File = rawFile.default
-				if (!this.isClass(File)) throw new TypeError(`Command ${name} doesn"t export a class.`)
+				if (!this.isClass(File)) throw new TypeError(`Command ${name} doesn't export a class.`)
 
 				const command = new File(this.client, name.toLowerCase())
-				if (!(command instanceof Command)) throw new TypeError(`Comamnd ${name} doesnt belong in Commands.`)
+				if (!(command instanceof Command)) throw new TypeError(`Command ${name} doesn't belong in Commands.`)
 				Logger.log(`Loading Command: ${name}`, "log")
 				this.client.commands.set(command.name, command)
 
@@ -202,9 +202,9 @@ export default class Util {
 				if (!this.isClass(File)) throw new TypeError(`Command ${name} doesn"t export a class.`)
 
 				const event = new File(this.client, name.toLowerCase())
-				if (!(event instanceof Event)) throw new TypeError(`Comamnd ${name} doesnt belong in Commands.`)
+				if (!(event instanceof Event)) throw new TypeError(`Command ${name} doesnt belong in Commands.`)
 				this.client.events.set(event.name, event)
-				this.client.on(event.name, (...rest: any[]) => event.run(...rest))
+				this.client.on(event.name, event.run)
 				Logger.log(`Loading Event: ${name}`)
 
 			} catch (e) {

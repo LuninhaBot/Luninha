@@ -1,6 +1,6 @@
 import Event from "../../Structures/Event"
 import { Interaction, GuildMember, ChatInputCommandInteraction, PermissionsBitField } from "discord.js"
-import Command, { runCommand } from "../../Structures/Command"
+import Command, { RunCommand } from "../../Structures/Command"
 import EclipseClient from "../../Structures/EclipseClient"
 
 export default class InteractionCreateEvent extends Event {
@@ -16,7 +16,7 @@ export default class InteractionCreateEvent extends Event {
 
         if (interaction.isChatInputCommand()) {
 
-            const command = this.client.commands.get(interaction.commandName) || this.client.commands.get(interaction.options.getSubcommand())
+            const command = this.client.commands.get(interaction.commandName) ?? this.client.commands.get(interaction.options.getSubcommand())
 
             if (command) {
 
@@ -36,7 +36,7 @@ export default class InteractionCreateEvent extends Event {
                 }
 
                 try {
-                    command?.run({ interaction } as runCommand)
+                    command?.run({ interaction } as RunCommand)
                 } catch (error) {
                     return interaction.followUp(`⚠️ | Um erro aconteceu\n\`\`\`js\n${error}\`\`\``)
                 }

@@ -2,7 +2,6 @@ import { PermissionResolvable, ChatInputCommandInteraction, Awaitable } from "di
 import EclipseClient from "./EclipseClient"
 
 export default class Command {
-
     client: EclipseClient
     name: string
     description: string
@@ -16,19 +15,19 @@ export default class Command {
     constructor(client: EclipseClient) {
 
         this.client = client
-        this.name = "" || "Não definido"
-        this.description = "" || "Sem descrição"
+        this.name = "" ?? "Não definido"
+        this.description = "" ?? "Sem descrição"
         this.usage = ""
-        this.category = "" || "Outros"
+        this.category = "" ?? "Outros"
         this.userPerms = []
         this.botPerms = []
         this.ownerOnly = false
         this.ephemeral = false
     }
 
-    async run({ interaction }: runCommand): Promise<Awaitable<any>>  {
+    run({ interaction }: RunCommand): Awaitable<any>  {
         return { interaction }
     }
 }
 
-export type runCommand = { interaction: ChatInputCommandInteraction  }
+export type RunCommand = { interaction: ChatInputCommandInteraction  }
