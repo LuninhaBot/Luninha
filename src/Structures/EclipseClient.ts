@@ -1,12 +1,13 @@
 import { Shard } from "discord-cross-hosting"
 import Cluster from "discord-hybrid-sharding"
 import { Client, Collection, GatewayIntentBits, Options, PermissionResolvable } from "discord.js"
-import EclipseLavalink from "../LavalinkManager"
+import EclipseLavalink from "../LavalinkManager/"
 import Command from "./Command"
 import Event from "./Event"
 import Utils from "./Utils"
 
 export default class EclipseClient extends Client {
+
     owners: string[]
     prefix: string = "/"
     defaultPerms?: PermissionResolvable[]

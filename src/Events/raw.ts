@@ -1,16 +1,16 @@
-import Event from "../Structures/Event.js"
-import EclipseClient from "../Structures/EclipseClient.js"
+import Event from "../Structures/Event"
+import EclipseClient from "../Structures/EclipseClient"
 import { VoicePacket } from "erela.js"
 
 export default class extends Event {
 
     constructor(client: EclipseClient) {
         super(client, {
-            name: "raw",
+            name: "raw"
         })
     }
 
-    async run(d: VoicePacket) {
+    run(d: VoicePacket) {
         this.client.music.updateVoiceState(d)
     }
 }

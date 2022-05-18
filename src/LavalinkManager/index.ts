@@ -6,7 +6,6 @@ import Logger from "../Utils/Logger"
 import "./Player"
 
 export default class EclipseLavalink extends Manager {
-    client: EclipseClient
 
     constructor(client: EclipseClient) {
         super({
@@ -19,12 +18,9 @@ export default class EclipseLavalink extends Manager {
             }
         })
 
-
-        this.client = client
-
         this.on("nodeConnect", (node) => Logger.ready(`Lavalink Node ${node.options.identifier} connected!`))
 
-        this.on("nodeDisconnect", (node) => Logger.ready(`Lavalink Node ${node.options.identifier} disconnected!`))
+        this.on("nodeDisconnect", (node) => Logger.warn(`Lavalink Node ${node.options.identifier} disconnected!`))
 
         this.on("nodeError", (node, err) => Logger.error(`Lavalink Node ${node.options.identifier} found an error: ${err}`))
 
@@ -66,7 +62,7 @@ export default class EclipseLavalink extends Manager {
         })
 
         this.on("trackError", async (player, track, payload) => {
-            const channel = this.client.channels.cache.get(player.textChannel ?? "") as TextChannel
+            const channel = client.channels.cache.get(player.textChannel ?? "") as TextChannel
 
             channel.send({
                 content: `:x: | Encontrei um erro ao tocar o track ${track.title}\n\`\`\`${payload.error}\`\`\``
@@ -74,7 +70,7 @@ export default class EclipseLavalink extends Manager {
         })
 
         this.on("queueEnd", async (player, track) => {
-            const channel = this.client.channels.cache.get(player.textChannel ?? "") as TextChannel
+            const channel = client.channels.cache.get(player.textChannel ?? "") as TextChannel
 
             channel.send({
                 content: "👋 | A fila de reprodução acabou!",

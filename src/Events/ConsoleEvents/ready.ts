@@ -1,5 +1,5 @@
 import Event from "../../Structures/Event"
-import type EclipseClient from "../../Structures/EclipseClient"
+import EclipseClient from "../../Structures/EclipseClient"
 import Logger from "../../Utils/Logger"
 
 export default class ReadyEvent extends Event {
