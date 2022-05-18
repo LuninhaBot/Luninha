@@ -20,8 +20,6 @@ export default class EclipseLavalink extends Manager {
 
         this.on("nodeConnect", (node) => Logger.ready(`Lavalink Node ${node.options.identifier} connected!`))
 
-        this.on("nodeDisconnect", (node) => Logger.warn(`Lavalink Node ${node.options.identifier} disconnected!`))
-
         this.on("nodeError", (node, err) => Logger.error(`Lavalink Node ${node.options.identifier} found an error: ${err}`))
 
         this.on("trackEnd", (player) => {

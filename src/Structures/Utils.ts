@@ -199,12 +199,12 @@ export default class Util {
 
 				const rawFile = await import(eventFile)
 				const File = rawFile.default
-				if (!this.isClass(File)) throw new TypeError(`Command ${name} doesn"t export a class.`)
+				if (!this.isClass(File)) throw new TypeError(`Event ${name} doesn"t export a class.`)
 
 				const event = new File(this.client, name.toLowerCase())
-				if (!(event instanceof Event)) throw new TypeError(`Command ${name} doesnt belong in Commands.`)
+				if (!(event instanceof Event)) throw new TypeError(`Event ${name} doesnt belong in Commands.`)
 				this.client.events.set(event.name, event)
-				this.client.on(event.name, event.run)
+				this.client.on(event.name, (...rest: unknown[]) => event.run(...rest))
 				Logger.log(`Loading Event: ${name}`)
 
 			} catch (e) {
