@@ -1,9 +1,11 @@
+import { PermissionResolvable } from "discord.js";
+
 export default {
     client: {
         token: "",
         prefix: "/",
         owners: [""],
-        defaultPerms: [],
+        defaultPerms: [] as PermissionResolvable[],
     },
     clusterManager: {
         authToken: "",
