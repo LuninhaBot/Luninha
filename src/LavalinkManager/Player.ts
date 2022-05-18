@@ -2,15 +2,14 @@ import { Structure } from "erela.js"
 
 export default Structure.extend("Player", (Player) => {
     class LavalinkPlayer extends Player {
-
         speed: number
         pitch: number
         rate: number
         nightCore: boolean
         vaporWave: boolean
         bassBoost: boolean
-        band: number | undefined
-        gain: number | undefined
+        band?: number
+        gain?: number
 
         // @ts-ignore - TS doesn't know about this method
         constructor(...args) {
@@ -81,8 +80,8 @@ export default Structure.extend("Player", (Player) => {
         }
 
         setEqualizer(band: number, gain: number) {
-            this.band = band || this.band
-            this.gain = gain || this.gain
+            this.band = band ?? this.band
+            this.gain = gain ?? this.gain
 
             this.node.send({
                 op: 'filters',
@@ -117,9 +116,9 @@ export default Structure.extend("Player", (Player) => {
         }
 
         setTimescale(speed?: number, pitch?: number, rate?: number) {
-            this.speed = speed || this.speed
-            this.pitch = pitch || this.pitch
-            this.rate = rate || this.rate
+            this.speed = speed ?? this.speed
+            this.pitch = pitch ?? this.pitch
+            this.rate = rate ?? this.rate
 
             this.node.send({
                 op: "filters",

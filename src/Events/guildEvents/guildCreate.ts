@@ -38,7 +38,7 @@ export default class GuildCreateEvent extends Event {
         ])
         embed.setColor("Blue")
         embed.setFooter({ text: `Cluster => ${this.client.cluster.id} (Shard => ${guild.shardId})` })
-        embed.setThumbnail(guild.iconURL({ size: 2048, forceStatic: false }) || "https://cdn.discordapp.com/embed/avatars/0.png")
+        embed.setThumbnail(guild.iconURL({ size: 2048, forceStatic: false }) ?? "https://cdn.discordapp.com/embed/avatars/0.png")
 
         new WebhookClient({
             url: config.hooks.guildCreate.url,

@@ -1,13 +1,13 @@
-import { Manager, Player, Track } from "erela.js"
-import config from "../Utils/Config"
-import EclipseClient from "../Structures/EclipseClient"
-import Logger from "../Utils/Logger"
 import { ChatInputCommandInteraction, EmbedBuilder, TextChannel } from "discord.js"
-
+import { Manager, Player, Track } from "erela.js"
+import EclipseClient from "../Structures/EclipseClient"
+import config from "../Utils/Config"
+import Logger from "../Utils/Logger"
 import "./Player"
-export default class EclipseLavalink extends Manager {
 
+export default class EclipseLavalink extends Manager {
     client: EclipseClient
+
     constructor(client: EclipseClient) {
         super({
             nodes: config.lavalink,
@@ -52,7 +52,7 @@ export default class EclipseLavalink extends Manager {
         })
 
         // @ts-ignore
-        this.on("newTrackStart", (player: Player, tracks: any[]) => {
+        this.on("newTrackStart", (player: Player, tracks: Track[]) => {
             const track = tracks[0]
             const channel = client.channels.cache.get(player.textChannel ?? "") as TextChannel
 

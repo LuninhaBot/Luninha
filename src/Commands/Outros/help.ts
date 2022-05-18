@@ -1,6 +1,6 @@
-import Command, { runCommand } from "../../Structures/Command"
+import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, ComponentType, EmbedBuilder, Interaction } from "discord.js"
+import Command, { RunCommand } from "../../Structures/Command"
 import EclipseClient from "../../Structures/EclipseClient"
-import { EmbedBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle, UnsafeButtonBuilder } from "discord.js"
 
 export default class HelpCommand extends Command {
     constructor(client: EclipseClient) {
@@ -11,7 +11,7 @@ export default class HelpCommand extends Command {
         this.usage = "[comando]"
     }
 
-    async run({ interaction }: runCommand) {
+    async run({ interaction }: RunCommand) {
         if (!interaction.options.getString("comando")) {
             const embed0 = new EmbedBuilder()
 
@@ -35,7 +35,7 @@ export default class HelpCommand extends Command {
                 helpString.push(this.client.commands.filter(cmd => cmd.category === category).map(cmd => `<:seta:974012084926959676> | \`/${cmd.name} ${cmd.usage}\` → ${cmd.description}`))
             }
     
-            const pages: any[] = [embed0]
+            const pages = [embed0]
             for (let i = 0; i < helpString.length; i++) {
     
                 let embed = new EmbedBuilder()
@@ -63,7 +63,7 @@ export default class HelpCommand extends Command {
                 style: ButtonStyle.Primary
             })
     
-            const row = new ActionRowBuilder<UnsafeButtonBuilder>()
+            const row = new ActionRowBuilder<ButtonBuilder>()
             row.addComponents([backwardButton, forwardButton,])
     
             await interaction.followUp({
@@ -72,12 +72,14 @@ export default class HelpCommand extends Command {
             })
     
             let page = 0
-            const collector = interaction.channel?.createMessageComponentCollector({
-                filter: (interaction) => ["forward", "backward"].includes(interaction.customId),
+            const collector = interaction.channel!.createMessageComponentCollector({
+                filter: (interaction: ButtonInteraction) => ["forward", "backward"].includes(interaction.customId),
+                componentType: ComponentType.Button,
                 time: 60000
             })
     
-            collector?.on("collect", async (i) => {
+            collector.on("collect", async (i: Interaction) => {
+                if(!i.isButton()) return;
     
                 if (i.customId == "forward") {
                     page = page + 1 < pages.length ? ++page : 0
