@@ -46,15 +46,24 @@ export default class EclipseClient extends Client {
                 ThreadMemberManager: 0
             })
         })
-
+        
+        // Não dar espaço aqui eu tenho toque
         this.validate(options)
+
         this.owners = options.owners
+
         this.commands = new Collection()
+
         this.events = new Collection()
+
         this.cluster = new Cluster.Client(this)
+
         this.machine = new Shard(this.cluster)
+
         this.shardsInfoExtended = new Collection()
+
         this.music = new EclipseLavalink(this)
+
         this.utils = new Utils(this)
     }
 
