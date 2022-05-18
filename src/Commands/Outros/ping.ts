@@ -18,10 +18,12 @@ export default class PingCommand extends Command {
         if (interaction.options.getString("opção", false) == "shards_value") {
 
 
+            
             let pings = await this.client.machine.broadcastEval(`this.ws.shards.map(s => s.ping)`)
             let guilds = await this.client.machine.broadcastEval(`this.ws.shards.map((s) => this.guilds.cache.filter((g) => g.shardId === s.id).size)`)
             let users = await this.client.machine.broadcastEval(`this.ws.shards.map((s) => this.guilds.cache.filter((g) => g.shardId === s.id).reduce((a, b) => a + b.memberCount, 0))`)
             let stats = await this.client.machine.broadcastEval(`this.ws.shards.map((s) => s.status)`)
+            let uptime = await this.client.machine.broadcastEval(`this.shardsInfoExtended.map((s) => s.uptime)`)
             let s = await this.client.machine.broadcastEval(`this.ws.shards.size`)
 
             let all = s.flat(Infinity).reduce((a: number, b: number) => a + b, 0)
@@ -29,6 +31,7 @@ export default class PingCommand extends Command {
             let allGuilds: [] = guilds.flat(Infinity)
             let allUsers: [] = users.flat(Infinity)
             let allStats: [] = stats.flat(Infinity)
+            let allUptimes: [] = uptime.flat(Infinity)
 
 
             const status = {
@@ -44,18 +47,17 @@ export default class PingCommand extends Command {
             }
 
             const data = [
-                ["ID", "Servidores", "Usuários", "Uptime", "Players","Ping", "Status"]
+                ["ID", "Servidores", "Usuários", "Uptime", "Players", "Ping", "Status"]
             ]
 
 
             for (let i = 0; i < all; i++) {
-                let uptime = this.client.shardsInfoExtended.get(i ?? 0)
                 let players = this.client.guilds.cache.map((g) => g.shardId == i ? this.client.music.players.filter(p => p.options.guild == g.id).size : 0).reduce((a, b) => a + b, 0) ?? 0
                 data.push([
                     `${interaction.guild?.shardId == i ? "»" : ""} ${i}`,
                     allGuilds[i] ?? 0,
                     allUsers[i] ?? 0,
-                    this.client.utils.time(uptime ? Date.now() - uptime : 0),
+                    this.client.utils.time(allUptimes[i] ? Date.now() - allUptimes[i] : 0),
                     String(players),
                     allPings[i] + "ms",
                     status[allStats[i]]
@@ -91,7 +93,7 @@ export default class PingCommand extends Command {
 
 
             this.client.utils.splitMessage(output, {
-                maxLength: 2000,
+                maxLength: 1800,
                 char: "\n"
             }).forEach(m => interaction.followUp("```apache\n" + m + "```"))
     
@@ -121,13 +123,14 @@ export default class PingCommand extends Command {
             let shardsPerCluster = await this.client.machine.broadcastEval(`[...this.cluster.ids.keys()].length`)
             let clusterCount = await this.client.machine.broadcastEval(`this.cluster.count`)
             let playersCount = await this.client.machine.broadcastEval(`this.music.players.size`)
+            let clusterController = await this.client.machine.request({ requestStatus: true })
 
             let allUptime = uptime.flat(Infinity)
             let allMemory = memory.flat(Infinity)
             let allGuilds = guilds.flat(Infinity)
             let allUsers = users.flat(Infinity)
             let allShards = shardsPerCluster.flat(Infinity)
-            let allClusters = clusterCount.flat(Infinity).reduce((a: number, b: number) => a + b, 0)
+            let allClusters = clusterCount.flat(Infinity)
             let allPlayers = playersCount.flat(Infinity)
 
 
@@ -136,17 +139,27 @@ export default class PingCommand extends Command {
             ]
 
 
-            for (let i = 0; i < allClusters; i++) {
+            for (let i = 0; i < allClusters.length; i++) {
                 data.push([
                     `${[...this.client.cluster.ids.keys()].includes(interaction.guild?.shardId || 0) && this.client.cluster.id == i ? "»" : ""} ${i} (${clustersName[i]})`,
-                    allGuilds[i],
-                    allUsers[i],
-                    allShards[i],
+                    allGuilds[i] ?? 0,
+                    allUsers[i] ?? 0,
+                    allShards[i] ?? 0,
                     allPlayers[i],
-                    this.client.utils.time(allUptime[i]),
-                    this.client.utils.formatBytes(allMemory[i])
+                    this.client.utils.time(allUptime[i] ?? 0),
+                    this.client.utils.formatBytes(allMemory[i] ?? 0)
                 ])
             }
+
+            data.push([
+                "Controlador (Ayana)",
+                "*",
+                "*",
+                "*",
+                "*",
+                this.client.utils.time(clusterController.uptime),
+                this.client.utils.formatBytes(clusterController.memory)
+            ])
 
 
             const output = table(data, {
@@ -177,8 +190,7 @@ export default class PingCommand extends Command {
             })
 
             this.client.utils.splitMessage(output, {
-                maxLength: 2000,
-                char: "\n"
+                maxLength: 1800
             }).forEach(m => interaction.followUp("```apache\n" + m + "```"))
 
             return;

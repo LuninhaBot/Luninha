@@ -13,14 +13,7 @@ export default class ShardReady extends Event {
 
     async run(shard: number) {
 
-        this.client.user?.setPresence({
-            activities: [{
-                name: `Starting shard => ${shard}`,
-                type: ActivityType.Watching,
-            }]
-        })
-
-        this.client.shardsInfoExtended.set(shard, Date.now())
+        this.client.shardsInfoExtended.set(shard, { uptime: Date.now() })
         
         Logger.ready(`Shard ${shard} => Cluster ${this.client.cluster.id} is ready!`)
     }

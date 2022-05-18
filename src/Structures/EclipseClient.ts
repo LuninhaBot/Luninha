@@ -16,7 +16,7 @@ export default class EclipseClient extends Client {
     utils: Utils
     cluster: Cluster.Client
     machine: Shard
-    shardsInfoExtended: Collection<number, number>
+    shardsInfoExtended: Collection<number, { uptime: number }>
     music: EclipseLavalink
 
     constructor(options = {} as { token: string, prefix: string, owners: string[], defaultPerms: any[] }) {

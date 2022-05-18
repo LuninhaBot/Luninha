@@ -1,6 +1,7 @@
 import Event from "../../Structures/Event"
 import EclipseClient from "../../Structures/EclipseClient"
 import Logger from "../../Utils/Logger"
+import { CloseEvent } from "discord.js"
 
 export default class ShardDisconnect extends Event {
 
@@ -10,10 +11,10 @@ export default class ShardDisconnect extends Event {
         })
     }
 
-    async run(shard: number) {
+    async run(close: CloseEvent, shard: number) {
 
-        this.client.shardsInfoExtended.set(shard, 0)
+        this.client.shardsInfoExtended.set(shard, { uptime: 0 })
         
-        Logger.warn(`Shard ${shard} => Cluster ${this.client.cluster.id} is disconnected!`)
+        Logger.error(`Shard ${shard} => Cluster ${this.client.cluster.id} has disconnected with code ${close.code}`)
     }
 }
