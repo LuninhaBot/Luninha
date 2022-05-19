@@ -1,4 +1,5 @@
 import { EmbedBuilder } from "discord.js"
+import { SearchResult } from "erela.js"
 import Command, { RunCommand } from "../../Structures/Command"
 import EclipseClient from "../../Structures/EclipseClient"
 
@@ -8,7 +9,7 @@ export default class PlayCommand extends Command {
         this.name = "tocar"
         this.description = "Toca uma música no servidor."
         this.category = "Música"
-        this.usage = "link | playlist | nome"
+        this.usage = "<link | playlist | nome>"
         this.ephemeral = false
         this.ownerOnly = false
     }
@@ -43,7 +44,7 @@ export default class PlayCommand extends Command {
         }
 
         const search = interaction.options.getString("query", true)
-        let res;
+        let res: SearchResult;
 
         try {
             res = await player.search(search, interaction.user)

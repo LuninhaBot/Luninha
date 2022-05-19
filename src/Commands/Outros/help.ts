@@ -73,7 +73,7 @@ export default class HelpCommand extends Command {
     
             let page = 0
             const collector = interaction.channel!.createMessageComponentCollector({
-                filter: (interaction: ButtonInteraction) => ["forward", "backward"].includes(interaction.customId),
+                filter: (i: ButtonInteraction) => ["forward", "backward"].includes(i.customId),
                 componentType: ComponentType.Button,
                 time: 60000
             })
