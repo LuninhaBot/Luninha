@@ -44,11 +44,11 @@ export default class HelpCommand extends Command {
                 embed.setDescription(helpString[i].join("\n"))
                 embed.setTitle(`Categoria: ${categories[i]} [${this.client.commands.filter(cmd => cmd.category === categories[i]).size}]`)
                 embed.setFooter({
-                    text: `Página ${i + 1} de ${helpString.length}`,
+                    text: `Página ${i + 2}/${helpString.length + 1}`,
                 })
     
                 pages.push(embed)
-                pages[0].setFooter({ text: `Pagina 0 de ${helpString.length}` })
+                pages[0].setFooter({ text: `Página ${i}/${helpString.length + 1}` })
             }
     
             const forwardButton = new ButtonBuilder({
