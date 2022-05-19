@@ -6,10 +6,10 @@ import { SearchResult, Track } from "erela.js"
 export default class SearchCommand extends Command {
     constructor(client: EclipseClient) {
         super(client)
-        this.name = "pesquisar"
+        this.name = "search"
         this.description = "Pesquisa uma música e a coloca para tocar"
         this.category = "Música"
-        this.usage = "[nome]"
+        this.usage = "<nome>"
     }
 
     async run({ interaction }: RunCommand) {

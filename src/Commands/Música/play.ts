@@ -6,7 +6,7 @@ import EclipseClient from "../../Structures/EclipseClient"
 export default class PlayCommand extends Command {
     constructor(client: EclipseClient) {
         super(client)
-        this.name = "tocar"
+        this.name = "play"
         this.description = "Toca uma música no servidor."
         this.category = "Música"
         this.usage = "<link | playlist | nome>"
