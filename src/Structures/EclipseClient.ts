@@ -10,7 +10,7 @@ export default class EclipseClient extends Client {
 
     owners: string[]
     prefix: string = "/"
-    defaultPerms?: PermissionResolvable[]
+    defaultPerms!: PermissionResolvable[]
     commands: Collection<string, Command>
     events: Collection<string, Event>
     utils: Utils
@@ -47,8 +47,7 @@ export default class EclipseClient extends Client {
                 ThreadMemberManager: 0
             })
         })
-        
-        // Não dar espaço aqui eu tenho toque
+
         this.validate(options)
 
         this.owners = options.owners
@@ -71,12 +70,12 @@ export default class EclipseClient extends Client {
     validate(options = {} as { token: string, prefix: string, owners: string[], defaultPerms: PermissionResolvable[] }) {
         if (typeof options !== "object") throw new TypeError("As opçoes so podem ser objetos")
 
-		if (!options.token) throw new Error("Defina um token")
-		this.token = options.token;
+        if (!options.token) throw new Error("Defina um token")
+        this.token = options.token;
 
-		if (!options.prefix) throw new Error("Defina um prefix")
-		if (typeof options.prefix !== "string") throw new TypeError("Prefix apenas string")
-		this.prefix = options.prefix
+        if (!options.prefix) throw new Error("Defina um prefix")
+        if (typeof options.prefix !== "string") throw new TypeError("Prefix apenas string")
+        this.prefix = options.prefix
 
         if (!options.defaultPerms) throw new Error("Defina as permissoes")
     }

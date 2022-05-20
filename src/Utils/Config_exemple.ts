@@ -17,6 +17,10 @@ export default {
         },
         guildDelete: {
             url: ""
+        },
+        status: {
+            cluster: "",
+            shards: ""
         }
     },
     lavalink: [

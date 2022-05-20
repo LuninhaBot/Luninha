@@ -55,7 +55,7 @@ export default class QueueCommand extends Command {
         row.addComponents([backwardButton, forwardButton])
 
         await interaction.followUp({
-            content: `[${player.queue.current!.title}](${player.queue.current!.uri}) | ${player.queue.length} músicas ${parsedQueueDuration}`,
+            content: `**[${player.queue.current!.title}](${player.queue.current!.uri})** | ${player.queue.length} músicas ${parsedQueueDuration}`,
             embeds: [pages[0]],
             components: [row]
         })
@@ -78,9 +78,10 @@ export default class QueueCommand extends Command {
                 page = page > 0 ? --page : pages.length - 1
             }
 
-            if (i.user.id !== interaction.user.id) {
+            if (i.user.id !== "interaction.user.id") {
                 interaction.followUp({
-                    content: ":x: | Apenas o autor pode usar os botões!"
+                    content: ":x: | Apenas o autor pode usar os botões!",
+                    ephemeral: true
                 })
                 return;
             }

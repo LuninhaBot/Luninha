@@ -56,7 +56,7 @@ export default class EclipseLavalink extends Manager {
 
             channel.send({
                 embeds: [embed]
-            })
+            }).then(msg => player.set("message", msg))
         })
 
         this.on("trackError", async (player, track, payload) => {
