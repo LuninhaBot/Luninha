@@ -1,6 +1,6 @@
-import config from "./Utils/Config"
+import { bot } from "./Utils/Config"
 import EclipseClient from "./Structures/EclipseClient"
 
-const client = new EclipseClient(config.client)
+const client = new EclipseClient(bot)
 
 client.start()

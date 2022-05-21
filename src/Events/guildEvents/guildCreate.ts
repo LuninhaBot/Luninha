@@ -1,5 +1,5 @@
 import { Guild, EmbedBuilder, WebhookClient } from "discord.js"
-import config from "../../Utils/Config"
+import { hooks } from "../../Utils/Config"
 import Event from "../../Structures/Event"
 import EclipseClient from "../../Structures/EclipseClient"
 
@@ -41,7 +41,7 @@ export default class GuildCreateEvent extends Event {
         embed.setThumbnail(guild.iconURL({ size: 2048, forceStatic: false }) ?? "https://cdn.discordapp.com/embed/avatars/0.png")
 
         new WebhookClient({
-            url: config.hooks.guildCreate.url,
+            url: hooks.guildCreate.url,
         }).send({
             username: this.client.user?.username,
             avatarURL: this.client.user?.displayAvatarURL(),

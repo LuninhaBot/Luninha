@@ -1,15 +1,14 @@
 import Command from "../../Structures/Command"
-import type EclipseClient from "../../Structures/EclipseClient"
-import type { RunCommand } from "../../Structures/Command"
-import { table } from "table"
+import EclipseClient from "../../Structures/EclipseClient"
+import { RunCommand } from "../../Structures/Command"
 
 export default class PingCommand extends Command {
     constructor(client: EclipseClient) {
-        super(client)
-        this.name = "ping"
-        this.category = "Outros"
-        this.description = "Mostra o ping do bot"
-        this.ownerOnly = false
+        super(client, {
+            name: "ping",
+            category: "Outros",
+            description: "Mostra o meu ping e o uptime",
+        })
     }
 
     async run({ interaction }: RunCommand) {

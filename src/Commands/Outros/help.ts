@@ -4,11 +4,12 @@ import EclipseClient from "../../Structures/EclipseClient"
 
 export default class HelpCommand extends Command {
     constructor(client: EclipseClient) {
-        super(client)
-        this.name = "help"
-        this.description = "Mostra todos os comandos disponíveis."
-        this.category = "Outros"
-        this.usage = "[comando]"
+        super(client, {
+            name: "help",
+            category: "Outros",
+            description: "Mostra a lista de comandos",
+            usage: "[comando]"
+        })
     }
 
     async run({ interaction }: RunCommand) {

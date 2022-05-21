@@ -1,7 +1,7 @@
 import { ChatInputCommandInteraction, EmbedBuilder, TextChannel } from "discord.js"
 import { Manager, Player, Track } from "erela.js"
 import EclipseClient from "../Structures/EclipseClient"
-import config from "../Utils/Config"
+import { lavalink } from "../Utils/Config"
 import Logger from "../Utils/Logger"
 import "./Player"
 
@@ -9,7 +9,7 @@ export default class EclipseLavalink extends Manager {
 
     constructor(client: EclipseClient) {
         super({
-            nodes: config.lavalink,
+            nodes: lavalink,
             autoPlay: true,
             clientName: "Eclipse",
             send: (id, payload) => {

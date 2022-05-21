@@ -2,7 +2,7 @@ import Event from "../../Structures/Event"
 import EclipseClient from "../../Structures/EclipseClient"
 import Logger from "../../Utils/Logger"
 import { WebhookClient } from "discord.js"
-import config from "../../Utils/Config"
+import { hooks } from "../../Utils/Config"
 
 export default class ReadyEvent extends Event {
 
@@ -13,7 +13,7 @@ export default class ReadyEvent extends Event {
     }
 
     async run() {
-        
+
         this.client.music.init(this.client.user?.id)
 
         this.client.user?.setPresence({
@@ -22,14 +22,17 @@ export default class ReadyEvent extends Event {
             }]
         })
 
-        new WebhookClient({
-            url: config.hooks.status.cluster
-        }).send({
-            embeds: [{
-                title: `Cluster ${this.client.cluster.id} está online!`,
-                description: `Shards ${this.client.ws.shards.first()?.id} - ${this.client.ws.shards.last()?.id} estão operando!`,
-            }]
-        })
+
+        if (hooks.status.sendLogs) {
+            new WebhookClient({
+                url: hooks.status.cluster
+            }).send({
+                embeds: [{
+                    title: `Cluster ${this.client.cluster.id} está online!`,
+                    description: `Shards ${this.client.ws.shards.first()?.id} - ${this.client.ws.shards.last()?.id} estão operando!`,
+                }]
+            })
+        }
 
         Logger.ready("Client is ready!")
     }

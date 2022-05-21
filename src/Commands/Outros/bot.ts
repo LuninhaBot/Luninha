@@ -4,11 +4,12 @@ import { table } from "table"
 
 export default class InviteCommand extends Command {
     constructor(client: EclipseClient) {
-        super(client)
-        this.name = "bot"
-        this.usage = "convite | shards | cluster"
-        this.description = "...?"
-        this.category = "Outros"
+        super(client, {
+            name: "bot",
+            usage: "convite | shards | cluster",
+            description: "...?",
+            category: "Outros"
+        })
     }
 
     async run({ interaction }: RunCommand) {

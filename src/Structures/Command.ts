@@ -1,6 +1,18 @@
 import { PermissionResolvable, ChatInputCommandInteraction, Awaitable } from "discord.js"
 import EclipseClient from "./EclipseClient"
 
+
+export interface CommandOptions {
+    name: string
+    description: string | "Não definido"
+    usage?: string
+    category?: string
+    userPerms?: PermissionResolvable[]
+    botPerms?: PermissionResolvable[]
+    ownerOnly?: boolean
+    ephemeral?: boolean
+}
+
 export default class Command {
     client: EclipseClient
     name: string
@@ -12,17 +24,17 @@ export default class Command {
     ownerOnly: boolean
     ephemeral: boolean
 
-    constructor(client: EclipseClient) {
+    constructor(client: EclipseClient, options: CommandOptions) {
 
         this.client = client
-        this.name = "" ?? "Não definido"
-        this.description = "" ?? "Sem descrição"
-        this.usage = ""
-        this.category = "" ?? "Outros"
-        this.userPerms = []
-        this.botPerms = []
-        this.ownerOnly = false
-        this.ephemeral = false
+        this.name = options.name ?? "Não definido"
+        this.description = options.description ?? "Sem descrição"
+        this.usage = options.usage ?? ""
+        this.category = options.category ?? "Outros"
+        this.userPerms = options.userPerms ?? []
+        this.botPerms = options.botPerms ?? []
+        this.ownerOnly = options.ownerOnly ?? false
+        this.ephemeral = options.ephemeral ?? false
     }
 
     run({ interaction }: RunCommand): Awaitable<any>  {

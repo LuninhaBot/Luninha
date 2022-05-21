@@ -45,7 +45,12 @@ export default class EclipseClient extends Client {
                 GuildBanManager: 0,
                 StageInstanceManager: 0,
                 ThreadMemberManager: 0
-            })
+            }),
+            ws: {
+                properties: {
+                    $browser: "Discord Android"
+                }
+            }
         })
 
         this.validate(options)

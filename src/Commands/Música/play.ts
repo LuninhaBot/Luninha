@@ -5,13 +5,12 @@ import EclipseClient from "../../Structures/EclipseClient"
 
 export default class PlayCommand extends Command {
     constructor(client: EclipseClient) {
-        super(client)
-        this.name = "play"
-        this.description = "Toca uma música no servidor."
-        this.category = "Música"
-        this.usage = "<link | playlist | nome>"
-        this.ephemeral = false
-        this.ownerOnly = false
+        super(client, {
+            name: "play",
+            description: "Adiciona uma música à fila de espera.",
+            usage: "<link | playlist | nome>",
+            category: "Música"
+        })
     }
 
     async run({ interaction }: RunCommand) {

@@ -4,10 +4,11 @@ import EclipseClient from "../../Structures/EclipseClient.js"
 
 export default class QueueCommand extends Command {
     constructor(client: EclipseClient) {
-        super(client)
-        this.name = "queue"
-        this.description = "Mostra a fila de música"
-        this.category = "Música"
+        super(client, {
+            name: "queue",
+            category: "Música",
+            description: "Mostra a fila de música",
+        })
     }
 
     async run({ interaction }: RunCommand) {
