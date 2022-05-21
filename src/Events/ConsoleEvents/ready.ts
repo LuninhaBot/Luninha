@@ -3,6 +3,13 @@ import EclipseClient from "../../Structures/EclipseClient"
 import Logger from "../../Utils/Logger"
 import { WebhookClient } from "discord.js"
 import { hooks } from "../../Utils/Config"
+import { DatabaseManager } from "../../Database/index"
+
+declare global {
+    var db: DatabaseManager
+}
+
+global.db = new DatabaseManager("db")
 
 export default class ReadyEvent extends Event {
 

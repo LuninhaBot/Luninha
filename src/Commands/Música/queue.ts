@@ -69,25 +69,20 @@ export default class QueueCommand extends Command {
 
         var page = 0
         collector.on("collect", async (i) => {
-            if (!i.isButton()) return;
 
-            if (i.customId == "forward") {
-                page = page + 1 < pages.length ? ++page : 0
-            }
+            if (i.user.id !== interaction.user.id) {
 
-            if (i.customId == "backward") {
-                page = page > 0 ? --page : pages.length - 1
-            }
-
-            if (i.user.id !== "interaction.user.id") {
-                interaction.followUp({
-                    content: ":x: | Apenas o autor pode usar os botões!",
-                    ephemeral: true
+                await i.deferReply({ ephemeral: true })
+                i.editReply({
+                    content: ":x: | Apenas o autor pode usar os botões!"
                 })
+
                 return;
             }
 
             if (i.customId == "forward") {
+                page = page + 1 < pages.length ? ++page : 0
+
                 await i.deferUpdate()
 
                 i.editReply({
@@ -100,6 +95,8 @@ export default class QueueCommand extends Command {
             }
 
             if (i.customId == "backward") {
+                page = page > 0 ? --page : pages.length - 1
+
                 await i.deferUpdate()
                 
                 i.editReply({

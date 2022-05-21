@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, ComponentType, EmbedBuilder, Interaction } from "discord.js"
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType, EmbedBuilder, Interaction } from "discord.js"
 import Command, { RunCommand } from "../../Structures/Command"
 import EclipseClient from "../../Structures/EclipseClient"
 
@@ -29,6 +29,7 @@ export default class HelpCommand extends Command {
                 ``,
                 `👑 | Fui desenvolvido por ${await (this.client.utils.fetchOwners(this.client.owners))}.`,
             ].join("\n"))
+            embed0.setTimestamp()
     
             const helpString = []
             let categories = this.client.utils.removeDuplicates(this.client.commands.filter(cmd => cmd.category !== "Desenvolvedor").map(cmd => cmd.category))
@@ -44,12 +45,15 @@ export default class HelpCommand extends Command {
                 embed.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL({ forceStatic: false ,size: 4096 }) })
                 embed.setDescription(helpString[i].join("\n"))
                 embed.setTitle(`Categoria: ${categories[i]} [${this.client.commands.filter(cmd => cmd.category === categories[i]).size}]`)
+                embed.setTimestamp()
                 embed.setFooter({
-                    text: `Página ${i + 2}/${helpString.length + 1}`,
+                    text: `Página ${i + 1} - ${helpString.length}`
                 })
-    
+
+                pages[0].setFooter({
+                    text: `Página 0 - ${helpString.length}`
+                })
                 pages.push(embed)
-                pages[0].setFooter({ text: `Página ${i}/${helpString.length + 1}` })
             }
     
             const forwardButton = new ButtonBuilder({
@@ -74,31 +78,25 @@ export default class HelpCommand extends Command {
     
             let page = 0
             const collector = interaction.channel!.createMessageComponentCollector({
-                filter: (i: ButtonInteraction) => ["forward", "backward"].includes(i.customId),
+                filter: (i) => ["forward", "backward"].includes(i.customId),
                 componentType: ComponentType.Button,
                 time: 60000
             })
     
-            collector.on("collect", async (i: Interaction) => {
-                if(!i.isButton()) return;
-    
-                if (i.customId == "forward") {
-                    page = page + 1 < pages.length ? ++page : 0
-                }
-    
-                if (i.customId == "backward") {
-                    page = page > 0 ? --page : pages.length - 1
-                }
+            collector.on("collect", async (i) => {
     
                 if (i.user.id !== interaction.user.id) {
-                    i.reply({
+                    await i.deferReply({ ephemeral: true })
+
+                    i.editReply({
                         content: ":x: | Você não pode mudar de página.",
-                        ephemeral: true
                     })
                     return;
                 }
     
                 if (i.customId == "forward") {
+                    page = page + 1 < pages.length ? ++page : 0
+
                     await i.deferUpdate()
     
                     i.editReply({
@@ -111,6 +109,8 @@ export default class HelpCommand extends Command {
                 }
     
                 if (i.customId == "backward") {
+                    page = page > 0 ? --page : pages.length - 1
+
                     await i.deferUpdate()
                     
                     i.editReply({

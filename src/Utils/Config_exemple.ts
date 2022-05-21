@@ -35,3 +35,5 @@ export const lavalink = [
         retryDelay: 500,
     }
 ]
+
+export const geniusToken = ""

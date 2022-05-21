@@ -10,6 +10,7 @@ export default Structure.extend("Player", (Player) => {
         bassBoost: boolean
         band?: number
         gain?: number
+        skipVotes: unknown[]
 
         // @ts-ignore - TS doesn't know about this method
         constructor(...args) {
@@ -21,6 +22,7 @@ export default Structure.extend("Player", (Player) => {
             this.nightCore = false
             this.vaporWave = false
             this.bassBoost = false
+            this.skipVotes = []
         }
 
         setSpeed(speed: number) {

@@ -161,6 +161,11 @@ export default class Util {
 		return messages.concat(msg).filter(m => m)
 	}
 
+	resetVotes(player: Player) {
+		// @ts-ignore
+		player.skipVotes.splice(0)
+	}
+
 	async loadCommands() {
 
 		const commands = await glob(`./build/Commands/**/*.js`, { absolute: true })
