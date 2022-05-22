@@ -6,7 +6,8 @@
   "private": true,
   "scripts": {
     "start": "node ./build/Cluster.js",
-    "build": "sucrase ./src -d ./build --transforms typescript,imports && yarn start"
+    "build": "sucrase ./src -d ./build --transforms typescript,imports",
+    "build:start": "sucrase ./src -d ./build --transforms typescript,imports && yarn start"
   },
   "dependencies": {
     "chalk": "4.1.2",
