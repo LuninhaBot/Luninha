@@ -26,6 +26,14 @@ export default class InteractionCreateEvent extends Event {
                     return interaction.followUp(":x: | Você não pode usar este comando!")
                 }
 
+                const member = await interaction.guild?.members.fetch(interaction.user.id)
+                let role = interaction.guild?.roles.cache.get(db.get(`dj_${interaction.guild?.id}`))?.name ?? "DJ"
+                if (command.djOnly && !member?.roles.cache.has(db.get(`dj_${interaction.guild?.id}`))) {
+                    return interaction.followUp({
+                        content: `:x: | Apenas pessoas com o cargo \`${role}\` podem usar este comando!`,
+                    })
+                }
+
                 if (!interaction?.inGuild()) {
                     return interaction.followUp(":x: | Esté comando não pode ser usado fora de um servidor!")
                 }

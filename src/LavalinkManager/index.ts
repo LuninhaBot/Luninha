@@ -5,6 +5,7 @@ import { lavalink } from "../Utils/Config"
 import Logger from "../Utils/Logger"
 import "./Player"
 
+
 export default class EclipseLavalink extends Manager {
 
     constructor(client: EclipseClient) {

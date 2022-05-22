@@ -17,7 +17,7 @@ export default class PingCommand extends Command {
         const apiPing = Date.now() - start
 
         await interaction.editReply({
-            content: `**Pong!** Meu ping é de \`${this.client.ws.ping}ms\`. A latencia da API é \`${apiPing}ms\`\n**Uptime:** ${this.client.utils.time(this.client?.uptime ?? 0)}`
+            content: `**Pong!** (Shard ${this.client.ws.shards.first()?.id} - ${this.client.ws.shards.last()?.id})\nMeu ping é de \`${this.client.ws.ping}ms\`. A latencia da API é \`${apiPing}ms\`\n**Uptime:** ${this.client.utils.time(this.client?.uptime ?? 0)}`
         })
     }
 }

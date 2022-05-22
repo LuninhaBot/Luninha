@@ -48,7 +48,7 @@ export default class skipCommand extends Command {
             // @ts-ignore
             this.client.utils.resetVotes(player)
             player?.stop()
-            str += `✅ Pulando **${player?.queue.current?.title}**`;
+            str += `✅ | Pulando **${player?.queue.current?.title}**`;
         };
 
         interaction.followUp({

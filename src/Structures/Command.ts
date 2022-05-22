@@ -11,6 +11,7 @@ export interface CommandOptions {
     botPerms?: PermissionResolvable[]
     ownerOnly?: boolean
     ephemeral?: boolean
+    djOnly?: boolean
 }
 
 export default class Command {
@@ -23,6 +24,7 @@ export default class Command {
     botPerms: PermissionResolvable[]
     ownerOnly: boolean
     ephemeral: boolean
+    djOnly: boolean
 
     constructor(client: EclipseClient, options: CommandOptions) {
 
@@ -35,6 +37,7 @@ export default class Command {
         this.botPerms = options.botPerms ?? []
         this.ownerOnly = options.ownerOnly ?? false
         this.ephemeral = options.ephemeral ?? false
+        this.djOnly = options.djOnly ?? false
     }
 
     run({ interaction }: RunCommand): Awaitable<any>  {
