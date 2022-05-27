@@ -1,4 +1,4 @@
-import { EmbedBuilder } from "discord.js"
+import { EmbedBuilder, GuildMember } from "discord.js"
 import { SearchResult } from "erela.js"
 import Command, { RunCommand } from "../../Structures/Command"
 import EclipseClient from "../../Structures/EclipseClient"
@@ -16,10 +16,15 @@ export default class PlayCommand extends Command {
     async run({ interaction }: RunCommand) {
         const play = this.client.music.players.get(interaction.guild?.id ?? "")
 
-        let member = await interaction.guild?.members.fetch(interaction.user.id)
-        const voice = member?.voice
+        let member = interaction.member as GuildMember
+        const voice = member.voice
 
-        if (!voice?.channel) return interaction.followUp(":x: | Você não está em um canal de voz!")
+        if (!voice.channel) {
+            interaction.followUp({
+                content: ":x: | Você não está em um canal de voz!"
+            })
+            return;
+        }
 
         if (!play) {
             const player = this.client.music.create({
@@ -30,7 +35,11 @@ export default class PlayCommand extends Command {
             })
 
             if (!voice.channel.joinable) {
-                return interaction.followUp(":x: | Não consigo entrar no canal de voz solicitado!")
+                interaction.followUp({
+                    content: ":x: | Não consigo entrar no canal de voz solicitado!" 
+                })
+
+                return;
             }
 
             player.connect()
@@ -39,7 +48,8 @@ export default class PlayCommand extends Command {
         const player = this.client.music.players.get(interaction.guild?.id ?? "")
 
         if (player?.voiceChannel !== voice.channel.id) {
-            return interaction.followUp(`:x: | Estou tocando música em \`${interaction.guild?.channels.cache.get(player?.options.voiceChannel ?? "")}\`!`)
+            interaction.followUp(`:x: | Estou tocando música em \`${interaction.guild?.channels.cache.get(player?.options.voiceChannel ?? "")?.name}\`!`)
+            return;
         }
 
         const search = interaction.options.getString("query", true)
@@ -63,7 +73,7 @@ export default class PlayCommand extends Command {
 
         if (res.loadType == "NO_MATCHES") {
             if (!player.queue.current) player.destroy()
-            return interaction.followUp(":x: | Não foi possivel encontrar a música!")
+            return interaction.followUp(":x: | Não foi possivel encontrar nenhuma música!")
         }
 
         if (res.loadType == "TRACK_LOADED") {
@@ -87,22 +97,16 @@ export default class PlayCommand extends Command {
 
         if (res.loadType == "PLAYLIST_LOADED") {
 
-            if (player.queue.size >= 1) {
-                embed2.setDescription(`:musical_note: | Adicionado a fila de espera a playlist **${res.playlist?.name}**`)
-            } else {
-                embed2.setDescription(`:musical_note: | Tocando agora a playlist **${res.playlist?.name}**`)
-            }
-
             player.queue.add(res.tracks)
 
             if (!player.playing && !player.paused && player.queue.totalSize === res.tracks.length) player.play()
             embed2.setColor("#80088b")
+            embed2.setDescription(`:musical_note: | Adicionado a fila de espera a playlist **${res.playlist?.name}**`)
+            this.client.music.emit("playingNow", player, res.tracks[0], interaction)
 
             interaction.followUp({
                 embeds: [embed2]
             })
-
-			this.client.music.emit("playingNow", player, res.tracks[0], interaction)
         }
 
         if (res.loadType == "SEARCH_RESULT") {

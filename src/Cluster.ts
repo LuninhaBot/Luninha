@@ -21,7 +21,7 @@ const manager = new Cluster.Manager(`${__dirname}/index.js`, {
 })
 
 manager.on("clusterCreate", (cluster) => {
-    Logger.log(`Started cluster ${cluster.id}`)
+    Logger.warn(`Started cluster ${cluster.id}`)
 
     cluster.on("death", async (machine) => {
         let shards = cluster.manager.shardList

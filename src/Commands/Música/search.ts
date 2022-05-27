@@ -58,7 +58,7 @@ export default class SearchCommand extends Command {
 
         if (res.loadType == "NO_MATCHES") {
             if (!player.queue.current) player.destroy()
-            await interaction.followUp(":x: | Não foi possivel encontrar a música!")
+            await interaction.followUp(":x: | Não foi possivel encontrar nenhuma música!")
         }
 
         if (res.loadType == "PLAYLIST_LOADED") {

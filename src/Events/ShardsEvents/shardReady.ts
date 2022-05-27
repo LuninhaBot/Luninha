@@ -13,8 +13,6 @@ export default class ShardReady extends Event {
     }
 
     async run(shard: number) {
-
-        this.client.shardsInfoExtended.set(shard, { uptime: Date.now() })
         
         if (hooks.status.sendLogs) {
             new WebhookClient({

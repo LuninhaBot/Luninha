@@ -1,5 +1,5 @@
 import Command, { RunCommand } from "../../Structures/Command.js"
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, User, Embed, ButtonStyle, ComponentType } from "discord.js"
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, User, Embed, ButtonStyle, ComponentType, Message } from "discord.js"
 import EclipseClient from "../../Structures/EclipseClient.js"
 
 export default class QueueCommand extends Command {

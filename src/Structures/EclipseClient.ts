@@ -16,7 +16,6 @@ export default class EclipseClient extends Client {
     utils: Utils
     cluster: Cluster.Client
     machine: Shard
-    shardsInfoExtended: Collection<number, { uptime: number }>
     music: EclipseLavalink
 
     constructor(options = {} as { token: string, prefix: string, owners: string[], defaultPerms: PermissionResolvable[] }) {
@@ -44,7 +43,6 @@ export default class EclipseClient extends Client {
                 UserManager: 0,
                 GuildBanManager: 0,
                 StageInstanceManager: 0,
-                ThreadMemberManager: 0
             }),
             ws: {
                 properties: {
@@ -64,8 +62,6 @@ export default class EclipseClient extends Client {
         this.cluster = new Cluster.Client(this)
 
         this.machine = new Shard(this.cluster)
-
-        this.shardsInfoExtended = new Collection()
 
         this.music = new EclipseLavalink(this)
 

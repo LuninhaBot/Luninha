@@ -14,9 +14,6 @@ export default class ShardDisconnect extends Event {
 
     async run(close: CloseEvent, shard: number) {
 
-        this.client.shardsInfoExtended.set(shard, { uptime: 0 })
-
-
         if (hooks.status.sendLogs) {
             new WebhookClient({
                 url: hooks.status.shards

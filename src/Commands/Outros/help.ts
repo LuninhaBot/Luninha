@@ -24,7 +24,7 @@ export default class HelpCommand extends Command {
             embed0.setColor("#80088b")
             embed0.setDescription([
                 `👋 | Eu tenho atualmente **${this.client.commands.size}** comandos.`,
-                `:tools: | Você pode pedir suporte e ficar por dentro das novidades no meu [servidor oficial](https://linkfoda.com).`,
+                `:tools: | Você pode pedir suporte e ficar por dentro das novidades no meu [servidor oficial](https://discord.gg/Ce2EhRkYe6).`,
                 `:question: | Você pode pedir ajuda para um comando específico, usando o comando \`${this.client.prefix}help [comando]\`.`,
                 ``,
                 `👑 | Fui desenvolvido por ${await (this.client.utils.fetchOwners(this.client.owners))}.`,
