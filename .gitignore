@@ -3,3 +3,4 @@ yarn.lock
 /src/Utils/Config.ts
 /build
 /src/Database/db.json
+/src/Database/playlists.json

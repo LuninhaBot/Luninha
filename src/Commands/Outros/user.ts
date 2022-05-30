@@ -1,7 +1,6 @@
 import Command, { RunCommand } from "../../Structures/Command"
 import EclipseClient from "../../Structures/EclipseClient"
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, GuildMember, Attachment, ButtonStyle, User } from "discord.js"
-import Canvas from "canvas"
 
 export default class UserCommands extends Command {
     constructor(client: EclipseClient) {
@@ -9,7 +8,7 @@ export default class UserCommands extends Command {
             name: "user",
             description: "Mostra informações sobre um usuário",
             category: "Outros",
-            usage: "info | banner | avatar ",
+            usage: "info  | avatar ",
         })
     }
 

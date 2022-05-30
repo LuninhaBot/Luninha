@@ -21,11 +21,11 @@ export default class nowPlayingCommand extends Command {
         const player = this.client.music.players.get(interaction.guild?.id ?? "")
 
 
-        let duration = player?.queue.current?.duration ?? 0
+        let duration = player!.queue.current!.duration ?? 0
         const parsedCurrentDuration = this.client.utils.formatDuration(player?.position ?? 0)
         const parsedDuration = this.client.utils.formatDuration(player?.queue.current?.duration ?? 0)
-        const part = Math.floor((player?.position ?? 0 / duration) * 11)
-        const uni = player?.playing ? "▶" : "⏸️"
+        const part = Math.floor((player!.position / duration) * 11)
+        const uni = player!.playing ? "▶" : "⏸️"
         // @ts-ignore
         const user = await this.client.users.fetch(player?.queue.current?.requester.id ?? "")
         var sound;
@@ -40,7 +40,7 @@ export default class nowPlayingCommand extends Command {
             sound = "🔈"
         }
 
-        let repeat = "▬"?.repeat(part) + "🔘" + "▬"?.repeat((11 - part) ?? part - 11)
+        let repeat = "▬".repeat(part) + "🔘" + "▬".repeat(11)
 
         let embed = new EmbedBuilder()
         embed.setAuthor({ name: user.tag, iconURL: user.displayAvatarURL({ forceStatic: false }) })
@@ -50,7 +50,7 @@ export default class nowPlayingCommand extends Command {
 
         let member = await interaction.guild?.members.fetch(interaction.user.id)
         interaction.followUp({
-            content: `**Tocando agora em ${member?.voice.channel?.name}**`,
+            content: `Tocando agora em **${member?.voice.channel?.name}**`,
             embeds: [embed]
         })
     }

@@ -23,7 +23,7 @@ export default class QueueCommand extends Command {
         for (let i = 0; i < player.queue.length; i++) {
             const song = player.queue[i]
             // @ts-ignore
-            songStrings.push(`**${i + 1}º** \`[${this.client.utils.formatDuration(song.duration ?? 0)}]\` **${song.title}** - <@${song.requester ? song.requester.id : null}>`)
+            songStrings.push(`**${i + 1}º** \`[${this.client.utils.formatDuration(song?.duration)}]\` **${song?.title}** - <@${song.requester ? song.requester.id : null}>`)
         }
 
         const pages: EmbedBuilder[] = []
@@ -32,7 +32,7 @@ export default class QueueCommand extends Command {
             const str = songStrings.slice(i * 10, i * 10 + 10).join("\n")
             const embed = new EmbedBuilder()
             embed.setColor("#80088b")
-            embed.setDescription(str == "" ? "Nada na fila de música" : str)
+            embed.setDescription(str)
             embed.setFooter({
                 text: `Página ${i + 1}/${pagesNum}`,
             })
@@ -43,13 +43,13 @@ export default class QueueCommand extends Command {
         const forwardButton = new ButtonBuilder({
             emoji: "➡️",
             customId: "forward",
-            style: ButtonStyle.Primary
+            style: ButtonStyle.Secondary
         })
 
         const backwardButton = new ButtonBuilder({
             emoji: "⬅️",
             customId: "backward",
-            style: ButtonStyle.Primary
+            style: ButtonStyle.Secondary
         })
 
         let row = new ActionRowBuilder<ButtonBuilder>()
@@ -57,7 +57,7 @@ export default class QueueCommand extends Command {
 
         await interaction.followUp({
             content: `**[${player.queue.current!.title}](${player.queue.current!.uri})** | ${player.queue.length} músicas ${parsedQueueDuration}`,
-            embeds: [pages[0]],
+            embeds: [pagesNum == 0 ? new EmbedBuilder().setDescription("Não há músicas na fila!").setColor("#80088b") : pages[0]],
             components: [row]
         })
 
@@ -86,7 +86,9 @@ export default class QueueCommand extends Command {
                 await i.deferUpdate()
 
                 i.editReply({
-                    embeds: [pages[page]],
+                    embeds: [
+                        pagesNum == 0 ? new EmbedBuilder().setDescription("Não há músicas na fila!").setColor("#80088b") : pages[page]
+                    ],
                     components: [row]
                 })
 
@@ -100,7 +102,9 @@ export default class QueueCommand extends Command {
                 await i.deferUpdate()
                 
                 i.editReply({
-                    embeds: [pages[page]],
+                    embeds: [
+                        pagesNum == 0 ? new EmbedBuilder().setDescription("Não há músicas na fila!").setColor("#80088b") : pages[page]
+                    ],
                     components: [row]
                 })
 

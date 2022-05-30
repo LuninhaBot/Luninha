@@ -58,13 +58,13 @@ export default class HelpCommand extends Command {
     
             const forwardButton = new ButtonBuilder({
                 emoji: "➡️",
-                customId: "forward",
+                customId: "forward1",
                 style: ButtonStyle.Primary
             })
     
             const backwardButton = new ButtonBuilder({
                 emoji: "⬅️",
-                customId: "backward",
+                customId: "backward1",
                 style: ButtonStyle.Primary
             })
     
@@ -78,7 +78,7 @@ export default class HelpCommand extends Command {
     
             let page = 0
             const collector = interaction.channel!.createMessageComponentCollector({
-                filter: (i) => ["forward", "backward"].includes(i.customId),
+                filter: (i) => ["forward1", "backward1"].includes(i.customId),
                 componentType: ComponentType.Button,
                 time: 60000
             })
@@ -94,7 +94,7 @@ export default class HelpCommand extends Command {
                     return;
                 }
     
-                if (i.customId == "forward") {
+                if (i.customId == "forward1") {
                     page = page + 1 < pages.length ? ++page : 0
 
                     await i.deferUpdate()
@@ -108,7 +108,7 @@ export default class HelpCommand extends Command {
                     return;
                 }
     
-                if (i.customId == "backward") {
+                if (i.customId == "backward1") {
                     page = page > 0 ? --page : pages.length - 1
 
                     await i.deferUpdate()
