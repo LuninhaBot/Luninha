@@ -18,24 +18,24 @@ export default class UserCommands extends Command {
 
             let m = await interaction.guild?.members.fetch((interaction.options.getMember("usuário") as GuildMember) ?? interaction.user.id)
     
-            //let arr: { tag: string; timestamp: number, id: string }[] = []
-            //let members = await interaction.guild?.members.fetch()
-            //members?.forEach((u) => {
-                //arr.push({
-                    //tag: u.user.tag == m?.user.tag ? `**${u.user.tag}**` : u.user.tag,
-                    //timestamp: u.joinedTimestamp ?? 0,
-                    //id: u.id
-                //})
-            //})
+            let arr: { tag: string; timestamp: number, id: string }[] = []
+            let members = await interaction.guild?.members.fetch()
+            members?.forEach((u) => {
+                arr.push({
+                    tag: u.user.tag == m?.user.tag ? `**${u.user.tag}**` : u.user.tag,
+                    timestamp: u.joinedTimestamp ?? 0,
+                    id: u.id
+                })
+            })
 
-            //let sort = arr.sort((a, b) => a?.timestamp - b?.timestamp)
-            //let index = sort.findIndex(u => u.id == m?.user.id)
+            let sort = arr.sort((a, b) => a?.timestamp - b?.timestamp)
+            let index = sort.findIndex(u => u.id == m?.user.id)
 
             /*
              * Um dia eu consigo fazer a ordem de entrada mas esse dia não é hoje
             */
 
-            let emojis = {
+            const emojis = {
                 Staff: "<:staff:978173420036575243>",
                 Partner: "<:partner:978173517243764796>",
                 Hypesquad: "<:hyperevent:978175869875003434>",
@@ -57,12 +57,15 @@ export default class UserCommands extends Command {
             let nitro = avatar?.startsWith("a_") ? "<:nitro:979250617333710908>" : ""
             let flags = m?.user.flags?.toArray()
 
+            const startingValue = (index - 7) <= 0 ? 0 : index - 7
+            const endingValue = (index + 8) >= sort.length ? sort.length : index + 8
+
             let embed = new EmbedBuilder()
             embed.setDescription([
                 `ID: **${m?.user.id}** ${nitro}${flags?.map(flag => emojis[flag]).join("") ?? ""}${interaction.guild?.ownerId == m?.user.id ? "👑" : ""}`,
                 `Criado em: **${m?.user.createdAt.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" })}**`,
                 `Entrou em: **${m?.joinedAt?.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" })}**`,
-                //`Ordem de entrada: tem nada`
+                `Ordem de entrada: ${sort.slice(startingValue, endingValue).map(u => u.tag).join(" > ")}`
             ].join("\n"))
 
             embed.setColor(m?.roles.highest?.color || "#80088b")

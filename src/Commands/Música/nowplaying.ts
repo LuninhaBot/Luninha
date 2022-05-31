@@ -1,6 +1,6 @@
 import Command, { RunCommand } from "../../Structures/Command"
 import EclipseClient from "../../Structures/EclipseClient"
-import { EmbedBuilder } from "discord.js"
+import { EmbedBuilder, GuildMember } from "discord.js"
 
 export default class nowPlayingCommand extends Command {
     constructor(client: EclipseClient) {
@@ -13,44 +13,34 @@ export default class nowPlayingCommand extends Command {
     }
 
     async run({ interaction }: RunCommand) {
-        
-        /*
-         * Esse comando ta funcionando por enquanto? Talvez ele faça puff em breve 
-        */
-
+        // agora funciona caralho
         const player = this.client.music.players.get(interaction.guild?.id ?? "")
 
-
-        let duration = player!.queue.current!.duration ?? 0
+        const duration = player!.queue.current!.duration ?? 0
         const parsedCurrentDuration = this.client.utils.formatDuration(player?.position ?? 0)
         const parsedDuration = this.client.utils.formatDuration(player?.queue.current?.duration ?? 0)
         const part = Math.floor((player!.position / duration) * 11)
         const uni = player!.playing ? "▶" : "⏸️"
         // @ts-ignore
         const user = await this.client.users.fetch(player?.queue.current?.requester.id ?? "")
-        var sound;
+        let sound;
 
-        // @ts-ignore
-        if (player?.volume > 50) {
-            sound = "🔊"
-            // @ts-ignore
-        } else if (player?.volume <= 50 && player?.volume !== 0) {
-            sound = "🔉"
-        } else {
-            sound = "🔈"
-        }
 
-        let repeat = "▬".repeat(part) + "🔘" + "▬".repeat(11)
+        if (player!.volume > 50) sound = "🔊"
+        if (player!.volume <= 50) sound = "🔉"
+        if (player!.volume === 0) sound = "🔈"
 
-        let embed = new EmbedBuilder()
+        const repeat = `${"▬".repeat(part)}🔘${"▬".repeat(11 - part)}`;
+
+        const embed = new EmbedBuilder()
         embed.setAuthor({ name: user.tag, iconURL: user.displayAvatarURL({ forceStatic: false }) })
         embed.setDescription(`**[${player?.queue.current?.title}](${player?.queue.current?.uri})**\n${uni} ${repeat} \`${parsedCurrentDuration}/${parsedDuration}\` ${sound}`)
         embed.setFooter({ text: `De ${player?.queue.current?.author}` })
         embed.setColor("#80088b")
 
-        let member = await interaction.guild?.members.fetch(interaction.user.id)
+        const member = interaction.member as GuildMember
         interaction.followUp({
-            content: `Tocando agora em **${member?.voice.channel?.name}**`,
+            content: `Tocando agora em **${member.voice.channel?.name}**`,
             embeds: [embed]
         })
     }
