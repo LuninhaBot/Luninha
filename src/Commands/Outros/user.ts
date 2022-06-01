@@ -65,7 +65,7 @@ export default class UserCommands extends Command {
                     id: string,
                     name: string,
                     icon: string,
-                    description: string,
+                    description?: string,
                     rpc_origins?: string[],
                     owner?: {
                         avatar: string,
@@ -79,7 +79,7 @@ export default class UserCommands extends Command {
                     primary_sku_id: string,
                     hook: boolean,
                     slug?: string,
-                    guild_id: string,
+                    guild_id?: string,
                     bot_public: boolean,
                     bot_require_code_grant: boolean,
                     terms_of_service_url?: string,
@@ -121,17 +121,17 @@ export default class UserCommands extends Command {
                 let botEmbed = new EmbedBuilder()
                 botEmbed.setAuthor({ name: "Informações da aplicação" })
                 botEmbed.setTitle(json.name)
-                botEmbed.setDescription(json?.description)
+                botEmbed.setDescription(json.description ? json.description : "Nenhuma descrição")
                 botEmbed.setColor(m?.roles.highest.color ?? "#80088b")
                 botEmbed.addFields([
                     {
                         name: ":id: Servidor de suporte",
-                        value: "`" + json.guild_id + "`",
+                        value: `\`${json.guild_id ? json.guild_id : "Não possui"}\``,
                         inline: true
                     },
                     {
                         name: ":label: Marcadores",
-                        value: json?.tags.join(", "),
+                        value: json.tags ? json.tags.join(", ") : "Não há marcadores",
                         inline: true
                     },
                     {
