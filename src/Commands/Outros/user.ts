@@ -1,6 +1,8 @@
 import Command, { RunCommand } from "../../Structures/Command"
 import EclipseClient from "../../Structures/EclipseClient"
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, GuildMember, Attachment, ButtonStyle, User } from "discord.js"
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, GuildMember, ButtonStyle } from "discord.js"
+import fetch from "node-fetch"
+import { bot } from "../../Utils/Config"
 
 export default class UserCommands extends Command {
     constructor(client: EclipseClient) {
@@ -17,7 +19,7 @@ export default class UserCommands extends Command {
         if (interaction.options.getSubcommand(true) == "info") {
 
             let m = await interaction.guild?.members.fetch((interaction.options.getMember("usuário") as GuildMember) ?? interaction.user.id)
-    
+
             let arr: { tag: string; timestamp: number, id: string }[] = []
             let members = await interaction.guild?.members.fetch()
             members?.forEach((u) => {
@@ -31,9 +33,6 @@ export default class UserCommands extends Command {
             let sort = arr.sort((a, b) => a?.timestamp - b?.timestamp)
             let index = sort.findIndex(u => u.id == m?.user.id)
 
-            /*
-             * Um dia eu consigo fazer a ordem de entrada mas esse dia não é hoje
-            */
 
             const emojis = {
                 Staff: "<:staff:978173420036575243>",
@@ -57,8 +56,119 @@ export default class UserCommands extends Command {
             let nitro = avatar?.startsWith("a_") ? "<:nitro:979250617333710908>" : ""
             let flags = m?.user.flags?.toArray()
 
-            const startingValue = (index - 7) <= 0 ? 0 : index - 7
-            const endingValue = (index + 8) >= sort.length ? sort.length : index + 8
+            const startingValue = (index - 7) <= 0 ? 0 : index - 6
+            const endingValue = (index + 6) >= sort.length ? sort.length : index + 6
+
+            if (m?.user.bot) {
+                let infos = await fetch(`https://discord.com/api/v10/applications/${m?.user.id}/rpc`)
+                let json = await infos.json() as {
+                    id: string,
+                    name: string,
+                    icon: string,
+                    description: string,
+                    rpc_origins?: string[],
+                    owner?: {
+                        avatar: string,
+                        discriminator: string,
+                        flags: number,
+                        id: string,
+                        username: string
+                    }
+                    type: number,
+                    cover_image: string,
+                    primary_sku_id: string,
+                    hook: boolean,
+                    slug?: string,
+                    guild_id: string,
+                    bot_public: boolean,
+                    bot_require_code_grant: boolean,
+                    terms_of_service_url?: string,
+                    privacy_policy_url?: string,
+                    install_params: { scopes: string[], permissions: string },
+                    verify_key: string,
+                    flags: number,
+                    tags: string[]
+                }
+    
+                let intents = {
+                    GATEWAY_PRESENCE: 1 << 12,
+                    GATEWAY_PRESENCE_LIMITED: 1 << 13,
+                    GATEWAY_GUILD_MEMBERS: 1 << 14,
+                    GATEWAY_GUILD_MEMBERS_LIMITED: 1 << 15,
+                    VERIFICATION_PENDING_GUILD_LIMIT: 1 << 16,
+                    //EMBEDDED: 1 << 17,
+                    GATEWAY_MESSAGE_CONTENT: 1 << 18,
+                    GATEWAY_MESSAGE_CONTENT_LIMITED: 1 << 19,
+                }
+    
+                let translatedIntents = {
+                    GATEWAY_PRESENCE: "Intent de presença",
+                    GATEWAY_PRESENCE_LIMITED: "Intent de presença limitada",
+                    GATEWAY_GUILD_MEMBERS: "Intent de membros de servidores",
+                    GATEWAY_GUILD_MEMBERS_LIMITED: "Intent de membros de servidores limitada",
+                    VERIFICATION_PENDING_GUILD_LIMIT: "Em verificação",
+                    //EMBEDDED: "Embed",
+                    GATEWAY_MESSAGE_CONTENT: "Intent de Conteúdo de Mensagens",
+                    GATEWAY_MESSAGE_CONTENT_LIMITED: "Intent de Conteúdo de Mensagens limitada"
+                }
+    
+                // @ts-ignore
+                let array = Object.entries(intents).map(([key, value]) => json.flags & value ? `✅ ${translatedIntents[key]}` : `❌ ${translatedIntents[key]}`)
+                array.push(`${json.bot_public ? "✅" : "❌"} Público`)
+                array.push(`${json.bot_require_code_grant ? "✅" : "❌"} Requer código de Autenticação via OAuth2`)
+                array.push(`${flags?.includes("BotHTTPInteractions") ? "✅" : "❌"} Usa interações HTTP`)
+    
+                let botEmbed = new EmbedBuilder()
+                botEmbed.setAuthor({ name: "Informações da aplicação" })
+                botEmbed.setTitle(json.name)
+                botEmbed.setDescription(json?.description)
+                botEmbed.setColor(m?.roles.highest.color ?? "#80088b")
+                botEmbed.addFields([
+                    {
+                        name: ":id: Servidor de suporte",
+                        value: "`" + json.guild_id + "`",
+                        inline: true
+                    },
+                    {
+                        name: ":label: Marcadores",
+                        value: json?.tags.join(", "),
+                        inline: true
+                    },
+                    {
+                        name: ":bug: Slug",
+                        value: json?.slug ?? "Não possui",
+                        inline: true
+                    },
+                    {
+                        name: "Informações úteis",
+                        value: array.join("\n"),
+                        inline: false
+                    },
+                    {
+                        name: "Chave de requisição HTTP",
+                        value: "`" + json?.verify_key + "`",
+    
+                    }
+                ])
+
+                let embed = new EmbedBuilder()
+                embed.setDescription([
+                    `ID: **${m?.user.id}** ${nitro}${flags?.map(flag => emojis[flag]).join("") ?? ""}${interaction.guild?.ownerId == m?.user.id ? "👑" : ""}`,
+                    `Criado em: **${m?.user.createdAt.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" })}**`,
+                    `Entrou em: **${m?.joinedAt?.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" })}**`,
+                    `Ordem de entrada: ${sort.slice(startingValue, endingValue).map(u => u.tag).join(" > ")}`
+                ].join("\n"))
+    
+                embed.setColor(m?.roles.highest.color ?? "#80088b")
+                embed.setThumbnail(m?.displayAvatarURL({ forceStatic: false }) ?? "https://cdn.discordapp.com/embed/avatars/0.png")
+
+                interaction.followUp({
+                    content: `${m?.user.bot ? "🤖" : "👤"} | Informações de ${m?.user.tag}`,
+                    embeds: [embed, botEmbed]
+                })
+                
+                return;
+            }
 
             let embed = new EmbedBuilder()
             embed.setDescription([
@@ -68,12 +178,14 @@ export default class UserCommands extends Command {
                 `Ordem de entrada: ${sort.slice(startingValue, endingValue).map(u => u.tag).join(" > ")}`
             ].join("\n"))
 
-            embed.setColor(m?.roles.highest?.color || "#80088b")
+            embed.setColor(m?.roles.highest.color ?? "#80088b")
             embed.setThumbnail(m?.displayAvatarURL({ forceStatic: false }) ?? "https://cdn.discordapp.com/embed/avatars/0.png")
+
             interaction.followUp({
-                content: `${m?.user.bot ? "🤖" : "👤"} | Informaçoes de ${m?.user.tag}`,
+                content: `${m?.user.bot ? "🤖" : "👤"} | Informações de ${m?.user.tag}`,
                 embeds: [embed]
             })
+
 
             return;
         }
@@ -120,7 +232,7 @@ export default class UserCommands extends Command {
                     return;
                 }
 
-        
+
                 let newEmbed = new EmbedBuilder()
                 newEmbed.setDescription(`🖼️ | Avatar de **${member?.user.tag}**`)
                 newEmbed.setImage(member?.displayAvatarURL({ size: 4096, forceStatic: false }) ?? "https://cdn.discordapp.com/embed/avatars/0.png")
