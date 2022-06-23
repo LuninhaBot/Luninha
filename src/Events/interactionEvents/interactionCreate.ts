@@ -26,7 +26,7 @@ export default class InteractionCreateEvent extends Event {
                     return interaction.followUp(":x: | Você não pode usar este comando!")
                 }
 
-                const member = await interaction.guild?.members.fetch(interaction.user.id)
+                const member = interaction.member as GuildMember
                 let role = interaction.guild?.roles.cache.get(db.get(`dj_${interaction.guild?.id}`))?.name ?? "DJ"
                 if (command.djOnly && !member?.roles.cache.has(db.get(`dj_${interaction.guild?.id}`))) {
                     return interaction.followUp({

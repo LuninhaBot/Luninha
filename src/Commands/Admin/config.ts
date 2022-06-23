@@ -6,7 +6,7 @@ export default class djCommand extends Command {
         super(client, {
             name: "config",
             description: "Defina o cargo de DJ do servidor!",
-            usage: "dj",
+            subCommands: ["dj"],
             category: "Admin"
         })
     }

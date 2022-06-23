@@ -46,7 +46,7 @@ export default class EclipseClient extends Client {
             }),
             ws: {
                 properties: {
-                    $browser: "Discord Android"
+                    browser: "Discord Android"
                 }
             }
         })

@@ -34,7 +34,7 @@ export default class HelpCommand extends Command {
             const helpString = []
             let categories = this.client.utils.removeDuplicates(this.client.commands.filter(cmd => cmd.category !== "Desenvolvedor").map(cmd => cmd.category))
             for (let category of categories) {
-                helpString.push(this.client.commands.filter(cmd => cmd.category === category).map(cmd => `<:seta:974012084926959676> | \`/${cmd.name} ${cmd.usage}\` → ${cmd.description}`))
+                helpString.push(this.client.commands.filter(cmd => cmd.category === category).map(cmd => `<:seta:974012084926959676> | \`/${cmd.name} ${cmd.subCommands?.join(" | ") ?? cmd.usage}\` → ${cmd.description}`))
             }
     
             const pages = [embed0]

@@ -5,6 +5,7 @@ import EclipseClient from "./EclipseClient"
 export interface CommandOptions {
     name: string
     description: string | "Não definido"
+    subCommands?: unknown[]
     usage?: string
     category?: string
     userPerms?: PermissionResolvable[]
@@ -18,6 +19,7 @@ export default class Command {
     client: EclipseClient
     name: string
     description: string
+    subCommands?: unknown[]
     usage: string
     category: string
     userPerms: PermissionResolvable[]
@@ -31,6 +33,7 @@ export default class Command {
         this.client = client
         this.name = options.name ?? "Não definido"
         this.description = options.description ?? "Sem descrição"
+        this.subCommands = options.subCommands 
         this.usage = options.usage ?? ""
         this.category = options.category ?? "Outros"
         this.userPerms = options.userPerms ?? []

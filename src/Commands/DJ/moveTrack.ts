@@ -6,7 +6,7 @@ export default class MoveTrackCommand extends Command {
         super(client, {
             name: "move",
             description: "Move uma música da fila atual para uma posição diferente",
-            usage: "track",
+            subCommands: ["track"],
             category: "DJ",
             djOnly: true
         })

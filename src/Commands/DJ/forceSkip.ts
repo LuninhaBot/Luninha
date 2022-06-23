@@ -6,7 +6,7 @@ export default class ForceSkipCommand extends Command {
         super(client, {
             name: "force",
             description: "Skipa a música tocando no momento",
-            usage: "skip",
+            subCommands: ["skip"],
             category: "DJ",
             djOnly: true
         })

@@ -5,7 +5,7 @@ export default class InviteCommand extends Command {
     constructor(client: EclipseClient) {
         super(client, {
             name: "bot",
-            usage: "convite | info",
+            subCommands: ["convite", "info"],
             description: "...?",
             category: "Outros"
         })
