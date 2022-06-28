@@ -20,6 +20,14 @@ export default class InteractionCreateEvent extends Event {
 
             if (command) {
 
+                try {
+                    db.getData(`/${interaction.guild?.id}`)
+                } catch {
+                    db.push(`/${interaction.guild?.id}`, { 
+                        dj: null 
+                    })
+                }
+
                 command.ephemeral ? await interaction.deferReply({ ephemeral: true, fetchReply: true }) : await interaction.deferReply({ fetchReply: true })
 
                 if (command.ownerOnly && !this.client.utils.checkOwner(interaction.user.id)) {
@@ -27,8 +35,8 @@ export default class InteractionCreateEvent extends Event {
                 }
 
                 const member = interaction.member as GuildMember
-                let role = interaction.guild?.roles.cache.get(db.get(`dj_${interaction.guild?.id}`))?.name ?? "DJ"
-                if (command.djOnly && !member?.roles.cache.has(db.get(`dj_${interaction.guild?.id}`))) {
+                let role = interaction.guild?.roles.cache.get(db.getData(`/${interaction.guild?.id}/dj`))?.name ?? "DJ"
+                if (command.djOnly && !member?.roles.cache.has(db.getData(`/${interaction.guild?.id}/dj`))) {
                     return interaction.followUp({
                         content: `:x: | Apenas pessoas com o cargo \`${role}\` podem usar este comando!`,
                     })

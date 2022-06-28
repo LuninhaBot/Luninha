@@ -179,6 +179,7 @@ export default class Util {
 
 				const rawFile = await import(commandFile)
 				const File = rawFile.default
+
 				if (!this.isClass(File)) throw new TypeError(`Command ${name} doesn't export a class.`)
 
 				const command = new File(this.client, name.toLowerCase())

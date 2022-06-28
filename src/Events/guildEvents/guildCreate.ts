@@ -14,8 +14,7 @@ export default class GuildCreateEvent extends Event {
     async run(guild: Guild) {
         let owner = await guild.members.fetch(guild.ownerId).catch(() => { })
 
-        let totalServers = await this.client.machine.broadcastEval(`this.guilds.cache.size`)
-        let embed = new EmbedBuilder()
+        const embed = new EmbedBuilder()
         embed.setTitle("Adicionada em um novo servidor!")
         embed.setFields([
             {
@@ -45,7 +44,6 @@ export default class GuildCreateEvent extends Event {
         }).send({
             username: this.client.user?.username,
             avatarURL: this.client.user?.displayAvatarURL(),
-            content: `:heart: Total de servidores agora: ${totalServers.flat(Infinity).length}`,
             embeds: [embed]
         })
     }

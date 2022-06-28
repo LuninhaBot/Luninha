@@ -2,7 +2,7 @@ import { PermissionResolvable, ChatInputCommandInteraction, Awaitable } from "di
 import EclipseClient from "./EclipseClient"
 
 
-export interface CommandOptions {
+interface CommandOptions {
     name: string
     description: string | "Não definido"
     subCommands?: unknown[]
@@ -20,7 +20,7 @@ export default class Command {
     name: string
     description: string
     subCommands?: unknown[]
-    usage: string
+    usage?: string
     category: string
     userPerms: PermissionResolvable[]
     botPerms: PermissionResolvable[]
@@ -34,7 +34,7 @@ export default class Command {
         this.name = options.name ?? "Não definido"
         this.description = options.description ?? "Sem descrição"
         this.subCommands = options.subCommands 
-        this.usage = options.usage ?? ""
+        this.usage = options.usage ?? "Não definido"
         this.category = options.category ?? "Outros"
         this.userPerms = options.userPerms ?? []
         this.botPerms = options.botPerms ?? []

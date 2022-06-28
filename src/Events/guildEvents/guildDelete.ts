@@ -14,8 +14,9 @@ export default class GuildDeleteEvent extends Event {
     async run(guild: Guild) {
         let owner = await guild.members.fetch(guild.ownerId).catch(() => { })
 
-        let totalServers = await this.client.machine.broadcastEval(`this.guilds.cache.size`)
-        let embed = new EmbedBuilder()
+        db.delete(`/${guild.id}`)
+
+        const embed = new EmbedBuilder()
         embed.setTitle("Removido de um servidor!")
         embed.setFields([
             {
@@ -44,7 +45,6 @@ export default class GuildDeleteEvent extends Event {
         }).send({
             username: this.client.user?.username,
             avatarURL: this.client.user?.displayAvatarURL(),
-            content: `<a:cry:974175503403581440> Total de servidores agora: ${totalServers.flat(Infinity).length}`,
             embeds: [embed]
         })
     }

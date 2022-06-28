@@ -1,6 +1,6 @@
 import { Shard } from "discord-cross-hosting"
 import Cluster from "discord-hybrid-sharding"
-import { Client, Collection, GatewayIntentBits, Options, PermissionResolvable } from "discord.js"
+import { Client, Collection, GatewayIntentBits, Partials, Options, PermissionResolvable } from "discord.js"
 import EclipseLavalink from "../LavalinkManager/"
 import Command from "./Command"
 import Event from "./Event"
@@ -28,6 +28,10 @@ export default class EclipseClient extends Client {
                 GatewayIntentBits.GuildMessageReactions,
                 GatewayIntentBits.DirectMessages,
                 GatewayIntentBits.MessageContent
+            ],
+            partials: [
+                Partials.Message,
+                Partials.Reaction
             ],
             shardCount: Cluster.data.TOTAL_SHARDS,
             shards: Cluster.data.SHARD_LIST,

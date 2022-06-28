@@ -3,13 +3,16 @@ import EclipseClient from "../../Structures/EclipseClient"
 import Logger from "../../Utils/Logger"
 import { WebhookClient } from "discord.js"
 import { hooks } from "../../Utils/Config"
-import { DatabaseManager } from "../../Database/index"
+import { JsonDB } from "node-json-db";
+import { Config } from "node-json-db/dist/lib/JsonDBConfig"
+
+var Database = new JsonDB(new Config("./src/Database/db.json", true, true, "/"))
 
 declare global {
-    var db: DatabaseManager
+    var db: JsonDB
 }
 
-global.db = new DatabaseManager("db")
+global.db = Database
 
 export default class ReadyEvent extends Event {
 
@@ -25,7 +28,7 @@ export default class ReadyEvent extends Event {
 
         this.client.user?.setPresence({
             activities: [{
-                name: `Shard ${this.client.ws.shards.first()?.id}/${this.client.ws.shards.last()?.id}`,
+                name: `Shard ${this.client.ws.shards.first()?.id} - ${this.client.ws.shards.last()?.id}`,
             }]
         })
 

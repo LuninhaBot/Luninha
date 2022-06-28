@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType, EmbedBuilder, Interaction } from "discord.js"
+import { EmbedBuilder, Message } from "discord.js"
 import Command, { RunCommand } from "../../Structures/Command"
 import EclipseClient from "../../Structures/EclipseClient"
 
@@ -18,31 +18,49 @@ export default class HelpCommand extends Command {
 
             embed0.setAuthor({
                 name: interaction.user.tag,
-                iconURL: interaction.user.displayAvatarURL({ forceStatic: false ,size: 4096 })
+                iconURL: interaction.user.displayAvatarURL({ forceStatic: false, size: 4096 })
             })
-    
+
+            let emojis = [
+                { emoji: "🏘️", number: 0 },
+                { emoji: "1️⃣", number: 1 },
+                { emoji: "2️⃣", number: 2 },
+                { emoji: "3️⃣", number: 3 },
+                { emoji: "4️⃣", number: 4 },
+                { emoji: "5️⃣", number: 5 },
+                { emoji: "6️⃣", number: 6 },
+                { emoji: "7️⃣", number: 7 },
+                { emoji: "8️⃣", number: 8 },
+                { emoji: "9️⃣", number: 9 },
+                { emoji: "🔟", number: 10 }
+            ]
+
             embed0.setColor("#80088b")
+
             embed0.setDescription([
                 `👋 | Eu tenho atualmente **${this.client.commands.size}** comandos.`,
-                `:tools: | Você pode pedir suporte e ficar por dentro das novidades no meu [servidor oficial](https://discord.gg/Ce2EhRkYe6).`,
-                `:question: | Você pode pedir ajuda para um comando específico, usando o comando \`${this.client.prefix}help [comando]\`.`,
+                `:tools: | Você pode pedir suporte e ficar por dentro das novidades no meu [servidor](https://discord.gg/Ce2EhRkYe6).`,
+                `:question: | Você pode pedir ajuda para um comando específico, usando \`${this.client.prefix}help [comando]\`.`,
+                `⚙️ | Clique nos emojis abaixo para ver os comandos de cada categoria.`,
+                `<:github_logo:991215243139239966> | Você pode me ajudar a melhorar, fazendo uma contribuição no meu [repositório](https://github.com/eclipse-labs)`,
                 ``,
                 `👑 | Fui desenvolvido por ${await (this.client.utils.fetchOwners(this.client.owners))}.`,
             ].join("\n"))
+
             embed0.setTimestamp()
-    
+
             const helpString = []
             let categories = this.client.utils.removeDuplicates(this.client.commands.filter(cmd => cmd.category !== "Desenvolvedor").map(cmd => cmd.category))
             for (let category of categories) {
-                helpString.push(this.client.commands.filter(cmd => cmd.category === category).map(cmd => `<:seta:974012084926959676> | \`/${cmd.name} ${cmd.subCommands?.join(" | ") ?? cmd.usage}\` → ${cmd.description}`))
+                helpString.push(this.client.commands.filter(cmd => cmd.category === category).map(cmd => `<:seta:974012084926959676> | \`/${cmd.name} ${cmd.subCommands?.join(" | ") ?? ""}\` → ${cmd.description}\n↳ Modo de uso <:seta:974012084926959676> \`${cmd.usage ?? "Não possui modo de uso"}\``))
             }
-    
+
             const pages = [embed0]
             for (let i = 0; i < helpString.length; i++) {
-    
+
                 let embed = new EmbedBuilder()
                 embed.setColor("#80088b")
-                embed.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL({ forceStatic: false ,size: 4096 }) })
+                embed.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL({ forceStatic: false, size: 4096 }) })
                 embed.setDescription(helpString[i].join("\n"))
                 embed.setTitle(`Categoria: ${categories[i]} [${this.client.commands.filter(cmd => cmd.category === categories[i]).size}]`)
                 embed.setTimestamp()
@@ -55,72 +73,51 @@ export default class HelpCommand extends Command {
                 })
                 pages.push(embed)
             }
-    
-            const forwardButton = new ButtonBuilder({
-                emoji: "➡️",
-                customId: "forward1",
-                style: ButtonStyle.Primary
-            })
-    
-            const backwardButton = new ButtonBuilder({
-                emoji: "⬅️",
-                customId: "backward1",
-                style: ButtonStyle.Primary
-            })
-    
-            const row = new ActionRowBuilder<ButtonBuilder>()
-            row.addComponents([backwardButton, forwardButton,])
-    
-            await interaction.followUp({
+
+            let msg = await interaction.followUp({
                 embeds: [embed0],
-                components: [row]
-            })
-    
-            let page = 0
-            const collector = interaction.channel!.createMessageComponentCollector({
-                filter: (i) => ["forward1", "backward1"].includes(i.customId),
-                componentType: ComponentType.Button,
+            }) as Message
+
+            for (let amount = 0; amount < pages.length; amount++) {
+                msg.react(emojis[amount].emoji)
+            }
+
+            const collector = msg.createReactionCollector({
+                filter: (reaction, user) => user.id === interaction.user.id,
                 time: 60000
             })
-    
-            collector.on("collect", async (i) => {
-    
-                if (i.user.id !== interaction.user.id) {
-                    await i.deferReply({ ephemeral: true })
 
-                    i.editReply({
-                        content: ":x: | Você não pode mudar de página.",
-                    })
-                    return;
-                }
-    
-                if (i.customId == "forward1") {
-                    page = page + 1 < pages.length ? ++page : 0
+            collector.on("collect", async (reaction, user) => {
 
-                    await i.deferUpdate()
-    
-                    i.editReply({
-                        embeds: [pages[page]],
-                        components: [row]
-                    })
-    
-                    collector.resetTimer()
-                    return;
-                }
-    
-                if (i.customId == "backward1") {
-                    page = page > 0 ? --page : pages.length - 1
+                switch (reaction.emoji.name) {
+                    case "🏘️":
+                    case "1️⃣":
+                    case "2️⃣":
+                    case "3️⃣":
+                    case "4️⃣":
+                    case "5️⃣":
+                    case "6️⃣":
+                    case "7️⃣":
+                    case "8️⃣":
+                    case "9️⃣":
+                    case "🔟":
 
-                    await i.deferUpdate()
-                    
-                    i.editReply({
-                        embeds: [pages[page]],
-                        components: [row]
+                    await reaction.users.remove(user.id).catch(() => { })
+                    let page = emojis.find(emoji => emoji.emoji === reaction.emoji.name)?.number ?? 0
+                    msg.edit({
+                        embeds: [pages[page]]
                     })
-    
-                    collector.resetTimer()
-                    return;
                 }
+            })
+
+            collector.on("end", () => {
+
+                msg.reactions.removeAll().catch(() => { })
+                msg.edit({
+                    embeds: [embed0]
+                })
+
+                return;
             })
         } else {
             let command = this.client.commands.get(interaction.options.getString("comando", true))
@@ -134,7 +131,7 @@ export default class HelpCommand extends Command {
             const embed = new EmbedBuilder()
             embed.setAuthor({
                 name: interaction.user.tag,
-                iconURL: interaction.user.displayAvatarURL({ forceStatic: false ,size: 4096 })
+                iconURL: interaction.user.displayAvatarURL({ forceStatic: false, size: 4096 })
             })
 
             embed.setColor("#80088b")
@@ -143,7 +140,7 @@ export default class HelpCommand extends Command {
                 `📋 | **Uso**: \`${this.client.prefix}${command.name} ${command.usage}\``,
                 `📝 | Categoria: **${command.category}**`
             ].join("\n"))
-            
+
             embed.setFooter({
                 text: `Isso [] é opcional e <> é obrigatório.`
             })
