@@ -35,7 +35,7 @@ export default class HelpCommand extends Command {
                 { emoji: "🔟", number: 10 }
             ]
 
-            embed0.setColor("#80088b")
+            embed0.setColor("#04c4e4")
 
             embed0.setDescription([
                 `👋 | Eu tenho atualmente **${this.client.commands.size}** comandos.`,
@@ -59,7 +59,7 @@ export default class HelpCommand extends Command {
             for (let i = 0; i < helpString.length; i++) {
 
                 let embed = new EmbedBuilder()
-                embed.setColor("#80088b")
+                embed.setColor("#04c4e4")
                 embed.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL({ forceStatic: false, size: 4096 }) })
                 embed.setDescription(helpString[i].join("\n"))
                 embed.setTitle(`Categoria: ${categories[i]} [${this.client.commands.filter(cmd => cmd.category === categories[i]).size}]`)
@@ -134,7 +134,7 @@ export default class HelpCommand extends Command {
                 iconURL: interaction.user.displayAvatarURL({ forceStatic: false, size: 4096 })
             })
 
-            embed.setColor("#80088b")
+            embed.setColor("#04c4e4")
             embed.setDescription([
                 `📚 | **Nome**: \`${command.name}\` → \`${command.description}\``,
                 `📋 | **Uso**: \`${this.client.prefix}${command.name} ${command.usage}\``,

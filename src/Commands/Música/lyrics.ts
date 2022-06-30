@@ -47,7 +47,7 @@ export default class LyricsCommand extends Command {
         const lyrics = await searches[0].lyrics()
 
         let embed = new EmbedBuilder()
-        embed.setColor("#80088b")
+        embed.setColor("#04c4e4")
         embed.setDescription(lyrics.slice(0, 2044) + "...")
 
         interaction.followUp({

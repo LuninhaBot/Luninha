@@ -6,9 +6,9 @@ export default class UserCommands extends Command {
     constructor(client: EclipseClient) {
         super(client, {
             name: "user",
-            description: "Mostra informações sobre um usuário",
+            description: "Mostra algumas coisas uteis sobre um usuário",
             category: "Outros",
-            subCommands: ["info", "avatar"],
+            subCommands: ["info", "banner", "avatar"],
         })
     }
 
@@ -19,8 +19,8 @@ export default class UserCommands extends Command {
             let m = await interaction.guild?.members.fetch((interaction.options.getMember("usuário") as GuildMember) ?? interaction.user.id)
 
             let arr: { tag: string; timestamp: number, id: string }[] = []
-            let members = await interaction.guild?.members.fetch()
-            members?.forEach((u) => {
+            const members = await interaction.guild!.members.fetch()
+            members.forEach((u) => {
                 arr.push({
                     tag: u.user.tag == m?.user.tag ? `**${u.user.tag}**` : u.user.tag,
                     timestamp: u.joinedTimestamp ?? 0,
@@ -54,8 +54,8 @@ export default class UserCommands extends Command {
             let nitro = avatar?.startsWith("a_") ? "<:nitro:979250617333710908>" : ""
             let flags = m?.user.flags?.toArray()
 
-            const startingValue = (index - 7) <= 0 ? 0 : index - 6
-            const endingValue = (index + 6) >= sort.length ? sort.length : index + 6
+            const startingValue = (index - 3) <= 0 ? 0 : index - 3
+            const endingValue = (index + 4) >= sort.length ? sort.length : index + 4
 
             let embed = new EmbedBuilder()
             embed.setDescription([
@@ -65,7 +65,7 @@ export default class UserCommands extends Command {
                 `Ordem de entrada: ${sort.slice(startingValue, endingValue).map(u => u.tag).join(" > ")}`
             ].join("\n"))
 
-            embed.setColor(m?.roles.highest.color ?? "#80088b")
+            embed.setColor(m?.roles.highest.color ?? "#04c4e4")
             embed.setThumbnail(m?.displayAvatarURL({ forceStatic: false }) ?? "https://cdn.discordapp.com/embed/avatars/0.png")
 
             interaction.followUp({
@@ -97,36 +97,34 @@ export default class UserCommands extends Command {
             let embed = new EmbedBuilder()
             embed.setDescription(`🖼️ | Avatar de **${user?.tag}**`)
             embed.setImage(user?.displayAvatarURL({ size: 4096, forceStatic: false }) ?? "https://cdn.discordapp.com/embed/avatars/0.png")
-            embed.setColor("#80088b")
+            embed.setColor("#04c4e4")
             interaction.followUp({
                 embeds: [embed],
-                components: member?.avatar ? [row] : []
+                components: member!.avatar ? [row] : []
             })
 
-            const collector = interaction.channel?.createMessageComponentCollector({
+            const response = await interaction.channel!.awaitMessageComponent({
                 filter: (i) => ["guildAvatar"].includes(i.customId),
                 time: 60000
             })
 
-            collector?.on("collect", async (i) => {
-                if (i.user.id !== interaction.user.id) {
-                    i.reply({
-                        content: ":x: | Apenas o autor do comando pode usar o botão",
-                        ephemeral: true
-                    })
-
-                    return;
-                }
-
-
-                let newEmbed = new EmbedBuilder()
-                newEmbed.setDescription(`🖼️ | Avatar de **${member?.user.tag}**`)
-                newEmbed.setImage(member?.displayAvatarURL({ size: 4096, forceStatic: false }) ?? "https://cdn.discordapp.com/embed/avatars/0.png")
-                newEmbed.setColor("#80088b")
-                interaction.editReply({
-                    embeds: [newEmbed],
-                    components: []
+            if (response.user.id !== interaction.user.id) {
+                response.reply({
+                    content: ":x: | Apenas o autor do comando pode usar o botão",
+                    ephemeral: true
                 })
+
+                return;
+            }
+
+
+            let newEmbed = new EmbedBuilder()
+            newEmbed.setDescription(`🖼️ | Avatar de **${member?.user.tag}**`)
+            newEmbed.setImage(member?.displayAvatarURL({ size: 4096, forceStatic: false }) ?? "https://cdn.discordapp.com/embed/avatars/0.png")
+            newEmbed.setColor("#04c4e4")
+            interaction.editReply({
+                embeds: [newEmbed],
+                components: []
             })
 
             return;

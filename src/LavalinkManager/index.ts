@@ -3,7 +3,6 @@ import { Manager, Player, Track } from "erela.js"
 import EclipseClient from "../Structures/EclipseClient"
 import { lavalink } from "../Utils/Config"
 import Logger from "../Utils/Logger"
-import "./Player"
 
 
 export default class EclipseLavalink extends Manager {
@@ -39,7 +38,7 @@ export default class EclipseLavalink extends Manager {
         this.on("playingNow", (player: Player, track: Track, interaction: ChatInputCommandInteraction) => {
             let embed = new EmbedBuilder()
             embed.setDescription(`:musical_note: | Tocando agora **${track.title}**`)
-            embed.setColor("#80088b")
+            embed.setColor("#04c4e4")
 
             interaction.followUp({
                 embeds: [embed]
@@ -52,7 +51,7 @@ export default class EclipseLavalink extends Manager {
             const channel = client.channels.cache.get(player.textChannel ?? "") as TextChannel
 
             let embed = new EmbedBuilder()
-            embed.setColor("#80088b")
+            embed.setColor("#04c4e4")
             embed.setDescription(`:musical_note: | Tocando agora **${track.title}**`)
 
             channel.send({

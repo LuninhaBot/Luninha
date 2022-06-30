@@ -36,7 +36,7 @@ export default class nowPlayingCommand extends Command {
         embed.setAuthor({ name: user.tag, iconURL: user.displayAvatarURL({ forceStatic: false }) })
         embed.setDescription(`**[${player?.queue.current?.title}](${player?.queue.current?.uri})**\n${uni} ${repeat} \`${parsedCurrentDuration}/${parsedDuration}\` ${sound}`)
         embed.setFooter({ text: `De ${player?.queue.current?.author}` })
-        embed.setColor("#80088b")
+        embed.setColor("#04c4e4")
 
         const member = interaction.member as GuildMember
         interaction.followUp({

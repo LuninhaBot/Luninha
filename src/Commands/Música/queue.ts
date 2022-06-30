@@ -31,7 +31,7 @@ export default class QueueCommand extends Command {
 
             const str = songStrings.slice(i * 10, i * 10 + 10).join("\n")
             const embed = new EmbedBuilder()
-            embed.setColor("#80088b")
+            embed.setColor("#04c4e4")
             embed.setDescription(str)
             embed.setFooter({
                 text: `Página ${i + 1}/${pagesNum}`,
@@ -57,7 +57,7 @@ export default class QueueCommand extends Command {
 
         await interaction.followUp({
             content: `**[${player.queue.current!.title}](${player.queue.current!.uri})** | ${player.queue.length} músicas ${parsedQueueDuration}`,
-            embeds: [pagesNum == 0 ? new EmbedBuilder().setDescription("Não há músicas na fila!").setColor("#80088b") : pages[0]],
+            embeds: [pagesNum == 0 ? new EmbedBuilder().setDescription("Não há músicas na fila!").setColor("#04c4e4") : pages[0]],
             components: [row]
         })
 
@@ -87,7 +87,7 @@ export default class QueueCommand extends Command {
 
                 i.editReply({
                     embeds: [
-                        pagesNum == 0 ? new EmbedBuilder().setDescription("Não há músicas na fila!").setColor("#80088b") : pages[page]
+                        pagesNum == 0 ? new EmbedBuilder().setDescription("Não há músicas na fila!").setColor("#04c4e4") : pages[page]
                     ],
                     components: [row]
                 })
@@ -103,7 +103,7 @@ export default class QueueCommand extends Command {
                 
                 i.editReply({
                     embeds: [
-                        pagesNum == 0 ? new EmbedBuilder().setDescription("Não há músicas na fila!").setColor("#80088b") : pages[page]
+                        pagesNum == 0 ? new EmbedBuilder().setDescription("Não há músicas na fila!").setColor("#04c4e4") : pages[page]
                     ],
                     components: [row]
                 })

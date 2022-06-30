@@ -115,7 +115,7 @@ export default class SearchCommand extends Command {
                 .join("\n")
 
             let embed3 = new EmbedBuilder()
-            embed3.setColor("#80088b")
+            embed3.setColor("#04c4e4")
             embed3.setTimestamp()
             embed3.setDescription(results)
 
@@ -144,7 +144,7 @@ export default class SearchCommand extends Command {
                     }
 
                     let embed = new EmbedBuilder()
-                    embed.setColor("#80088b")
+                    embed.setColor("#04c4e4")
                     embed.setTimestamp()
                     embed.setDescription(`:white_check_mark: | As seguintes músicas foram adicionadas à fila:\n${tracks.map((track, index) => `**${++index}º** \`[${this.client.utils.formatDuration(track.duration)}]\` **[${track.title}](${track.uri})**`).join("\n")}`)
 
@@ -179,7 +179,7 @@ export default class SearchCommand extends Command {
                         if (!player.playing && !player.paused && player.queue.totalSize === tracks.length) await player.play()
 
                         let embed = new EmbedBuilder()
-                        embed.setColor("#80088b")
+                        embed.setColor("#04c4e4")
                         embed.setDescription(`:white_check_mark: | Adicionado \`${tracks.length}\` músicas à fila!`)
 
                         await i.channel!.send({ embeds: [embed], components: [buttonRow] })

@@ -84,7 +84,7 @@ export default class PlayCommand extends Command {
 
 			if (player.queue.size >= 1) {
                 let embed = new EmbedBuilder()
-                embed.setColor("#80088b")
+                embed.setColor("#04c4e4")
                 embed.setDescription(`:musical_note: | Adicionado a lista de espera **${res.tracks[0].title}**`)
 
 				interaction.followUp({
@@ -100,7 +100,7 @@ export default class PlayCommand extends Command {
             player.queue.add(res.tracks)
 
             if (!player.playing && !player.paused && player.queue.totalSize === res.tracks.length) player.play()
-            embed2.setColor("#80088b")
+            embed2.setColor("#04c4e4")
             embed2.setDescription(`:musical_note: | Adicionado a fila de espera a playlist **${res.playlist?.name}**`)
             this.client.music.emit("playingNow", player, res.tracks[0], interaction)
 
@@ -115,7 +115,7 @@ export default class PlayCommand extends Command {
 
             if (!player.playing && !player.paused && !player.queue.length) player.play()
 
-            embed.setColor("#80088b")
+            embed.setColor("#04c4e4")
             embed.setDescription(`:musical_note: | Adicionado a lista de espera **${res.tracks[0].title}**`)
 
 			if (player.queue.size >= 1) {
