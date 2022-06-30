@@ -65,11 +65,15 @@ export default class Util {
 		return member.roles.highest.position < target.roles.highest.position
 	}
 
-	async fetchOwners(ids: string[]) {
+	async fetchOwners(ids: string[], tagOnly?: boolean) {
 		let owners = []
-		for (const id of ids) {
+		for (const id of ids ?? this.client.owners) {
 			let user = await this.client.users.fetch(id)
-			owners.push(user ? `**${user.username}**#${user.discriminator}` : "unknown")
+			if (tagOnly) {
+				owners.push(user ? `**${user.username}**#${user.discriminator}` : "unknown")
+			} else {
+				owners.push(user.toString())
+			}
 		}
 
 		return owners.join(", ")
@@ -131,35 +135,6 @@ export default class Util {
 		return (meses > 0 ? pad(meses) + "m, " : "") + (days > 0 ? pad(days) + "d, " : "") + (hrs > 0 ? pad(hrs) + "h, " : "") + (mins > 0 ? pad(mins) + "m " : "") + (pad(secs) + "s")
 	}
 
-
-	splitMessage(text: string, { maxLength = 2_000, char = "\n", prepend = "", append = "" } = {}) {
-
-		if (text.length <= maxLength) return [text]
-		let splitText = [text]
-		if (Array.isArray(char)) {
-			while (char.length > 0 && splitText.some(elem => elem.length > maxLength)) {
-				const currentChar = char.shift()
-				if (currentChar instanceof RegExp) {
-					splitText = splitText.flatMap(chunk => chunk.match(currentChar)) as string[]
-				} else {
-					splitText = splitText.flatMap(chunk => chunk.split(currentChar)) as string[]
-				}
-			}
-		} else {
-			splitText = text.split(char)
-		}
-		if (splitText.some(elem => elem.length > maxLength)) throw new RangeError("SPLIT_MAX_LEN")
-		const messages = []
-		let msg = ""
-		for (const chunk of splitText) {
-			if (msg && (msg + char + chunk + append).length > maxLength) {
-				messages.push(msg + append)
-				msg = prepend
-			}
-			msg += (msg && msg !== prepend ? char : "") + chunk
-		}
-		return messages.concat(msg).filter(m => m)
-	}
 
 	resetVotes(player: Player) {
 		// @ts-ignore

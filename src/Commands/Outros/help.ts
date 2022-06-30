@@ -44,7 +44,7 @@ export default class HelpCommand extends Command {
                 `⚙️ | Clique nos emojis abaixo para ver os comandos de cada categoria.`,
                 `<:github_logo:991215243139239966> | Você pode me ajudar a melhorar, fazendo uma contribuição no meu [repositório](https://github.com/eclipse-labs)`,
                 ``,
-                `👑 | Fui desenvolvido por ${await (this.client.utils.fetchOwners(this.client.owners))}.`,
+                `👑 | Fui desenvolvido por ${await (this.client.utils.fetchOwners(this.client.owners, true))}.`,
             ].join("\n"))
 
             embed0.setTimestamp()

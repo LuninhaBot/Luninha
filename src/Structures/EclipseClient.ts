@@ -25,9 +25,7 @@ export default class EclipseClient extends Client {
                 GatewayIntentBits.GuildMembers,
                 GatewayIntentBits.GuildVoiceStates,
                 GatewayIntentBits.GuildMessages,
-                GatewayIntentBits.GuildMessageReactions,
-                GatewayIntentBits.DirectMessages,
-                GatewayIntentBits.MessageContent
+                GatewayIntentBits.GuildMessageReactions
             ],
             partials: [
                 Partials.Message,

@@ -1,6 +1,8 @@
 import Command, { RunCommand } from "../../Structures/Command"
 import EclipseClient from "../../Structures/EclipseClient"
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, GuildMember, ButtonStyle } from "discord.js"
+import fetch from "node-fetch"
+import { bot } from "../../Utils/Config"
 
 export default class UserCommands extends Command {
     constructor(client: EclipseClient) {
@@ -69,7 +71,54 @@ export default class UserCommands extends Command {
             embed.setThumbnail(m?.displayAvatarURL({ forceStatic: false }) ?? "https://cdn.discordapp.com/embed/avatars/0.png")
 
             interaction.followUp({
-                content: `${m?.user.bot ? "🤖" : "👤"} | Informações de ${m?.user.tag}`,
+                content: `${m?.user.bot ? "🤖" : "👤"} | Informações de **${m?.user.tag}**`,
+                embeds: [embed]
+            })
+
+            return;
+        }
+
+        if (interaction.options.getSubcommand(true) == "banner") {
+
+            let options = interaction.options.getString("usuário", false)
+            let id = options?.match(/\d+/g)?.join("") ?? interaction.user.id
+
+            let m = await interaction.guild!.members.fetch(id)
+
+            let fe = await fetch(`https://discord.com/api/v10/users/${id}`, {
+                headers: {
+                    "Authorization": `Bot ${bot.token}`,
+                    "Content-Type": "application/json"
+                }
+            })
+
+            let json = await fe.json() as {
+                id: string,
+                username: string
+                avatar: string
+                avatar_decoration: string
+                discriminator: string
+                public_flags: number
+                banner: string
+                banner_color: string
+                accent_color: string
+            }
+
+            if (!json.banner) {
+
+                interaction.followUp({
+                    content: `:x: | Esté usuário não possui um banner.`,
+                })
+
+                return;
+            } 
+            
+            let embed = new EmbedBuilder()
+            embed.setColor("#04c4e4")
+            embed.setDescription(`🖼️ | Banner de **${m?.user.tag}**`)
+            embed.setImage(`https://cdn.discordapp.com/banners/${json.id}/${json.banner}.${json.banner.startsWith("a_") ? "gif" : "png"}?size=4096`)
+
+            interaction.followUp({
                 embeds: [embed]
             })
 

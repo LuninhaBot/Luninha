@@ -48,4 +48,6 @@ export default class Command {
     }
 }
 
-export type RunCommand = { interaction: ChatInputCommandInteraction  }
+export type RunCommand = {
+    interaction: ChatInputCommandInteraction  
+}

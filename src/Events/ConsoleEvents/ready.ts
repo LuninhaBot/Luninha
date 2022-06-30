@@ -1,7 +1,8 @@
+import { WebhookClient } from "discord.js"
+import { inspect } from "util"
 import Event from "../../Structures/Event"
 import EclipseClient from "../../Structures/EclipseClient"
 import Logger from "../../Utils/Logger"
-import { WebhookClient } from "discord.js"
 import { hooks } from "../../Utils/Config"
 import { JsonDB } from "node-json-db";
 import { Config } from "node-json-db/dist/lib/JsonDBConfig"
@@ -45,5 +46,37 @@ export default class ReadyEvent extends Event {
         }
 
         Logger.ready("Client is ready!")
+
+        process.on("unhandledRejection", async (err) => {
+            console.log(err)
+
+            if (hooks.status.sendLogs) {
+                new WebhookClient({
+                    url: hooks.status.cluster
+                }).send({
+                    content: await (this.client.utils.fetchOwners(this.client.owners, false)),
+                    embeds: [{
+                        title: `:warning: | Um erro aconteceu!`,
+                        description: "```ts\n" + inspect(err, { depth: 0 }) + "```"
+                    }]
+                })
+            }
+        })
+
+        process.on("uncaughtException", async (err) => {
+            console.log(err)
+
+            if (hooks.status.sendLogs) {
+                new WebhookClient({
+                    url: hooks.status.cluster
+                }).send({
+                    content: await (this.client.utils.fetchOwners(this.client.owners, false)),
+                    embeds: [{
+                        title: `:warning: | Um erro aconteceu!`,
+                        description: "```ts\n" + inspect(err, { depth: 0 }) + "```"
+                    }]
+                })
+            }
+        })
     }
 }
