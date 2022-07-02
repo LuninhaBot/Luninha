@@ -23,12 +23,16 @@ export default class EclipseClient extends Client {
             intents: [
                 GatewayIntentBits.Guilds,
                 GatewayIntentBits.GuildMembers,
+                GatewayIntentBits.GuildPresences,
                 GatewayIntentBits.GuildVoiceStates,
                 GatewayIntentBits.GuildMessages,
                 GatewayIntentBits.GuildMessageReactions
             ],
             partials: [
                 Partials.Message,
+                Partials.Channel,
+                Partials.User,
+                Partials.GuildMember,
                 Partials.Reaction
             ],
             shardCount: Cluster.data.TOTAL_SHARDS,
@@ -39,13 +43,6 @@ export default class EclipseClient extends Client {
                     "roles"
                 ]
             },
-            makeCache: Options.cacheWithLimits({
-                MessageManager: 0,
-                PresenceManager: 0,
-                UserManager: 0,
-                GuildBanManager: 0,
-                StageInstanceManager: 0,
-            }),
             ws: {
                 properties: {
                     browser: "Discord Android"

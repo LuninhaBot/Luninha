@@ -13,6 +13,8 @@ export default class nowPlayingCommand extends Command {
     }
 
     async run({ interaction }: RunCommand) {
+        await interaction.deferReply({ ephemeral: false, fetchReply: true })
+        
         // agora funciona caralho
         const player = this.client.music.players.get(interaction.guild?.id ?? "")
 

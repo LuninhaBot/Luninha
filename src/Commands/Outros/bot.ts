@@ -13,6 +13,8 @@ export default class InviteCommand extends Command {
 
     async run({ interaction }: RunCommand) {
 
+        await interaction.deferReply({ ephemeral: true, fetchReply: true })
+
         let subCommand = interaction.options.getSubcommand(false)
 
         if (subCommand == "convite") {

@@ -12,6 +12,8 @@ export default class PingCommand extends Command {
     }
 
     async run({ interaction }: RunCommand) {
+        await interaction.deferReply({ ephemeral: true, fetchReply: true })
+
         const start = Date.now()
         await interaction.followUp({ content: "🏓" })
         const apiPing = Date.now() - start

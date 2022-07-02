@@ -15,6 +15,8 @@ export default class SearchCommand extends Command {
 
     async run({ interaction }: RunCommand) {
 
+        await interaction.deferReply({ ephemeral: false, fetchReply: true })
+
         const play = this.client.music.players.get(interaction.guild?.id ?? "")
 
         let member = await interaction.guild?.members.fetch(interaction.user.id)

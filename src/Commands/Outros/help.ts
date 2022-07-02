@@ -13,6 +13,8 @@ export default class HelpCommand extends Command {
     }
 
     async run({ interaction }: RunCommand) {
+        await interaction.deferReply({ ephemeral: false, fetchReply: true })
+        
         if (!interaction.options.getString("comando")) {
             const embed0 = new EmbedBuilder()
 
@@ -52,7 +54,7 @@ export default class HelpCommand extends Command {
             const helpString = []
             let categories = this.client.utils.removeDuplicates(this.client.commands.filter(cmd => cmd.category !== "Desenvolvedor").map(cmd => cmd.category))
             for (let category of categories) {
-                helpString.push(this.client.commands.filter(cmd => cmd.category === category).map(cmd => `<:seta:974012084926959676> | \`/${cmd.name} ${cmd.subCommands?.join(" | ") ?? ""}\` → ${cmd.description}\n↳ Modo de uso <:seta:974012084926959676> \`${cmd.usage ?? "Não possui modo de uso"}\``))
+                helpString.push(this.client.commands.filter(cmd => cmd.category === category).map(cmd => `<:seta:974012084926959676> | \`/${cmd.name} ${cmd.subCommands?.join(" | ") ?? ""}\` → ${cmd.description}\n↳ Modo de uso → \`${cmd.usage ?? "Não possui modo de uso"}\``))
             }
 
             const pages = [embed0]

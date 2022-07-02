@@ -15,6 +15,8 @@ export default class ShuffleCommand extends Command {
 
     async run({ interaction }: RunCommand) {
 
+        
+
         const player = this.client.music.players.get(interaction.guild?.id ?? "")
         const nvolume = player?.volume
     

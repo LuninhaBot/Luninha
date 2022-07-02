@@ -20,30 +20,29 @@ export default class InteractionCreateEvent extends Event {
 
             if (command) {
 
-                try {
-                    db.getData(`/${interaction.guild?.id}`)
-                } catch {
-                    db.push(`/${interaction.guild?.id}`, { 
-                        dj: null 
-                    })
-                }
-
-                command.ephemeral ? await interaction.deferReply({ ephemeral: true, fetchReply: true }) : await interaction.deferReply({ fetchReply: true })
-
                 if (command.ownerOnly && !this.client.utils.checkOwner(interaction.user.id)) {
-                    return interaction.followUp(":x: | Você não pode usar este comando!")
+                    await interaction.deferReply({ ephemeral: true })
+                    interaction.followUp(":x: | Você não pode usar este comando!")
+                    return;
                 }
 
                 const member = interaction.member as GuildMember
-                let role = interaction.guild?.roles.cache.get(db.getData(`/${interaction.guild?.id}/dj`))?.name ?? "DJ"
-                if (command.djOnly && !member?.roles.cache.has(db.getData(`/${interaction.guild?.id}/dj`))) {
-                    return interaction.followUp({
+                let role = interaction.guild?.roles.cache.get(db.get(`${interaction.guild?.id}.dj`))?.name ?? "DJ"
+
+                if (command.djOnly && !member?.roles.cache.has(db.get(`${interaction.guild?.id}.dj`))) {
+                    await interaction.deferReply({ ephemeral: true })
+                    interaction.followUp({
                         content: `:x: | Apenas pessoas com o cargo \`${role}\` podem usar este comando!`,
                     })
+
+                    return;
                 }
 
                 if (!interaction?.inGuild()) {
-                    return interaction.followUp(":x: | Esté comando não pode ser usado fora de um servidor!")
+                    await interaction.deferReply({ ephemeral: true })
+                    interaction.followUp(":x: | Esté comando não pode ser usado fora de um servidor!")
+
+                    return;
                 }
 
                 if (interaction?.inGuild()) {
@@ -54,7 +53,9 @@ export default class InteractionCreateEvent extends Event {
                 try {
                     command?.run({ interaction } as RunCommand)
                 } catch (error) {
-                    return interaction.followUp(`⚠️ | Um erro aconteceu\n\`\`\`js\n${error}\`\`\``)
+                    await interaction.deferReply({ ephemeral: true })
+                    interaction.followUp(`⚠️ | Um erro aconteceu\n\`\`\`js\n${error}\`\`\``)
+                    return;
                 }
             }
         }
@@ -67,7 +68,7 @@ export default class InteractionCreateEvent extends Event {
                 .toArray()
                 .map(p => p)
                 .join(', ')
-            interaction.reply({
+            interaction.followUp({
                 content: `❌ | Está me faltando permissões para rodar o comando \`${permissions.toString()}\``,
                 ephemeral: true
             })
@@ -83,7 +84,7 @@ export default class InteractionCreateEvent extends Event {
                 .toArray()
                 .map(p => p)
                 .join(', ')
-            interaction.reply({
+            interaction.followUp({
                 content: `❌ | Você não pode usar esté comando pois está te faltando permissões \`${permissions.toString()}\``,
                 ephemeral: true
             })

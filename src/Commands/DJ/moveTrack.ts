@@ -14,6 +14,8 @@ export default class MoveTrackCommand extends Command {
 
     async run({ interaction }: RunCommand) {
 
+        await interaction.deferReply({ ephemeral: false, fetchReply: true })
+
         const player = this.client.music.players.get(interaction.guild?.id ?? "")
 
         let options = {

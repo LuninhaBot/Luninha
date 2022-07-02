@@ -4,16 +4,13 @@ import Event from "../../Structures/Event"
 import EclipseClient from "../../Structures/EclipseClient"
 import Logger from "../../Utils/Logger"
 import { hooks } from "../../Utils/Config"
-import { JsonDB } from "node-json-db";
-import { Config } from "node-json-db/dist/lib/JsonDBConfig"
-
-var Database = new JsonDB(new Config("./src/Database/db.json", true, true, "/"))
+import { DatabaseManager } from "../../Database/index"
 
 declare global {
-    var db: JsonDB
+    var db: DatabaseManager
 }
 
-global.db = Database
+global.db = new DatabaseManager("db")
 
 export default class ReadyEvent extends Event {
 

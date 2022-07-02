@@ -18,6 +18,8 @@ export default class UserCommands extends Command {
 
         if (interaction.options.getSubcommand(true) == "info") {
 
+            await interaction.deferReply({ ephemeral: false, fetchReply: true })
+
             let m = await interaction.guild?.members.fetch((interaction.options.getMember("usuário") as GuildMember) ?? interaction.user.id)
 
             let arr: { tag: string; timestamp: number, id: string }[] = []
@@ -106,12 +108,15 @@ export default class UserCommands extends Command {
 
             if (!json.banner) {
 
+                await interaction.deferReply({ ephemeral: true, fetchReply: true })
                 interaction.followUp({
                     content: `:x: | Esté usuário não possui um banner.`,
                 })
 
                 return;
             } 
+
+            await interaction.deferReply({ ephemeral: false, fetchReply: true })
             
             let embed = new EmbedBuilder()
             embed.setColor("#04c4e4")

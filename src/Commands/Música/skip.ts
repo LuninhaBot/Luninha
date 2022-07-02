@@ -1,3 +1,4 @@
+import { GuildMember } from "discord.js"
 import Command, { RunCommand } from "../../Structures/Command"
 import EclipseClient from "../../Structures/EclipseClient"
 
@@ -12,7 +13,9 @@ export default class skipCommand extends Command {
 
     async run({ interaction }: RunCommand) {
 
-        let member = await interaction.guild?.members.fetch(interaction.user.id)
+        await interaction.deferReply({ ephemeral: false, fetchReply: true })
+
+        let member = interaction.member as GuildMember
         // @ts-ignore
         let memberCount = member?.voice.channel?.members.size - 1
         let player = this.client.music.players.get(interaction.guild?.id ?? "")

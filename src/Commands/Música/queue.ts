@@ -12,6 +12,8 @@ export default class QueueCommand extends Command {
     }
 
     async run({ interaction }: RunCommand) {
+        await interaction.deferReply({ ephemeral: false, fetchReply: true })
+        
         const player = this.client.music.players.get(interaction.guild!.id ?? "")
 
         if (!player) return interaction.followUp(":x: | Não tem nada tocando no servidor!")

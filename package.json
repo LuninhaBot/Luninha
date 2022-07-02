@@ -10,15 +10,15 @@
     "build:start": "sucrase ./src -d ./build --transforms typescript,imports && yarn start"
   },
   "dependencies": {
+    "@types/jsdom": "^16.2.14",
     "chalk": "4.1.2",
     "discord-cross-hosting": "^2.2.1",
     "discord-hybrid-sharding": "^1.5.3",
-    "discord.js": "^14.0.0-dev.1656158629-c4653f9",
+    "discord.js": "^14.0.0-dev.1656677097-741b3c8",
     "erela.js": "^2.3.3",
     "genius-lyrics": "^4.3.8",
     "glob": "^8.0.1",
-    "node-fetch": "2.6.6",
-    "node-json-db": "^1.5.0"
+    "node-fetch": "2.6.6"
   },
   "devDependencies": {
     "@types/glob": "^7.2.0",

@@ -13,6 +13,8 @@ export default class ShuffleCommand extends Command {
 
     async run({ interaction }: RunCommand) {
 
+        await interaction.deferReply({ ephemeral: false, fetchReply: true })
+
         const player = this.client.music.players.get(interaction.guild?.id ?? "")
         if (player?.queue.length == 0) {
             interaction.followUp({

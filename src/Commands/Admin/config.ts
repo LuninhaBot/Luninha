@@ -13,20 +13,22 @@ export default class djCommand extends Command {
 
     async run({ interaction }: RunCommand) {
 
+        await interaction.deferReply({ ephemeral: false, fetchReply: true })
+
         if (interaction.options.getSubcommand(true) == "dj") {
 
             let role = interaction.options.getRole("cargo", false)
 
 
-            if (!role && !db.getData(`/${interaction.guild?.id}/dj`)) {
+            if (!role && !db.get(`${interaction.guild?.id}.dj`)) {
                 interaction.followUp({
                     content: ":x: | Você não tem cargo de DJ definido!",
                 })
                 return;
             }
 
-            if (!role && db.getData(`/${interaction.guild?.id}/dj`)) {
-                db.push(`/${interaction.guild?.id}/dj`, { dj: null })
+            if (!role && db.get(`${interaction.guild?.id}.dj`)) {
+                db.delete(`${interaction.guild?.id}.dj`)
                 interaction.followUp({
                     content: ":white_check_mark: | Cargo de DJ removido com sucesso!",
                 })
@@ -34,7 +36,7 @@ export default class djCommand extends Command {
             }
 
             if (role) {
-                db.push(`/${interaction.guild?.id}/dj`, role.id)
+                db.set(`${interaction.guild?.id}.dj`, role.id)
                 interaction.followUp({
                     content: ":white_check_mark: | Cargo de DJ definido com sucesso!",
                 })

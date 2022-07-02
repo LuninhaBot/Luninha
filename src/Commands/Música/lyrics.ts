@@ -15,6 +15,8 @@ export default class LyricsCommand extends Command {
     }
 
     async run({ interaction }: RunCommand) {
+        await interaction.deferReply({ ephemeral: false, fetchReply: true })
+        
         const client = new Client(geniusToken)
 
         const player = this.client.music.players.get(interaction.guild?.id ?? "")
