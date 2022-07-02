@@ -8,8 +8,10 @@ import { DatabaseManager } from "../../Database/index"
 
 declare global {
     var db: DatabaseManager
+    var mostPlayed: DatabaseManager
 }
 
+global.mostPlayed = new DatabaseManager("mostPlayed")
 global.db = new DatabaseManager("db")
 
 export default class ReadyEvent extends Event {

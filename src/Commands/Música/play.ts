@@ -1,4 +1,4 @@
-import { EmbedBuilder, GuildMember } from "discord.js"
+import { ChannelType, EmbedBuilder, GuildMember } from "discord.js"
 import { SearchResult } from "erela.js"
 import Command, { RunCommand } from "../../Structures/Command"
 import EclipseClient from "../../Structures/EclipseClient"

@@ -3,7 +3,7 @@ import { Manager, Player, Track } from "erela.js"
 import EclipseClient from "../Structures/EclipseClient"
 import { lavalink } from "../Utils/Config"
 import Logger from "../Utils/Logger"
-
+import "./Player"
 
 export default class EclipseLavalink extends Manager {
 
@@ -40,6 +40,12 @@ export default class EclipseLavalink extends Manager {
             embed.setDescription(`:musical_note: | Tocando agora **${track.title}**`)
             embed.setColor("#04c4e4")
 
+            mostPlayed.set(track.identifier, {
+                title: track.title,
+                playedCount: mostPlayed.get(track.identifier)?.playedCount + 1 || 1,
+                url: track.uri
+            })
+
             interaction.followUp({
                 embeds: [embed]
             }).catch(() => { }).then(msg => player.set("message", msg))
@@ -49,6 +55,12 @@ export default class EclipseLavalink extends Manager {
         this.on("newTrackStart", (player: Player, tracks: Track[]) => {
             const track = tracks[0]
             const channel = client.channels.cache.get(player.textChannel ?? "") as TextChannel
+
+            mostPlayed.set(track.identifier, {
+                title: track.title,
+                playedCount: mostPlayed.get(track.identifier)?.playedCount + 1 || 1,
+                url: track.uri
+            })
 
             let embed = new EmbedBuilder()
             embed.setColor("#04c4e4")
