@@ -14,8 +14,6 @@ export default class MostPlayedCommand extends Command {
 
     async run({ interaction }: RunCommand) {
 
-        await interaction.deferReply({ fetchReply: true })
-
         const embed = new EmbedBuilder()
         embed.setColor("#04c4e4")
         embed.setTitle("Músicas mais tocadas")
@@ -23,12 +21,25 @@ export default class MostPlayedCommand extends Command {
         let sort = mostPlayed.all().sort((a, b) => b.data.playedCount - a.data.playedCount)
         let allPlayed = mostPlayed.all().map(x => x.data.playedCount).reduce((a, b) => a + b, 0)
         let songsArray = []
+        
         for (const data of sort) {
             songsArray.push(`**${data.data.playedCount}º** [\`${data.data.title}\`](${data.data.url})`)
         }
 
+        if (songsArray.length == 0) {
+
+            await interaction.deferReply({ ephemeral: true, fetchReply: true })
+
+            interaction.followUp({
+                content: ":x: | Nenhuma música foi tocada nesse mês ainda!",
+            })
+        }
+
+        await interaction.deferReply({ fetchReply: true })
+
         embed.setDescription(songsArray.slice(0, 10).join("\n"))
         embed.setFooter({ text: `Nesse mês eu reproduzi ${allPlayed.toLocaleString()} músicas` })
+
         interaction.followUp({
             embeds: [embed]
         })

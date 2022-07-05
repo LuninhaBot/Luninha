@@ -8,7 +8,7 @@ export default class nowPlayingCommand extends Command {
             name: "now",
             description: "Mostra a música que está tocando no momento",
             category: "Música",
-            usage: "playing",
+            subCommands: ["playing"]
         })
     }
 

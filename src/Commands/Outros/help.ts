@@ -60,7 +60,7 @@ export default class HelpCommand extends Command {
             const pages = [embed0]
             for (let i = 0; i < helpString.length; i++) {
 
-                let embed = new EmbedBuilder()
+                const embed = new EmbedBuilder()
                 embed.setColor("#04c4e4")
                 embed.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL({ forceStatic: false, size: 4096 }) })
                 embed.setDescription(helpString[i].join("\n"))
@@ -76,12 +76,12 @@ export default class HelpCommand extends Command {
                 pages.push(embed)
             }
 
-            let msg = await interaction.followUp({
+            const msg = await interaction.followUp({
                 embeds: [embed0],
             }) as Message
 
             for (let amount = 0; amount < pages.length; amount++) {
-                msg.react(emojis[amount].emoji)
+                await msg.react(emojis[amount].emoji)
             }
 
             const collector = msg.createReactionCollector({
@@ -105,10 +105,12 @@ export default class HelpCommand extends Command {
                     case "🔟":
 
                     await reaction.users.remove(user.id).catch(() => { })
+                    collector.resetTimer()
+                    
                     let page = emojis.find(emoji => emoji.emoji === reaction.emoji.name)?.number ?? 0
                     msg.edit({
                         embeds: [pages[page]]
-                    })
+                    }).catch(() => { })
                 }
             })
 
@@ -117,7 +119,7 @@ export default class HelpCommand extends Command {
                 msg.reactions.removeAll().catch(() => { })
                 msg.edit({
                     embeds: [embed0]
-                })
+                }).catch(() => { })
 
                 return;
             })
@@ -127,6 +129,7 @@ export default class HelpCommand extends Command {
                 interaction.followUp({
                     content: ":x: | Não encontrei este comando.",
                 })
+                
                 return;
             }
 

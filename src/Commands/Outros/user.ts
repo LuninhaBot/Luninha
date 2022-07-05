@@ -20,9 +20,9 @@ export default class UserCommands extends Command {
 
             await interaction.deferReply({ ephemeral: false, fetchReply: true })
 
-            let m = await interaction.guild?.members.fetch((interaction.options.getMember("usuário") as GuildMember) ?? interaction.user.id)
+            const m = await interaction.guild?.members.fetch((interaction.options.getMember("usuário") as GuildMember) ?? interaction.user.id)
 
-            let arr: { tag: string; timestamp: number, id: string }[] = []
+            const arr: { tag: string; timestamp: number, id: string }[] = []
             const members = await interaction.guild!.members.fetch()
             members.forEach((u) => {
                 arr.push({
@@ -32,8 +32,8 @@ export default class UserCommands extends Command {
                 })
             })
 
-            let sort = arr.sort((a, b) => a?.timestamp - b?.timestamp)
-            let index = sort.findIndex(u => u.id == m?.user.id)
+            const sort = arr.sort((a, b) => a?.timestamp - b?.timestamp)
+            const index = sort.findIndex(u => u.id == m?.user.id)
 
 
             const emojis = {
@@ -54,14 +54,14 @@ export default class UserCommands extends Command {
                 Spammer: "<:ASpam:978185720214724628>"
             }
 
-            let avatar = m?.avatar ? m?.avatar : m?.user.avatar
-            let nitro = avatar?.startsWith("a_") ? "<:nitro:979250617333710908>" : ""
-            let flags = m?.user.flags?.toArray()
+            const avatar = m?.avatar ? m?.avatar : m?.user.avatar
+            const nitro = avatar?.startsWith("a_") ? "<:nitro:979250617333710908>" : ""
+            const flags = m?.user.flags?.toArray()
 
-            const startingValue = (index - 3) <= 0 ? 0 : index - 3
-            const endingValue = (index + 4) >= sort.length ? sort.length : index + 4
+            const startingValue = (index - 5) <= 0 ? 0 : index - 5
+            const endingValue = (index + 6) >= sort.length ? sort.length : index + 6
 
-            let embed = new EmbedBuilder()
+            const embed = new EmbedBuilder()
             embed.setDescription([
                 `ID: **${m?.user.id}** ${nitro}${flags?.map(flag => emojis[flag]).join("") ?? ""}${interaction.guild?.ownerId == m?.user.id ? "👑" : ""}`,
                 `Criado em: **${m?.user.createdAt.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" })}**`,
@@ -82,19 +82,19 @@ export default class UserCommands extends Command {
 
         if (interaction.options.getSubcommand(true) == "banner") {
 
-            let options = interaction.options.getString("usuário", false)
-            let id = options?.match(/\d+/g)?.join("") ?? interaction.user.id
+            const options = interaction.options.getString("usuário", false)
+            const id = options?.match(/\d+/g)?.join("") ?? interaction.user.id
 
-            let m = await interaction.guild!.members.fetch(id)
+            const m = await interaction.guild!.members.fetch(id)
 
-            let fe = await fetch(`https://discord.com/api/v10/users/${id}`, {
+            const fe = await fetch(`https://discord.com/api/v10/users/${id}`, {
                 headers: {
                     "Authorization": `Bot ${bot.token}`,
                     "Content-Type": "application/json"
                 }
             })
 
-            let json = await fe.json() as {
+            const json = await fe.json() as {
                 id: string,
                 username: string
                 avatar: string
@@ -132,47 +132,49 @@ export default class UserCommands extends Command {
 
         if (interaction.options.getSubcommand(true) == "avatar") {
 
+            await interaction.deferReply({ ephemeral: false, fetchReply: true })
 
-            let options = interaction.options.getString("usuário", false)
-            let id = options?.match(/\d+/g)?.join("") ?? interaction.user.id
+            const options = interaction.options.getString("usuário", false)
+            const id = options?.match(/\d+/g)?.join("") ?? interaction.user.id
 
-            let user = await this.client.users.fetch(id).catch(() => { })
-            let member = await interaction.guild?.members.fetch(id).catch(() => { })
+            const user = await this.client.users.fetch(id).catch(() => { })
+            const member = await interaction.guild?.members.fetch(id).catch(() => { })
 
-            let guildAvatarButton = new ButtonBuilder({
+            const guildAvatarButton = new ButtonBuilder({
                 label: "Avatar do servidor",
                 customId: "guildAvatar",
                 style: ButtonStyle.Primary
             })
 
-            let row = new ActionRowBuilder<ButtonBuilder>()
+            const row = new ActionRowBuilder<ButtonBuilder>()
             row.addComponents([guildAvatarButton])
 
-            let embed = new EmbedBuilder()
+            const embed = new EmbedBuilder()
             embed.setDescription(`🖼️ | Avatar de **${user?.tag}**`)
             embed.setImage(user?.displayAvatarURL({ size: 4096, forceStatic: false }) ?? "https://cdn.discordapp.com/embed/avatars/0.png")
             embed.setColor("#04c4e4")
             interaction.followUp({
                 embeds: [embed],
-                components: member!.avatar ? [row] : []
+                components: member?.avatar ? [row] : []
             })
 
-            const response = await interaction.channel!.awaitMessageComponent({
-                filter: (i) => ["guildAvatar"].includes(i.customId),
+            
+            await interaction.channel!.awaitMessageComponent({
+                filter: (i) => {
+                    if (["guildAvatar"].includes(i.customId)) {
+                        if (i.user.id !== interaction.user.id) {
+                            i.reply(":x: | Apenas o autor pode usar este botão!")
+                            return false
+                        }
+                        return true
+                    }
+                    return false
+                },
                 time: 60000
             })
 
-            if (response.user.id !== interaction.user.id) {
-                response.reply({
-                    content: ":x: | Apenas o autor do comando pode usar o botão",
-                    ephemeral: true
-                })
 
-                return;
-            }
-
-
-            let newEmbed = new EmbedBuilder()
+            const newEmbed = new EmbedBuilder()
             newEmbed.setDescription(`🖼️ | Avatar de **${member?.user.tag}**`)
             newEmbed.setImage(member?.displayAvatarURL({ size: 4096, forceStatic: false }) ?? "https://cdn.discordapp.com/embed/avatars/0.png")
             newEmbed.setColor("#04c4e4")

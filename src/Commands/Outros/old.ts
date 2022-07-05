@@ -40,7 +40,8 @@ export default class OldMembersCommand extends Command {
         let i = 0
         const membersString = []
         for (const member of sort) {
-            membersString.push(`**${i++}º** ${member.presence} - ${member.tag == interaction.user.tag ? `**${member.tag}**` : member.tag} → <t:${~~(member.timestamp / 1000)}:R>`)
+            i++
+            membersString.push(`**${i}º** ${member.presence} - ${member.tag == interaction.user.tag ? `**${member.tag}**` : member.tag} → <t:${~~(member.timestamp / 1000)}:R>`)
         }
 
         let pagesNum = Math.ceil(membersString.length / 10)
@@ -80,23 +81,22 @@ export default class OldMembersCommand extends Command {
         })
 
         const collector = interaction.channel!.createMessageComponentCollector({
-            filter: (i) => ["forward", "backward"].includes(i.customId),
+            filter: (i) => {
+                if (["forward", "backward"].includes(i.customId)) {
+                    if (i.user.id !== interaction.user.id) {
+                        i.reply(":x: | Apenas o autor pode usar os botões!")
+                        return false
+                    }
+                    return true
+                }
+                return false
+            },
             componentType: ComponentType.Button,
             time: 60000
         })
 
         var page = 0
         collector.on("collect", async (i) => {
-
-            if (i.user.id !== interaction.user.id) {
-
-                await i.deferReply({ ephemeral: true })
-                i.editReply({
-                    content: ":x: | Apenas o autor pode usar os botões!"
-                })
-
-                return;
-            }
 
             if (i.customId == "forward") {
                 page = page + 1 < pages.length ? ++page : 0
@@ -105,7 +105,9 @@ export default class OldMembersCommand extends Command {
                 i.editReply({
                     embeds: [pages[page]]
                 })
-            } else if (i.customId == "backward") {
+            }
+
+            if (i.customId == "backward") {
                 page = page > 0 ? --page : pages.length - 1
 
                 await i.deferUpdate()
@@ -113,6 +115,15 @@ export default class OldMembersCommand extends Command {
                     embeds: [pages[page]]
                 })
             }
+        })
+
+        collector.on("end", () => {
+            interaction.editReply({
+                embeds: [],
+                components: []
+            })
+
+            return;
         })
     }
 }

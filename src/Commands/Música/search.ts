@@ -55,22 +55,30 @@ export default class SearchCommand extends Command {
                 throw new Error(res.exception?.message)
             }
         } catch (err) {
-            return interaction.followUp(`:x: | Aconteceu um erro ao tentar tocar a música: \`${err}\``)
+            interaction.followUp(`:x: | Aconteceu um erro ao tentar tocar a música: \`${err}\``)
+
+            return;
         }
 
         if (res.loadType == "NO_MATCHES") {
             if (!player.queue.current) player.destroy()
-            await interaction.followUp(":x: | Não foi possivel encontrar nenhuma música!")
+            interaction.followUp(":x: | Não foi possivel encontrar nenhuma música!")
+
+            return;
         }
 
         if (res.loadType == "PLAYLIST_LOADED") {
-            await interaction.followUp(":x: | Por favor não envie links de playlists!")
+            interaction.followUp(":x: | Por favor não envie links de playlists!")
             player.destroy()
+
+            return;
         }
 
         if (res.loadType == "TRACK_LOADED") {
-            await interaction.followUp(":x: | Por favor não envie links de músicas!")
+            interaction.followUp(":x: | Por favor não envie links de músicas!")
             player.destroy()
+
+            return;
         }
 
         if (res.loadType == "SEARCH_RESULT") {
@@ -116,79 +124,75 @@ export default class SearchCommand extends Command {
                 .map((track, index) => `**${++index}º** \`[${this.client.utils.formatDuration(track.duration)}]\` **[${track.title}](${track.uri})**`)
                 .join("\n")
 
-            let embed3 = new EmbedBuilder()
-            embed3.setColor("#04c4e4")
-            embed3.setTimestamp()
-            embed3.setDescription(results)
+            const embed = new EmbedBuilder()
+            embed.setColor("#04c4e4")
+            embed.setTimestamp()
+            embed.setDescription(results)
 
-            await interaction.followUp({
-                embeds: [embed3],
+            interaction.followUp({
+                embeds: [embed],
                 components: [row]
             })
 
             const collector = interaction.channel!.createMessageComponentCollector({
-                filter: (i) => ["musicSelector", "queue"].includes(i.customId),
+                filter: (i) => {
+                    if (["musicSelector", "queue"].includes(i.customId)) {
+                        if (i.user.id !== interaction.user.id) {
+                            i.reply(":x: | Apenas o autor pode usar essas interaçoes!")
+                            return false
+                        }
+                        return true
+                    }
+                    return false
+                },
                 time: 60000
             })
 
-            let tracks = [] as Track[]
+            const tracks = [] as Track[]
+            let msg: Message;
 
-            collector.on("collect", async (i: Interaction) => {
+            collector.on("collect", async (i) => {
                 if (i.isButton() && i.customId == "queue") {
 
-                    if (i.user.id !== interaction.user.id) {
-                        i.reply({
-                            content: ":x: | Você não pode interagir com a mensagem!",
-                            ephemeral: true
-                        })
-        
-                        return;
-                    }
-
-                    let embed = new EmbedBuilder()
+                    const embed = new EmbedBuilder()
                     embed.setColor("#04c4e4")
                     embed.setTimestamp()
                     embed.setDescription(`:white_check_mark: | As seguintes músicas foram adicionadas à fila:\n${tracks.map((track, index) => `**${++index}º** \`[${this.client.utils.formatDuration(track.duration)}]\` **[${track.title}](${track.uri})**`).join("\n")}`)
 
-                    await i.deferReply({ fetchReply: true, ephemeral: true })
-
-                    await i.followUp({
+                    i.reply({
                         embeds: [embed]
                     })
+                    
+                    msg.edit({
+                        components: []
+                    }).catch(() => { })
+
 
                     collector.stop()
                     return;
                 }
 
-                if (i.isSelectMenu()) {
+                if (i.isSelectMenu() && i.customId == "musicSelector") {
 
-                    if (i.customId == "musicSelector") {
+                    await i.deferUpdate()
 
-                        if (i.user.id !== interaction.user.id) {
-                            i.reply({
-                                content: ":x: | Você não pode interagir com a mensagem!",
-                                ephemeral: true
-                            })
-
-                            return;
-                        }
-
-                        for (const id of i.values) {
-                            tracks.push(res.tracks.find(t => t.identifier == id) as Track)
-                        }
-
-                        player.queue.add(tracks)
-                        if (!player.playing && !player.paused && player.queue.totalSize === tracks.length) await player.play()
-
-                        let embed = new EmbedBuilder()
-                        embed.setColor("#04c4e4")
-                        embed.setDescription(`:white_check_mark: | Adicionado \`${tracks.length}\` músicas à fila!`)
-
-                        await i.channel!.send({ embeds: [embed], components: [buttonRow] })
-                        this.client.music.emit("playingNow", player, player.queue.current, interaction)
-
-                        await i.update({ components: [] })
+                    for (const id of i.values) {
+                        tracks.push(res.tracks.find(t => t.identifier == id) as Track)
                     }
+
+                    player.queue.add(tracks)
+                    if (!player.playing && !player.paused && player.queue.totalSize === tracks.length) await player.play()
+
+                    const embed = new EmbedBuilder()
+                    embed.setColor("#04c4e4")
+                    embed.setDescription(`:white_check_mark: | Adicionado \`${tracks.length}\` músicas à fila!`)
+
+                    msg = await i.channel!.send({ embeds: [embed], components: [buttonRow] })
+                    this.client.music.emit("playingNow", player, player.queue.current, interaction)
+
+                    i.editReply({ components: [] })
+
+                    return;
                 }
             })
         }

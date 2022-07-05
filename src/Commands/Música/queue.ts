@@ -64,7 +64,16 @@ export default class QueueCommand extends Command {
         })
 
         const collector = interaction.channel!.createMessageComponentCollector({
-            filter: (i) => ["forward", "backward"].includes(i.customId),
+            filter: (i) => {
+                if (["forward", "backward"].includes(i.customId)) {
+                    if (i.user.id !== interaction.user.id) {
+                        i.reply(":x: | Apenas o autor pode usar os botões!")
+                        return false
+                    }
+                    return true
+                }
+                return false
+            },
             componentType: ComponentType.Button,
             time: 60000
         })
@@ -72,20 +81,10 @@ export default class QueueCommand extends Command {
         var page = 0
         collector.on("collect", async (i) => {
 
-            if (i.user.id !== interaction.user.id) {
-
-                await i.deferReply({ ephemeral: true })
-                i.editReply({
-                    content: ":x: | Apenas o autor pode usar os botões!"
-                })
-
-                return;
-            }
-
             if (i.customId == "forward") {
                 page = page + 1 < pages.length ? ++page : 0
 
-                await i.deferUpdate()
+                await i.deferUpdate().catch(() => { })
 
                 i.editReply({
                     embeds: [
@@ -101,7 +100,7 @@ export default class QueueCommand extends Command {
             if (i.customId == "backward") {
                 page = page > 0 ? --page : pages.length - 1
 
-                await i.deferUpdate()
+                await i.deferUpdate().catch(() => { })
                 
                 i.editReply({
                     embeds: [
@@ -113,6 +112,15 @@ export default class QueueCommand extends Command {
                 collector.resetTimer()
                 return;
             }
+        })
+
+        collector.on("end", () => {
+            interaction.editReply({
+                embeds: [],
+                components: []
+            })
+
+            return;
         })
     }
 }

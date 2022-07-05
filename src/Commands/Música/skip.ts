@@ -1,4 +1,5 @@
 import { GuildMember } from "discord.js"
+import { Player } from "erela.js"
 import Command, { RunCommand } from "../../Structures/Command"
 import EclipseClient from "../../Structures/EclipseClient"
 
@@ -48,9 +49,8 @@ export default class skipCommand extends Command {
 
         // @ts-ignore
         if (player.skipVotes.length >= required) {
-            // @ts-ignore
-            this.client.utils.resetVotes(player)
-            player?.stop()
+            this.client.utils.resetVotes(player as Player)
+            player!.stop()
             str += `✅ | Pulando **${player?.queue.current?.title}**`;
         };
 
