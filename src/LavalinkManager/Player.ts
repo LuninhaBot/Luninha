@@ -81,39 +81,11 @@ export default Structure.extend("Player", (Player) => {
             return this
         }
 
-        setEqualizer(band: number, gain: number) {
-            this.band = band ?? this.band
-            this.gain = gain ?? this.gain
-
+        setEqualizer(band = this.band, gain = this.gain) {
             this.node.send({
                 op: 'filters',
                 guildId: this.guild,
-                equalizer: [
-                    {
-                        band: this.band,
-                        gain: this.gain
-                    },
-                    {
-                        band: this.band,
-                        gain: this.gain
-                    },
-                    {
-                        band: this.band,
-                        gain: this.gain
-                    },
-                    {
-                        band: this.band,
-                        gain: this.gain
-                    },
-                    {
-                        band: this.band,
-                        gain: this.gain
-                    },
-                    {
-                        band: this.band,
-                        gain: this.gain
-                    }
-                ]
+                equalizer: Array.from({ length: 6 }).fill({ band, gain })
             })
         }
 
@@ -125,11 +97,7 @@ export default Structure.extend("Player", (Player) => {
             this.node.send({
                 op: "filters",
                 guildId: this.guild,
-                timescale: {
-                    speed: this.speed,
-                    pitch: this.pitch,
-                    rate: this.rate
-                },
+                timescale: {speed, pitch, rate }
             })
             return this
         }
