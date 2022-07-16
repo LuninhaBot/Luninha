@@ -97,7 +97,11 @@ export default Structure.extend("Player", (Player) => {
             this.node.send({
                 op: "filters",
                 guildId: this.guild,
-                timescale: {speed, pitch, rate }
+                timescale: {
+                  speed: this.speed,
+                  pitch: this.pitch,
+                  rate: this.rate
+               },
             })
             return this
         }
