@@ -1,6 +1,7 @@
 import { inspect } from "util"
 import EclipseClient from "../../Structures/EclipseClient"
 import Command, { RunCommand } from "../../Structures/Command"
+import player from "../../LavalinkManager/Player"
 
 export default class EvalCommand extends Command {
     constructor(client: EclipseClient) {

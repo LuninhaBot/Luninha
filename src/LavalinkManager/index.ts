@@ -3,7 +3,6 @@ import { Manager, Player, Track } from "erela.js"
 import EclipseClient from "../Structures/EclipseClient"
 import { lavalink } from "../Utils/Config"
 import Logger from "../Utils/Logger"
-import "./Player"
 
 export default class EclipseLavalink extends Manager {
 
@@ -75,7 +74,7 @@ export default class EclipseLavalink extends Manager {
             const channel = client.channels.cache.get(player.textChannel ?? "") as TextChannel
 
             channel.send({
-                content: `:x: | Encontrei um erro ao tocar o track ${track.title}\n\`\`\`${payload.error}\`\`\``
+                content: `:x: | Encontrei um erro ao tocar a música **${track.title}**\n\`\`\`${payload.error}\`\`\``
             })
         })
 

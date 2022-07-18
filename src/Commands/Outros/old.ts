@@ -1,4 +1,4 @@
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType } from "discord.js"
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType, Message } from "discord.js"
 import Command, { RunCommand } from "../../Structures/Command"
 import EclipseClient from "../../Structures/EclipseClient"
 
@@ -75,7 +75,7 @@ export default class OldMembersCommand extends Command {
         const actionRow = new ActionRowBuilder<ButtonBuilder>()
         actionRow.addComponents([backwardButton, forwardButton])
 
-        interaction.followUp({
+        const msg = await interaction.followUp({
             embeds: [pages[0]],
             components: [actionRow]
         })
@@ -118,10 +118,9 @@ export default class OldMembersCommand extends Command {
         })
 
         collector.on("end", () => {
-            interaction.editReply({
-                embeds: [],
+            msg.edit({
                 components: []
-            })
+            }).catch(() => { })
 
             return;
         })

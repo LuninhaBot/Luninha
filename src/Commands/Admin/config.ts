@@ -6,7 +6,7 @@ export default class djCommand extends Command {
         super(client, {
             name: "config",
             description: "Defina o cargo de DJ do servidor!",
-            subCommands: ["dj"],
+            subCommands: ["dj", "autorole"],
             category: "Admin"
         })
     }
@@ -17,7 +17,7 @@ export default class djCommand extends Command {
 
         if (interaction.options.getSubcommand(true) == "dj") {
 
-            let role = interaction.options.getRole("cargo", false)
+            const role = interaction.options.getRole("cargo", false)
 
 
             if (!role && !db.get(`${interaction.guild?.id}.dj`)) {
@@ -42,6 +42,43 @@ export default class djCommand extends Command {
                 })
                 return;
             }
+        }
+
+        if (interaction.options.getSubcommand(true) == "autorole") {
+            const arrayRoles = []
+			arrayRoles.push(
+                interaction.options.getRole("cargo1")?.id,
+                interaction.options.getRole("cargo2")?.id,
+                interaction.options.getRole("cargo3")?.id,
+                interaction.options.getRole("cargo4")?.id,
+                interaction.options.getRole("cargo5")?.id,
+            )
+
+            const filter = arrayRoles.filter(r => typeof r !== "undefined")
+
+            if (filter.length == 0 && !db.get(`${interaction.guild?.id}.autorole`)) {
+                interaction.followUp({
+                    content: ":x: | Você não definiu nenhum cargo para o autorole!",
+                })
+
+                return;
+            }
+
+            if (filter.length == 0 && db.get(`${interaction.guild?.id}.autorole`)) {
+                db.delete(`${interaction.guild?.id}.autorole`)
+                interaction.followUp({
+                    content: ":white_check_mark: | Cargo de autorole removido com sucesso!",
+                })
+
+                return;
+            }
+
+            db.set(`${interaction.guild?.id}.autorole`, arrayRoles.filter(r => typeof r !== "undefined"))
+            interaction.followUp({
+                content: ":white_check_mark: | Autorole definido com sucesso!",
+            })
+
+            
         }
     }
 }

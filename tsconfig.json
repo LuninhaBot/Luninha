@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "resolveJsonModule": true,
     "target": "ESNext",
     "lib": [ "ESNext" ],
     "experimentalDecorators": true,
@@ -13,7 +14,13 @@
     "skipDefaultLibCheck": true,
     "strict": true,
     "skipLibCheck": true,
-    "rootDir": "./src",
-    "outDir": "./build"
-  }
+    "rootDir": "./",
+    "outDir": "./build",
+  },
+  "exclude": [
+    "build",
+    "node_modules",
+    "yarn.lock",
+    "yarn-error.log"
+  ]
 }

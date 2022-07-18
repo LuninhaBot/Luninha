@@ -57,8 +57,8 @@ export default class QueueCommand extends Command {
         let row = new ActionRowBuilder<ButtonBuilder>()
         row.addComponents([backwardButton, forwardButton])
 
-        await interaction.followUp({
-            content: `**[${player.queue.current!.title}](${player.queue.current!.uri})** | ${player.queue.length} músicas ${parsedQueueDuration}`,
+        const msg = await interaction.followUp({
+            content: `**[${player.queue.current!.title}](<${player.queue.current!.uri}>)** | ${player.queue.length} músicas ${parsedQueueDuration}`,
             embeds: [pagesNum == 0 ? new EmbedBuilder().setDescription("Não há músicas na fila!").setColor("#04c4e4") : pages[0]],
             components: [row]
         })
@@ -67,7 +67,10 @@ export default class QueueCommand extends Command {
             filter: (i) => {
                 if (["forward", "backward"].includes(i.customId)) {
                     if (i.user.id !== interaction.user.id) {
-                        i.reply(":x: | Apenas o autor pode usar os botões!")
+                        i.reply({ 
+                            content: ":x: | Apenas o autor pode usar os botões!",
+                            ephemeral: true
+                        })
                         return false
                     }
                     return true
@@ -115,10 +118,9 @@ export default class QueueCommand extends Command {
         })
 
         collector.on("end", () => {
-            interaction.editReply({
-                embeds: [],
+            msg.edit({
                 components: []
-            })
+            }).catch(() => { })
 
             return;
         })

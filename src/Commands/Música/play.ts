@@ -2,6 +2,7 @@ import { ChannelType, EmbedBuilder, GuildMember } from "discord.js"
 import { SearchResult } from "erela.js"
 import Command, { RunCommand } from "../../Structures/Command"
 import EclipseClient from "../../Structures/EclipseClient"
+import Player from "../../LavalinkManager/Player"
 
 export default class PlayCommand extends Command {
     constructor(client: EclipseClient) {
@@ -17,7 +18,7 @@ export default class PlayCommand extends Command {
 
         await interaction.deferReply({ ephemeral: false, fetchReply: true })
         
-        const play = this.client.music.players.get(interaction.guild?.id ?? "")
+        const play = this.client.music.players.get(interaction.guild!.id)
 
         let member = interaction.member as GuildMember
         const voice = member.voice
@@ -30,11 +31,11 @@ export default class PlayCommand extends Command {
         }
 
         if (!play) {
-            const player = this.client.music.create({
-                guild: interaction.guild?.id ?? "",
-                voiceChannel: voice.channel?.id ?? "",
-                textChannel: interaction.channel?.id ?? "",
-                selfDeafen: true
+            const player = new Player({
+                guild: interaction.guild!.id,
+                voiceChannel: voice.channel!.id,
+                textChannel: interaction.channel!.id,
+                selfDeafen: true,
             })
 
             if (!voice.channel.joinable) {
@@ -48,7 +49,7 @@ export default class PlayCommand extends Command {
             player.connect()
         }
 
-        const player = this.client.music.players.get(interaction.guild?.id ?? "")
+        const player = this.client.music.players.get(interaction.guild!.id) as Player
 
         if (player?.voiceChannel !== voice.channel.id) {
             interaction.followUp(`:x: | Estou tocando música em \`${interaction.guild?.channels.cache.get(player?.options.voiceChannel ?? "")?.name}\`!`)
@@ -93,8 +94,13 @@ export default class PlayCommand extends Command {
 				interaction.followUp({
 					embeds: [embed],
 				})
+
+                return;
+                
 			} else {
 				this.client.music.emit("playingNow", player, res.tracks[0], interaction)
+
+                return;
 			}
         }
 
@@ -103,13 +109,19 @@ export default class PlayCommand extends Command {
             player.queue.add(res.tracks)
 
             if (!player.playing && !player.paused && player.queue.totalSize === res.tracks.length) player.play()
-            embed2.setColor("#04c4e4")
-            embed2.setDescription(`:musical_note: | Adicionado a fila de espera a playlist **${res.playlist?.name}**`)
-            this.client.music.emit("playingNow", player, res.tracks[0], interaction)
 
-            interaction.followUp({
-                embeds: [embed2]
-            })
+            if (player.queue.size >= 1) {
+                embed2.setColor("#04c4e4")
+                embed2.setDescription(`:musical_note: | Adicionado a fila de espera a playlist **${res.playlist?.name}**`)
+    
+                interaction.followUp({
+                    embeds: [embed2]
+                })
+            } else {
+                this.client.music.emit("playingNow", player, res.tracks[0], interaction)
+            }
+
+            return;
         }
 
         if (res.loadType == "SEARCH_RESULT") {
@@ -122,11 +134,16 @@ export default class PlayCommand extends Command {
             embed.setDescription(`:musical_note: | Adicionado a lista de espera **${res.tracks[0].title}**`)
 
 			if (player.queue.size >= 1) {
+
 				interaction.followUp({
 					embeds: [embed]
 				})
+
+                return;
 			} else {
 				this.client.music.emit("playingNow", player, res.tracks[0], interaction)
+
+                return;
 			}
         }
     }

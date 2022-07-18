@@ -51,7 +51,8 @@ export default class UserCommands extends Command {
                 VerifiedDeveloper: "<:dev:978175250967719956>",
                 CertifiedModerator: "<:mod:978174836025196594>",
                 BotHTTPInteractions: "<:slash:978177497701183508>",
-                Spammer: "<:ASpam:978185720214724628>"
+                Spammer: "<:ASpam:978185720214724628>",
+                Quarantined: "😷"
             }
 
             const avatar = m?.avatar ? m?.avatar : m?.user.avatar

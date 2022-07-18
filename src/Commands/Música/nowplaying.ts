@@ -16,7 +16,7 @@ export default class nowPlayingCommand extends Command {
         await interaction.deferReply({ ephemeral: false, fetchReply: true })
         
         // agora funciona caralho
-        const player = this.client.music.players.get(interaction.guild?.id ?? "")
+        const player = this.client.music.players.get(interaction.guild!.id)
 
         const duration = player!.queue.current!.duration ?? 0
         const parsedCurrentDuration = this.client.utils.formatDuration(player?.position ?? 0)

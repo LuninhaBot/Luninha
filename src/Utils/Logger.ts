@@ -17,10 +17,6 @@ export default class Logger {
                 return console.log(`${timestamp} ${chalk.bgRed(type.toUpperCase())} ${content} `);
             }
 
-            case "info": {
-                return console.log(`${timestamp}`, chalk)
-            }
-
             case "debug": {
                 return console.log(`${timestamp} ${chalk.yellow.bgBlue(type.toUpperCase())} ${content} `);
             }
@@ -47,10 +43,6 @@ export default class Logger {
 
     static warn(content: string) {
         return this.log(content, "warn");
-    }
-
-    static info(content: string) {
-        return this.log(content, "info");
     }
 
     static debug(content: string) {
