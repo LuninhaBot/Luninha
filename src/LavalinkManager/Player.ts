@@ -1,6 +1,6 @@
-import { Player, Structure } from "erela.js"
+import { Player } from "erela.js"
 
-export default class LavalinkPlayer extends Player {
+export class LavalinkPlayer extends Player {
     speed: number
     pitch: number
     rate: number
@@ -10,7 +10,6 @@ export default class LavalinkPlayer extends Player {
     band?: number
     gain?: number
     skipVotes: unknown[]
-
 
     constructor(options = {} as {
         node?: string,

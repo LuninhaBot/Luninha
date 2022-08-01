@@ -15,7 +15,7 @@ export default class ShuffleCommand extends Command {
 
         await interaction.deferReply({ ephemeral: false, fetchReply: true })
 
-        const player = this.client.music.players.get(interaction.guild?.id ?? "")
+        const player = this.client.music.players.get(interaction.guild!.id)
         if (player?.queue.length == 0) {
             interaction.followUp({
                 content: `:x: | Não tem nenhuma música na fila para embaralhar!`

@@ -17,7 +17,7 @@ export default class ShuffleCommand extends Command {
 
         
 
-        const player = this.client.music.players.get(interaction.guild?.id ?? "")
+        const player = this.client.music.players.get(interaction.guild!.id)
         const nvolume = player?.volume
     
         var sound;

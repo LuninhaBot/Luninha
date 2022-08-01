@@ -2,7 +2,7 @@ import { ChannelType, EmbedBuilder, GuildMember } from "discord.js"
 import { SearchResult } from "erela.js"
 import Command, { RunCommand } from "../../Structures/Command"
 import EclipseClient from "../../Structures/EclipseClient"
-import Player from "../../LavalinkManager/Player"
+import { LavalinkPlayer } from "../../LavalinkManager/Player"
 
 export default class PlayCommand extends Command {
     constructor(client: EclipseClient) {
@@ -31,7 +31,7 @@ export default class PlayCommand extends Command {
         }
 
         if (!play) {
-            const player = new Player({
+            const player = new LavalinkPlayer({
                 guild: interaction.guild!.id,
                 voiceChannel: voice.channel!.id,
                 textChannel: interaction.channel!.id,
@@ -49,7 +49,7 @@ export default class PlayCommand extends Command {
             player.connect()
         }
 
-        const player = this.client.music.players.get(interaction.guild!.id) as Player
+        const player = this.client.music.players.get(interaction.guild!.id) as LavalinkPlayer
 
         if (player?.voiceChannel !== voice.channel.id) {
             interaction.followUp(`:x: | Estou tocando música em \`${interaction.guild?.channels.cache.get(player?.options.voiceChannel ?? "")?.name}\`!`)
@@ -77,7 +77,9 @@ export default class PlayCommand extends Command {
 
         if (res.loadType == "NO_MATCHES") {
             if (!player.queue.current) player.destroy()
-            return interaction.followUp(":x: | Não foi possivel encontrar nenhuma música!")
+            interaction.followUp(":x: | Não foi possivel encontrar nenhuma música!")
+
+            return;
         }
 
         if (res.loadType == "TRACK_LOADED") {

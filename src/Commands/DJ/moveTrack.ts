@@ -16,7 +16,7 @@ export default class MoveTrackCommand extends Command {
 
         await interaction.deferReply({ ephemeral: false, fetchReply: true })
 
-        const player = this.client.music.players.get(interaction.guild?.id ?? "")
+        const player = this.client.music.players.get(interaction.guild!.id)
 
         let options = {
             from: interaction.options.getNumber("de", true),

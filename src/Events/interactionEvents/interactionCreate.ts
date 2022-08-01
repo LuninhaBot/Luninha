@@ -20,6 +20,16 @@ export default class InteractionCreateEvent extends Event {
 
             if (command) {
 
+                if (this.client.cluster.maintenance) {
+                
+                    interaction.followUp({
+                        content: `⚠️ | Estou em manutenção no momento e não posso executar comandos no momento.`,
+                        ephemeral: true
+                    })
+    
+                    return;
+                }
+
                 if (command.ownerOnly && !this.client.utils.checkOwner(interaction.user.id)) {
                     await interaction.deferReply({ ephemeral: true })
                     interaction.followUp(":x: | Você não pode usar este comando!")

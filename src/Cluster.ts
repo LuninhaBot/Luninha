@@ -9,7 +9,7 @@ const client = new Client({
     host: clusterManager.host,
     port: 3000,
     authToken: clusterManager.authToken,
-    rollingRestarts: false,
+    rollingRestarts: false
 })
 
 client.connect()
@@ -17,7 +17,11 @@ client.connect()
 const manager = new Cluster.Manager(`${__dirname}/index.js`, {
     totalShards: "auto",
     totalClusters: "auto",
-    token: bot.token
+    token: bot.token,
+    restarts: {
+        max: 5,
+        interval: 60000 * 60
+    }
 })
 
 manager.on("clusterCreate", (cluster) => {
@@ -49,4 +53,5 @@ client.requestShardData().then(e => {
     manager.shardList = e.shardList
     manager.clusterList = e.clusterList
     manager.spawn()
+
 }).catch(e => console.log(e))

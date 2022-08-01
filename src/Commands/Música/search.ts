@@ -1,6 +1,6 @@
 import Command, { RunCommand } from "../../Structures/Command"
 import EclipseClient from "../../Structures/EclipseClient"
-import Player from "../../LavalinkManager/Player"
+import { LavalinkPlayer } from "../../LavalinkManager/Player"
 import { EmbedBuilder, ButtonBuilder, ActionRowBuilder, SelectMenuBuilder, ButtonStyle, SelectMenuInteraction, ButtonInteraction, ComponentType, Interaction, Message } from "discord.js"
 import { SearchResult, Track } from "erela.js"
 
@@ -18,7 +18,7 @@ export default class SearchCommand extends Command {
 
         await interaction.deferReply({ ephemeral: false, fetchReply: true })
 
-        const play = this.client.music.players.get(interaction.guild!.id) as Player
+        const play = this.client.music.players.get(interaction.guild!.id) as LavalinkPlayer
 
         let member = await interaction.guild?.members.fetch(interaction.user.id)
         const voice = member?.voice
@@ -26,7 +26,7 @@ export default class SearchCommand extends Command {
         if (!voice?.channel) return interaction.followUp(":x: | Você não está em um canal de voz!")
 
         if (!play) {
-            const player = new Player({
+            const player = new LavalinkPlayer({
                 guild: interaction.guild!.id,
                 voiceChannel: voice.channel!.id,
                 textChannel: interaction.channel!.id,
@@ -34,13 +34,15 @@ export default class SearchCommand extends Command {
             })
 
             if (!voice.channel.joinable) {
-                return interaction.followUp(":x: | Não consigo entrar no canal de voz solicitado!")
+                interaction.followUp(":x: | Não consigo entrar no canal de voz solicitado!")
+
+                return;
             }
 
             player.connect()
         }
 
-        const player = this.client.music.players.get(interaction.guild!.id) as Player
+        const player = this.client.music.players.get(interaction.guild!.id) as LavalinkPlayer
 
         if (player?.voiceChannel !== voice.channel.id) {
             interaction.followUp(`:x: | Estou tocando música em \`${interaction.guild?.channels.cache.get(player?.options.voiceChannel ?? "")}\`!`)

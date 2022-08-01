@@ -16,7 +16,7 @@ export default class ForceSkipCommand extends Command {
 
         await interaction.deferReply({ ephemeral: false, fetchReply: true })
         
-        const player = this.client.music.players.get(interaction.guild?.id ?? "")
+        const player = this.client.music.players.get(interaction.guild!.id)
 
         let arg = interaction.options.getNumber("posição", true)
 

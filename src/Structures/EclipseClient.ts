@@ -1,7 +1,7 @@
 import { Shard } from "discord-cross-hosting"
 import Cluster from "discord-hybrid-sharding"
 import { Client, Collection, GatewayIntentBits, Partials, Options, PermissionResolvable } from "discord.js"
-import EclipseLavalink from "../LavalinkManager/"
+import EclipseLavalink from "../LavalinkManager"
 import Command from "./Command"
 import Event from "./Event"
 import Utils from "./Utils"
@@ -24,19 +24,23 @@ export default class EclipseClient extends Client {
                 GatewayIntentBits.Guilds,
                 GatewayIntentBits.GuildMembers,
                 GatewayIntentBits.GuildPresences,
-                GatewayIntentBits.GuildVoiceStates,
                 GatewayIntentBits.GuildMessages,
+                GatewayIntentBits.GuildVoiceStates,
                 GatewayIntentBits.GuildMessageReactions
             ],
             partials: [
-                Partials.Message,
-                Partials.Channel,
                 Partials.User,
-                Partials.GuildMember,
-                Partials.Reaction
+                Partials.Channel,
+                Partials.Message,
+                Partials.Reaction,
+                Partials.GuildMember
             ],
+            
+            // @ts-ignore | For Typescript use Cluster.Client.getInfo() instead of Cluster.data
             shardCount: Cluster.data.TOTAL_SHARDS,
+            // @ts-ignore | For Typescript use Cluster.Client.getInfo() instead of Cluster.data
             shards: Cluster.data.SHARD_LIST,
+
             allowedMentions: {
                 parse: [
                     "users",

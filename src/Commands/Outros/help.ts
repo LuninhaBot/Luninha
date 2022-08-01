@@ -1,4 +1,4 @@
-import { EmbedBuilder, Message } from "discord.js"
+import { ButtonBuilder, ButtonStyle, ComponentType, EmbedBuilder, ActionRowBuilder } from "discord.js"
 import Command, { RunCommand } from "../../Structures/Command"
 import EclipseClient from "../../Structures/EclipseClient"
 
@@ -14,7 +14,7 @@ export default class HelpCommand extends Command {
 
     async run({ interaction }: RunCommand) {
         await interaction.deferReply({ ephemeral: false, fetchReply: true })
-        
+
         if (!interaction.options.getString("comando")) {
             const embed0 = new EmbedBuilder()
 
@@ -22,20 +22,6 @@ export default class HelpCommand extends Command {
                 name: interaction.user.tag,
                 iconURL: interaction.user.displayAvatarURL({ forceStatic: false, size: 4096 })
             })
-
-            let emojis = [
-                { emoji: "🏘️", number: 0 },
-                { emoji: "1️⃣", number: 1 },
-                { emoji: "2️⃣", number: 2 },
-                { emoji: "3️⃣", number: 3 },
-                { emoji: "4️⃣", number: 4 },
-                { emoji: "5️⃣", number: 5 },
-                { emoji: "6️⃣", number: 6 },
-                { emoji: "7️⃣", number: 7 },
-                { emoji: "8️⃣", number: 8 },
-                { emoji: "9️⃣", number: 9 },
-                { emoji: "🔟", number: 10 }
-            ]
 
             embed0.setColor("#04c4e4")
 
@@ -73,55 +59,84 @@ export default class HelpCommand extends Command {
                 pages[0].setFooter({
                     text: `Página 0 - ${helpString.length}`
                 })
+
                 pages.push(embed)
             }
 
-            const msg = await interaction.followUp({
+            const forwardButton = new ButtonBuilder({
+                emoji: "➡️",
+                customId: "forward",
+                style: ButtonStyle.Primary
+            })
+
+            const backwardButton = new ButtonBuilder({
+                emoji: "⬅️",
+                customId: "backward",
+                style: ButtonStyle.Primary
+            })
+
+            const row = new ActionRowBuilder<ButtonBuilder>()
+            row.addComponents([backwardButton, forwardButton,])
+
+            await interaction.followUp({
                 embeds: [embed0],
-            }) as Message
+                components: [row]
+            })
 
-            for (let amount = 0; amount < pages.length; amount++) {
-                await msg.react(emojis[amount].emoji)
-            }
-
-            const collector = msg.createReactionCollector({
-                filter: (reaction, user) => user.id === interaction.user.id,
+            var page = 0
+            const collector = interaction.channel!.createMessageComponentCollector({
+                filter: (i) => {
+                    if (["forward", "backward"].includes(i.customId)) {
+                        if (i.user.id !== interaction.user.id) {
+                            i.reply(":x: | Apenas o autor pode usar os botões!")
+                            return false
+                        }
+                        return true
+                    }
+                    return false
+                },
+                componentType: ComponentType.Button,
                 time: 60000
             })
 
-            collector.on("collect", async (reaction, user) => {
+            collector.on("collect", async (i) => {
 
-                switch (reaction.emoji.name) {
-                    case "🏘️":
-                    case "1️⃣":
-                    case "2️⃣":
-                    case "3️⃣":
-                    case "4️⃣":
-                    case "5️⃣":
-                    case "6️⃣":
-                    case "7️⃣":
-                    case "8️⃣":
-                    case "9️⃣":
-                    case "🔟":
+                if (i.user.id !== interaction.user.id) {
+                    await i.deferReply({ ephemeral: true })
 
-                    await reaction.users.remove(user.id).catch(() => { })
-                    collector.resetTimer()
-                    
-                    let page = emojis.find(emoji => emoji.emoji === reaction.emoji.name)?.number ?? 0
-                    msg.edit({
-                        embeds: [pages[page]]
-                    }).catch(() => { })
+                    i.editReply({
+                        content: ":x: | Você não pode mudar de página.",
+                    })
+                    return;
                 }
-            })
 
-            collector.on("end", () => {
+                if (i.customId == "forward") {
+                    page = page + 1 < pages.length ? ++page : 0
 
-                msg.reactions.removeAll().catch(() => { })
-                msg.edit({
-                    embeds: [embed0]
-                }).catch(() => { })
+                    await i.deferUpdate()
 
-                return;
+                    i.editReply({
+                        embeds: [pages[page]],
+                        components: [row]
+                    })
+
+                    collector.resetTimer()
+                    return;
+                }
+
+                if (i.customId == "backward") {
+                    page = page > 0 ? --page : pages.length - 1
+
+                    await i.deferUpdate()
+
+                    i.editReply({
+                        embeds: [pages[page]],
+                        components: [row]
+                    })
+
+                    collector.resetTimer()
+                    return;
+                }
             })
         } else {
             let command = this.client.commands.get(interaction.options.getString("comando", true))
@@ -129,7 +144,6 @@ export default class HelpCommand extends Command {
                 interaction.followUp({
                     content: ":x: | Não encontrei este comando.",
                 })
-                
                 return;
             }
 
@@ -139,7 +153,7 @@ export default class HelpCommand extends Command {
                 iconURL: interaction.user.displayAvatarURL({ forceStatic: false, size: 4096 })
             })
 
-            embed.setColor("#04c4e4")
+            embed.setColor("#80088b")
             embed.setDescription([
                 `📚 | **Nome**: \`${command.name}\` → \`${command.description}\``,
                 `📋 | **Uso**: \`${this.client.prefix}${command.name} ${command.usage}\``,

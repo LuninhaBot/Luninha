@@ -1,7 +1,7 @@
 import Command, { RunCommand } from "../../Structures/Command"
 import EclipseClient from "../../Structures/EclipseClient"
 
-export default class djCommand extends Command {
+export default class ConfigCommand extends Command {
     constructor(client: EclipseClient) {
         super(client, {
             name: "config",
@@ -40,6 +40,7 @@ export default class djCommand extends Command {
                 interaction.followUp({
                     content: ":white_check_mark: | Cargo de DJ definido com sucesso!",
                 })
+
                 return;
             }
         }
@@ -77,8 +78,35 @@ export default class djCommand extends Command {
             interaction.followUp({
                 content: ":white_check_mark: | Autorole definido com sucesso!",
             })
+        }
 
-            
+        if (interaction.options.getSubcommand(true) == "modlogs") {
+
+            const channel = interaction.options.getChannel("canal")
+
+            if (!channel && !db.get(`${interaction.guild?.id}.modlogs`)) {
+                interaction.followUp({
+                    content: ":x: | Você não definiu um canal de logs de moderação!",
+                })
+
+                return;
+            }
+
+            if (!channel && db.get(`${interaction.guild?.id}.modlogs`)) {
+                db.delete(`${interaction.guild?.id}.modlogs`)
+                interaction.followUp({
+                    content: ":white_check_mark: | Canal de logs de moderação removido com sucesso!",
+                })
+
+                return;
+            }
+
+            db.set(`${interaction.guild?.id}.modlogs`, channel?.id)
+
+            interaction.followUp({
+                content: ":white_check_mark: | Canal de logs de moderação definido com sucesso!",
+            })
+
         }
     }
 }

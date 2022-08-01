@@ -16,10 +16,11 @@ export default class ForceSkipCommand extends Command {
 
         await interaction.deferReply({ ephemeral: false, fetchReply: true })
 
-        const player = this.client.music.players.get(interaction.guild?.id ?? "")
+        const player = this.client.music.players.get(interaction.guild!.id)
 
         if (player?.trackRepeat) player?.setTrackRepeat(false)
         if (player?.queueRepeat) player?.setQueueRepeat(false)
+        
         player?.stop()
         interaction.followUp({
             content: `✅ | **${player?.queue.current?.title}** Pulada (Solicitado por **${interaction.user.username}**)`
