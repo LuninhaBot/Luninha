@@ -10,14 +10,15 @@ export default class PlayCommand extends Command {
             name: "play",
             description: "Adiciona uma música à fila de espera.",
             usage: "<link | playlist | nome>",
-            category: "Música"
+            category: "Música",
+            markAsUpdated: true
         })
     }
 
     async run({ interaction }: RunCommand) {
 
         await interaction.deferReply({ ephemeral: false, fetchReply: true })
-        
+
         const play = this.client.music.players.get(interaction.guild!.id)
 
         let member = interaction.member as GuildMember
@@ -40,7 +41,7 @@ export default class PlayCommand extends Command {
 
             if (!voice.channel.joinable) {
                 interaction.followUp({
-                    content: ":x: | Não consigo entrar no canal de voz solicitado!" 
+                    content: ":x: | Não consigo entrar no canal de voz solicitado!"
                 })
 
                 return;
@@ -88,22 +89,22 @@ export default class PlayCommand extends Command {
 
             if (!player.playing && !player.paused && !player.queue.size) player.play()
 
-			if (player.queue.size >= 1) {
+            if (player.queue.size >= 1) {
                 let embed = new EmbedBuilder()
                 embed.setColor("#04c4e4")
                 embed.setDescription(`:musical_note: | Adicionado a lista de espera **${res.tracks[0].title}**`)
 
-				interaction.followUp({
-					embeds: [embed],
-				})
+                interaction.followUp({
+                    embeds: [embed],
+                })
 
                 return;
-                
-			} else {
-				this.client.music.emit("playingNow", player, res.tracks[0], interaction)
+
+            } else {
+                this.client.music.emit("playingNow", player, res.tracks[0], interaction)
 
                 return;
-			}
+            }
         }
 
         if (res.loadType == "PLAYLIST_LOADED") {
@@ -112,16 +113,12 @@ export default class PlayCommand extends Command {
 
             if (!player.playing && !player.paused && player.queue.totalSize === res.tracks.length) player.play()
 
-            if (player.queue.size >= 1) {
-                embed2.setColor("#04c4e4")
-                embed2.setDescription(`:musical_note: | Adicionado a fila de espera a playlist **${res.playlist?.name}**`)
-    
-                interaction.followUp({
-                    embeds: [embed2]
-                })
-            } else {
-                this.client.music.emit("playingNow", player, res.tracks[0], interaction)
-            }
+            embed2.setColor("#04c4e4")
+            embed2.setDescription(`:musical_note: | Adicionado a fila de espera a playlist **${res.playlist?.name}** e tocando a música **${res.tracks[0].title}**`)
+
+            interaction.followUp({
+                embeds: [embed2]
+            })
 
             return;
         }
@@ -135,18 +132,18 @@ export default class PlayCommand extends Command {
             embed.setColor("#04c4e4")
             embed.setDescription(`:musical_note: | Adicionado a lista de espera **${res.tracks[0].title}**`)
 
-			if (player.queue.size >= 1) {
+            if (player.queue.size >= 1) {
 
-				interaction.followUp({
-					embeds: [embed]
-				})
-
-                return;
-			} else {
-				this.client.music.emit("playingNow", player, res.tracks[0], interaction)
+                interaction.followUp({
+                    embeds: [embed]
+                })
 
                 return;
-			}
+            } else {
+                this.client.music.emit("playingNow", player, res.tracks[0], interaction)
+
+                return;
+            }
         }
     }
 }

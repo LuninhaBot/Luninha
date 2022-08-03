@@ -20,16 +20,6 @@ export default class InteractionCreateEvent extends Event {
 
             if (command) {
 
-                if (this.client.cluster.maintenance) {
-                
-                    interaction.followUp({
-                        content: `⚠️ | Estou em manutenção no momento e não posso executar comandos no momento.`,
-                        ephemeral: true
-                    })
-    
-                    return;
-                }
-
                 if (command.ownerOnly && !this.client.utils.checkOwner(interaction.user.id)) {
                     await interaction.deferReply({ ephemeral: true })
                     interaction.followUp(":x: | Você não pode usar este comando!")
@@ -78,7 +68,7 @@ export default class InteractionCreateEvent extends Event {
                 .toArray()
                 .map(p => p)
                 .join(', ')
-            interaction.followUp({
+            interaction.reply({
                 content: `❌ | Está me faltando permissões para rodar o comando \`${permissions.toString()}\``,
                 ephemeral: true
             })
@@ -94,7 +84,8 @@ export default class InteractionCreateEvent extends Event {
                 .toArray()
                 .map(p => p)
                 .join(', ')
-            interaction.followUp({
+                
+            interaction.reply({
                 content: `❌ | Você não pode usar esté comando pois está te faltando permissões \`${permissions.toString()}\``,
                 ephemeral: true
             })

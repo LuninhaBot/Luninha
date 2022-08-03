@@ -11,8 +11,6 @@ export default class MessageDeleteEvent extends Event {
 
     async run(message: Message) {
 
-        console.log(message)
-
         if (message?.author?.bot) return;
 
         if (message.stickers?.size) return;
