@@ -5,12 +5,12 @@
   },
   "extends": [
     "airbnb-base",
+    "plugin:prettier/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended"
   ],
   "ignorePatterns": [
-    "dist",
-    "packages/**/node_modules",
+    "build",
     "node_modules/",
     ".git/"
   ],
@@ -83,6 +83,14 @@
       }
     ],
     "require-await": "error",
-    "quotes": "off"
+    "quotes": "off",
+    "prettier/prettier": [
+      "error",
+      {},
+      {
+        "usePrettierrc": true,
+        "endOfLine": "off"
+      }
+    ]
   }
 }
