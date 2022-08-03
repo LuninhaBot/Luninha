@@ -18,6 +18,14 @@ export default class nowPlayingCommand extends Command {
         // agora funciona caralho
         const player = this.client.music.players.get(interaction.guild!.id)
 
+        if (!player) {
+            interaction.followUp({
+                content: ":x: | Não estou tocando nenhuma música."
+            })
+            
+            return;
+        }
+
         const duration = player!.queue.current!.duration ?? 0
         const parsedCurrentDuration = this.client.utils.formatDuration(player?.position ?? 0)
         const parsedDuration = this.client.utils.formatDuration(player?.queue.current?.duration ?? 0)

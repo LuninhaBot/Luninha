@@ -41,7 +41,7 @@ export default class HelpCommand extends Command {
             const helpString = []
             let categories = this.client.utils.removeDuplicates(this.client.commands.filter(cmd => cmd.category !== "Desenvolvedor").map(cmd => cmd.category))
             for (let category of categories) {
-                helpString.push(this.client.commands.filter(cmd => cmd.category === category).map(cmd => `${cmd.markAsUpdated ? "<:Icon_UpdateDownload:1004258709658144818> | " : " "}${cmd.markAsNew ? "<:IconNew:1004244460961546290> | " : " "}\`/${cmd.name} ${cmd.subCommands?.join(" | ") ?? ""}\` → ${cmd.description}\n⤷ Modo de uso → \`${cmd.usage ?? "Não possui modo de uso"}\``))
+                helpString.push(this.client.commands.filter(cmd => cmd.category === category).map(cmd => `${cmd.markAsBeta ? "<:__BETA:1004429899223814154> | " : " "}${cmd.markAsUpdated ? "<:Icon_UpdateDownload:1004258709658144818> | " : " "}${cmd.markAsNew ? "<:IconNew:1004244460961546290> | " : " "}\`/${cmd.name} ${cmd.subCommands?.join(" | ") ?? ""}\` → ${cmd.description}\n⤷ Modo de uso → \`${cmd.usage ?? "Não possui modo de uso"}\``))
             }
 
             const pages = [embed0]

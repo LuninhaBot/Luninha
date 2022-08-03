@@ -26,7 +26,7 @@ export default class PlayCommand extends Command {
 
         if (!voice.channel) {
             interaction.followUp({
-                content: ":x: | Você não está em um canal de voz!"
+                content: ":x: | Você não está em um canal de voz."
             })
             return;
         }
@@ -41,7 +41,7 @@ export default class PlayCommand extends Command {
 
             if (!voice.channel.joinable) {
                 interaction.followUp({
-                    content: ":x: | Não consigo entrar no canal de voz solicitado!"
+                    content: ":x: | Não consigo entrar no canal de voz solicitado."
                 })
 
                 return;
@@ -53,7 +53,7 @@ export default class PlayCommand extends Command {
         const player = this.client.music.players.get(interaction.guild!.id) as LavalinkPlayer
 
         if (player?.voiceChannel !== voice.channel.id) {
-            interaction.followUp(`:x: | Estou tocando música em \`${interaction.guild?.channels.cache.get(player?.options.voiceChannel ?? "")?.name}\`!`)
+            interaction.followUp(`:x: | Estou tocando música em \`${interaction.guild?.channels.cache.get(player?.options.voiceChannel ?? "")?.name}\``)
             return;
         }
 
@@ -78,7 +78,7 @@ export default class PlayCommand extends Command {
 
         if (res.loadType == "NO_MATCHES") {
             if (!player.queue.current) player.destroy()
-            interaction.followUp(":x: | Não foi possivel encontrar nenhuma música!")
+            interaction.followUp(":x: | Não foi possivel encontrar nenhuma música.")
 
             return;
         }

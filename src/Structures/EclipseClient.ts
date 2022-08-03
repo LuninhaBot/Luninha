@@ -22,6 +22,7 @@ export default class EclipseClient extends Client {
         super({
             intents: [
                 GatewayIntentBits.Guilds,
+                GatewayIntentBits.GuildBans,
                 GatewayIntentBits.GuildMembers,
                 GatewayIntentBits.GuildMessages,
                 GatewayIntentBits.MessageContent,
@@ -35,6 +36,17 @@ export default class EclipseClient extends Client {
             ],
             shardCount: Cluster.Client.getInfo().TOTAL_SHARDS,
             shards: Cluster.Client.getInfo().SHARD_LIST,
+            makeCache: Options.cacheWithLimits({
+                GuildMemberManager: 0,
+                GuildStickerManager: 0,
+                GuildEmojiManager: 0,
+                ThreadManager: 0,
+                PresenceManager: 0,
+                GuildScheduledEventManager: 0,
+                BaseGuildEmojiManager: 0,
+                ThreadMemberManager: 0,
+                ApplicationCommandManager: 0
+            }),
             allowedMentions: {
                 parse: [
                     "users",

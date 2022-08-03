@@ -35,7 +35,7 @@ export default class MessageUpdateEvent extends Event {
         const channel = this.client.channels.cache.get(db.get(`${newMessage.guild!.id}.modlogs`) as string) as TextChannel
         if (channel) {
             channel.send({
-                content: `\`[${date}]\`\nMensagem de ${newMessage ? newMessage.author.tag : "Error#0000"} (ID: ${newMessage ? newMessage.author.id : "00"} ) foi editada em <#${newMessage.channelId}>`,
+                content: `\`[${date}]\`\nMensagem de ${newMessage ? newMessage.author.tag : "Error#0000"} (ID: ${newMessage ? newMessage.author.id : "00"}) foi editada em <#${newMessage.channelId}>`,
                 embeds: [embed]
             })
         } else { return; }

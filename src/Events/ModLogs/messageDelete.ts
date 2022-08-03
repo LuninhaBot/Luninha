@@ -32,7 +32,7 @@ export default class MessageDeleteEvent extends Event {
 
         if (channel) {
             channel.send({
-                content: `\`[${date}]\`\nMensagem de ${message.author ? message.author.tag : "Error#0000"} (ID: ${message.author ? message.author.id : "00"} ) foi deletada em <#${message.channelId}>`,
+                content: `\`[${date}]\`\nMensagem de ${message.author ? message.author.tag : "Error#0000"} (ID: ${message.author ? message.author.id : "00"}) foi deletada em <#${message.channelId}>`,
                 embeds: [embed]
             })
         } else { return; }

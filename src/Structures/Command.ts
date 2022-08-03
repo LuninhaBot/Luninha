@@ -15,6 +15,7 @@ interface CommandOptions {
     djOnly?: boolean
     markAsNew?: boolean
     markAsUpdated?: boolean
+    markAsBeta?: boolean
 }
 
 export default class Command {
@@ -31,6 +32,7 @@ export default class Command {
     djOnly: boolean
     markAsNew: boolean
     markAsUpdated: boolean
+    markAsBeta: boolean
 
     constructor(client: EclipseClient, options: CommandOptions) {
 
@@ -47,6 +49,7 @@ export default class Command {
         this.djOnly = options.djOnly ?? false
         this.markAsNew = options.markAsNew ?? false
         this.markAsUpdated = options.markAsUpdated ?? false
+        this.markAsBeta = options.markAsBeta ?? false
     }
 
     run({ interaction }: RunCommand): Awaitable<any>  {

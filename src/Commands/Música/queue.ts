@@ -16,7 +16,7 @@ export default class QueueCommand extends Command {
         
         const player = this.client.music.players.get(interaction.guild!.id ?? "")
 
-        if (!player) return interaction.followUp(":x: | Não tem nada tocando no servidor!")
+        if (!player) return interaction.followUp(":x: | Não tem nada tocando no servidor.")
 
         const parsedQueueDuration = this.client.utils.formatDuration(this.client.utils.getQueueDuration(player))
         let pagesNum = Math.ceil(player.queue.length / 10)
