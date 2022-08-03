@@ -6,7 +6,7 @@ export default class nowPlayingCommand extends Command {
     constructor(client: EclipseClient) {
         super(client, {
             name: "now",
-            description: "Mostra a música que está tocando no momento",
+            description: "Mostra a música que está tocando no momento.",
             category: "Música",
             subCommands: ["playing"]
         })

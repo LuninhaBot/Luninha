@@ -8,7 +8,7 @@ export default class UserCommands extends Command {
     constructor(client: EclipseClient) {
         super(client, {
             name: "user",
-            description: "Mostra algumas coisas uteis sobre um usuário",
+            description: "Mostra algumas coisas uteis sobre um usuário.",
             category: "Outros",
             subCommands: ["info", "banner", "avatar"],
         })

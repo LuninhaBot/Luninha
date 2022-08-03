@@ -23,24 +23,19 @@ export default class EclipseClient extends Client {
             intents: [
                 GatewayIntentBits.Guilds,
                 GatewayIntentBits.GuildMembers,
-                GatewayIntentBits.GuildPresences,
                 GatewayIntentBits.GuildMessages,
-                GatewayIntentBits.GuildVoiceStates,
-                GatewayIntentBits.GuildMessageReactions
+                GatewayIntentBits.MessageContent,
+                GatewayIntentBits.GuildPresences,
+                GatewayIntentBits.GuildVoiceStates
             ],
             partials: [
                 Partials.User,
                 Partials.Channel,
                 Partials.Message,
-                Partials.Reaction,
                 Partials.GuildMember
             ],
-            
-            // @ts-ignore | For Typescript use Cluster.Client.getInfo() instead of Cluster.data
-            shardCount: Cluster.data.TOTAL_SHARDS,
-            // @ts-ignore | For Typescript use Cluster.Client.getInfo() instead of Cluster.data
-            shards: Cluster.data.SHARD_LIST,
-
+            shardCount: Cluster.Client.getInfo().TOTAL_SHARDS,
+            shards: Cluster.Client.getInfo().SHARD_LIST,
             allowedMentions: {
                 parse: [
                     "users",

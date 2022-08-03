@@ -7,14 +7,14 @@ export default class InviteCommand extends Command {
         super(client, {
             name: "bot",
             subCommands: ["convite", "info"],
-            description: "...?",
+            description: "Veja algumas informações sobre mim.",
             category: "Outros"
         })
     }
 
     async run({ interaction }: RunCommand) {
 
-        let subCommand = interaction.options.getSubcommand(false)
+        const subCommand = interaction.options.getSubcommand(false)
 
         if (subCommand == "convite") {
             await interaction.deferReply({ ephemeral: true, fetchReply: true })
@@ -90,8 +90,6 @@ export default class InviteCommand extends Command {
                 embeds: [embed],
                 components: [actionRow]
             })
-
-
         }
     }
 }

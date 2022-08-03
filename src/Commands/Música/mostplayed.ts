@@ -1,14 +1,13 @@
 import { EmbedBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle, GuildMember } from "discord.js"
 import EclipseClient from "../../Structures/EclipseClient"
 import Command, { RunCommand } from "../../Structures/Command"
-import Player from "../../LavalinkManager/Player"
 
 export default class MostPlayedCommand extends Command {
     constructor(client: EclipseClient) {
         super(client, {
             name: "most",
             category: "Música",
-            description: "Mostra as 10 músicas mais tocadas",
+            description: "Mostra as 10 músicas mais tocadas.",
             subCommands: ["played"],
         })
     }

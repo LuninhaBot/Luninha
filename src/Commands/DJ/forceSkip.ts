@@ -5,7 +5,7 @@ export default class ForceSkipCommand extends Command {
     constructor(client: EclipseClient) {
         super(client, {
             name: "force",
-            description: "Skipa a música tocando no momento",
+            description: "Skipa a música tocando no momento.",
             subCommands: ["skip"],
             category: "DJ",
             djOnly: true

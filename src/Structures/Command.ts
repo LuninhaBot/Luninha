@@ -13,6 +13,7 @@ interface CommandOptions {
     ownerOnly?: boolean
     ephemeral?: boolean
     djOnly?: boolean
+    markAsNew?: boolean
 }
 
 export default class Command {
@@ -27,6 +28,7 @@ export default class Command {
     ownerOnly: boolean
     ephemeral: boolean
     djOnly: boolean
+    markAsNew: boolean
 
     constructor(client: EclipseClient, options: CommandOptions) {
 
@@ -41,6 +43,7 @@ export default class Command {
         this.ownerOnly = options.ownerOnly ?? false
         this.ephemeral = options.ephemeral ?? false
         this.djOnly = options.djOnly ?? false
+        this.markAsNew = options.markAsNew ?? false
     }
 
     run({ interaction }: RunCommand): Awaitable<any>  {

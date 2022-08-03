@@ -8,7 +8,7 @@ export default class SearchCommand extends Command {
     constructor(client: EclipseClient) {
         super(client, {
             name: "search",
-            description: "Pesquisa uma música e a coloca para tocar",
+            description: "Pesquisa uma música e a coloca para tocar.",
             category: "Música",
             usage: "<nome>",
         })

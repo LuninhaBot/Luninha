@@ -7,7 +7,7 @@ export default class HelpCommand extends Command {
         super(client, {
             name: "help",
             category: "Outros",
-            description: "Mostra a lista de comandos",
+            description: "Mostra a lista de comandos.",
             usage: "[comando]"
         })
     }
@@ -40,7 +40,7 @@ export default class HelpCommand extends Command {
             const helpString = []
             let categories = this.client.utils.removeDuplicates(this.client.commands.filter(cmd => cmd.category !== "Desenvolvedor").map(cmd => cmd.category))
             for (let category of categories) {
-                helpString.push(this.client.commands.filter(cmd => cmd.category === category).map(cmd => `<:seta:974012084926959676> | \`/${cmd.name} ${cmd.subCommands?.join(" | ") ?? ""}\` → ${cmd.description}\n↳ Modo de uso → \`${cmd.usage ?? "Não possui modo de uso"}\``))
+                helpString.push(this.client.commands.filter(cmd => cmd.category === category).map(cmd => `<:seta:974012084926959676> | ${cmd.markAsNew ? "<:IconNew:1004244460961546290> " : ""}\`/${cmd.name} ${cmd.subCommands?.join(" | ") ?? ""}\` → ${cmd.description}\n↳ Modo de uso → \`${cmd.usage ?? "Não possui modo de uso"}\``))
             }
 
             const pages = [embed0]
@@ -64,13 +64,13 @@ export default class HelpCommand extends Command {
             }
 
             const forwardButton = new ButtonBuilder({
-                emoji: "➡️",
+                label: "Proxima página",
                 customId: "forward",
                 style: ButtonStyle.Primary
             })
 
             const backwardButton = new ButtonBuilder({
-                emoji: "⬅️",
+                label: "Página anterior",
                 customId: "backward",
                 style: ButtonStyle.Primary
             })

@@ -5,7 +5,7 @@ export default class ConfigCommand extends Command {
     constructor(client: EclipseClient) {
         super(client, {
             name: "config",
-            description: "Defina o cargo de DJ do servidor!",
+            description: "Configura algumas coisas do bot.",
             subCommands: ["dj", "autorole"],
             category: "Admin"
         })

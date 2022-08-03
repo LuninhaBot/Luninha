@@ -6,7 +6,7 @@ export default class ShuffleCommand extends Command {
     constructor(client: EclipseClient) {
         super(client, {
             name: "volume",
-            description: "Define ou mostra o volume",
+            description: "Define ou mostra o volume.",
             usage: "[0-100]",
             category: "DJ",
             djOnly: true

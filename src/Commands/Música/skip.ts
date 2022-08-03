@@ -1,5 +1,5 @@
 import { GuildMember } from "discord.js"
-import Player from "../../LavalinkManager/Player"
+import { LavalinkPlayer } from "../../LavalinkManager/Player"
 import Command, { RunCommand } from "../../Structures/Command"
 import EclipseClient from "../../Structures/EclipseClient"
 
@@ -18,7 +18,7 @@ export default class skipCommand extends Command {
 
         const member = interaction.member as GuildMember
         const memberCount = member.voice.channel!.members.size - 1
-        const player = this.client.music.players.get(interaction.guild!.id) as Player
+        const player = this.client.music.players.get(interaction.guild!.id) as LavalinkPlayer
 
         if (memberCount === 1) {
             player?.stop()
@@ -47,7 +47,7 @@ export default class skipCommand extends Command {
         str += `✅ | Você votou para pular a música \`[${player.skipVotes.length} votos, ${player.skipVotes.length}/${required} necessários]\`\n`;
 
         if (player.skipVotes.length >= required) {
-            this.client.utils.resetVotes(player as Player)
+            this.client.utils.resetVotes(player as LavalinkPlayer)
             player!.stop()
             str += `✅ | Pulando **${player?.queue.current?.title}**`
         }

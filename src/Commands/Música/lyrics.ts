@@ -9,7 +9,7 @@ export default class LyricsCommand extends Command {
         super(client, {
             name: "lyrics",
             category: "Música",
-            description: "Mostra as letras de uma música",
+            description: "Mostra as letras de uma música.",
             usage: "[nome da música]",
         })
     }

@@ -5,7 +5,7 @@ export default class ShuffleCommand extends Command {
     constructor(client: EclipseClient) {
         super(client, {
             name: "shuffle",
-            description: "Embaralha a fila de música",
+            description: "Embaralha a fila de música.",
             category: "DJ",
             djOnly: true
         })

@@ -7,7 +7,7 @@ export default class QueueCommand extends Command {
         super(client, {
             name: "queue",
             category: "Música",
-            description: "Mostra a fila de música",
+            description: "Mostra a fila de música.",
         })
     }
 

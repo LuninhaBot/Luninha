@@ -5,7 +5,7 @@ export default class ForceSkipCommand extends Command {
     constructor(client: EclipseClient) {
         super(client, {
             name: "skipto",
-            description: "Pula para uma música especifica",
+            description: "Pula para uma música especifica.",
             usage: "<posição>",
             category: "DJ",
             djOnly: true

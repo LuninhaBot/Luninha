@@ -5,7 +5,7 @@ export default class MoveTrackCommand extends Command {
     constructor(client: EclipseClient) {
         super(client, {
             name: "move",
-            description: "Move uma música da fila atual para uma posição diferente",
+            description: "Move uma música da fila atual para uma posição diferente.",
             subCommands: ["track"],
             category: "DJ",
             djOnly: true

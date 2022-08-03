@@ -37,14 +37,14 @@ export default class OldMembersCommand extends Command {
 
         let sort = arr.sort((a, b) => a?.timestamp - b?.timestamp)
 
-        let i = 0
+        var i = 0
         const membersString = []
         for (const member of sort) {
             i++
             membersString.push(`**${i}º** ${member.presence} - ${member.tag == interaction.user.tag ? `**${member.tag}**` : member.tag} → <t:${~~(member.timestamp / 1000)}:R>`)
         }
 
-        let pagesNum = Math.ceil(membersString.length / 10)
+        const pagesNum = Math.ceil(membersString.length / 10)
 
         const pages: EmbedBuilder[] = []
         for (let i = 0; i < pagesNum; i++) {
