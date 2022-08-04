@@ -14,7 +14,9 @@ export default class GuildDeleteEvent extends Event {
     async run(guild: Guild) {
         let owner = await guild.members.fetch(guild.ownerId).catch(() => { })
 
-        db.delete(`/${guild.id}`)
+        db.delete(`${guild.id}.dj`)
+        db.delete(`${guild.id}.autorole`)
+        db.delete(`${guild.id}.modlogs`)
 
         const embed = new EmbedBuilder()
         embed.setTitle("Removido de um servidor!")

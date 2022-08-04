@@ -37,6 +37,8 @@ export default class EclipseClient extends Client {
             shardCount: Cluster.Client.getInfo().TOTAL_SHARDS,
             shards: Cluster.Client.getInfo().SHARD_LIST,
             makeCache: Options.cacheWithLimits({
+                StageInstanceManager: 0,
+                GuildInviteManager: 0,
                 GuildMemberManager: 0,
                 GuildStickerManager: 0,
                 GuildEmojiManager: 0,

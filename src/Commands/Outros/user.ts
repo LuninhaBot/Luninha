@@ -115,10 +115,10 @@ export default class UserCommands extends Command {
                 })
 
                 return;
-            } 
+            }
 
             await interaction.deferReply({ ephemeral: false, fetchReply: true })
-            
+
             let embed = new EmbedBuilder()
             embed.setColor("#04c4e4")
             embed.setDescription(`🖼️ | Banner de **${m?.user.tag}**`)
@@ -159,32 +159,33 @@ export default class UserCommands extends Command {
                 components: member?.avatar ? [row] : []
             })
 
-            
-            await interaction.channel!.awaitMessageComponent({
-                filter: (i) => {
-                    if (["guildAvatar"].includes(i.customId)) {
-                        if (i.user.id !== interaction.user.id) {
-                            i.reply(":x: | Apenas o autor pode usar este botão!")
-                            return false
+            if (member?.avatar) {
+
+                await interaction.channel!.awaitMessageComponent({
+                    filter: (i) => {
+                        if (["guildAvatar"].includes(i.customId)) {
+                            if (i.user.id !== interaction.user.id) {
+                                i.reply(":x: | Apenas o autor pode usar este botão!")
+                                return false
+                            }
+                            return true
                         }
-                        return true
-                    }
-                    return false
-                },
-                time: 60000
-            })
+                        return false
+                    },
+                    time: 60000
+                })
 
-
-            const newEmbed = new EmbedBuilder()
-            newEmbed.setDescription(`🖼️ | Avatar de **${member?.user.tag}**`)
-            newEmbed.setImage(member?.displayAvatarURL({ size: 4096, forceStatic: false }) ?? "https://cdn.discordapp.com/embed/avatars/0.png")
-            newEmbed.setColor("#04c4e4")
-            interaction.editReply({
-                embeds: [newEmbed],
-                components: []
-            })
-
-            return;
+                const newEmbed = new EmbedBuilder()
+                newEmbed.setDescription(`🖼️ | Avatar de **${member?.user.tag}**`)
+                newEmbed.setImage(member?.displayAvatarURL({ size: 4096, forceStatic: false }) ?? "https://cdn.discordapp.com/embed/avatars/0.png")
+                newEmbed.setColor("#04c4e4")
+                interaction.editReply({
+                    embeds: [newEmbed],
+                    components: []
+                })
+    
+                return;
+            }
         }
     }
 }

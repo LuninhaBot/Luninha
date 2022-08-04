@@ -51,9 +51,11 @@ export default class ReadyEvent extends Event {
 
             if (hooks.status.sendLogs) {
                 new WebhookClient({
-                    url: hooks.status.cluster
+                    url: hooks.status.errors
                 }).send({
                     content: await (this.client.utils.fetchOwners(this.client.owners, false)),
+                    username: this.client.user?.username,
+                    avatarURL: this.client.user!.displayAvatarURL(),
                     embeds: [{
                         title: `:warning: | Um erro aconteceu!`,
                         description: "```ts\n" + inspect(err, { depth: 0 }) + "```"
@@ -67,7 +69,7 @@ export default class ReadyEvent extends Event {
 
             if (hooks.status.sendLogs) {
                 new WebhookClient({
-                    url: hooks.status.cluster
+                    url: hooks.status.errors
                 }).send({
                     content: await (this.client.utils.fetchOwners(this.client.owners, false)),
                     embeds: [{

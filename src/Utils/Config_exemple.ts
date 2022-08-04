@@ -22,7 +22,8 @@ export const hooks = {
     status: {
         sendLogs: false,
         cluster: "",
-        shards: ""
+        shards: "",
+        errors: ""
     }
 }
 

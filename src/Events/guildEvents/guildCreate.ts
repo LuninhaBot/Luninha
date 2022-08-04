@@ -12,7 +12,7 @@ export default class GuildCreateEvent extends Event {
     }
 
     async run(guild: Guild) {
-        let owner = await guild.members.fetch(guild.ownerId).catch(() => { })
+        const owner = await guild.members.fetch(guild.ownerId).catch(() => { })
 
         const embed = new EmbedBuilder()
         embed.setTitle("Adicionada em um novo servidor!")

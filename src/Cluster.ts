@@ -28,7 +28,7 @@ manager.on("clusterCreate", (cluster) => {
     Logger.warn(`Started cluster ${cluster.id}`)
 
     cluster.on("death", async (machine) => {
-        let shards = cluster.manager.shardList
+        const shards = cluster.manager.shardList
         if (hooks.status.sendLogs) {
             new WebhookClient({
                 url: hooks.status.cluster
