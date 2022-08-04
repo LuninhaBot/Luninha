@@ -10,7 +10,9 @@ export default class ConfigCommand extends Command {
             userPerms: ["ManageGuild", "ManageChannels"],
             subCommands: ["dj", "autorole", "modlogs", "view"],
             category: "Admin",
-            markAsUpdated: true
+            marks: {
+                updated: true
+            }
         })
     }
 

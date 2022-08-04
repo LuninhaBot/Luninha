@@ -22,7 +22,9 @@ export default class InteractionCreateEvent extends Event {
 
                 if (command.ownerOnly && !this.client.utils.checkOwner(interaction.user.id)) {
                     await interaction.deferReply({ ephemeral: true })
+
                     interaction.followUp(":x: | Você não pode usar este comando!")
+
                     return;
                 }
 
@@ -31,6 +33,7 @@ export default class InteractionCreateEvent extends Event {
 
                 if (command.djOnly && !member?.roles.cache.has(db.get(`${interaction.guild?.id}.dj`))) {
                     await interaction.deferReply({ ephemeral: true })
+
                     interaction.followUp({
                         content: `:x: | Apenas pessoas com o cargo \`${role}\` podem usar este comando!`,
                     })
@@ -40,6 +43,7 @@ export default class InteractionCreateEvent extends Event {
 
                 if (!interaction?.inGuild()) {
                     await interaction.deferReply({ ephemeral: true })
+
                     interaction.followUp(":x: | Esté comando não pode ser usado fora de um servidor!")
 
                     return;
@@ -54,7 +58,9 @@ export default class InteractionCreateEvent extends Event {
                     command?.run({ interaction } as RunCommand)
                 } catch (error) {
                     await interaction.deferReply({ ephemeral: true })
+
                     interaction.followUp(`⚠️ | Um erro aconteceu\n\`\`\`js\n${error}\`\`\``)
+
                     return;
                 }
             }

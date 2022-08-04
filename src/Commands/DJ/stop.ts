@@ -8,7 +8,9 @@ export default class StopCommand extends Command {
             description: "Para de tocar as músicas no servidor.",
             category: "DJ",
             djOnly: true,
-            markAsNew: true
+            marks: {
+                isNew: true
+            }
         })
     }
 

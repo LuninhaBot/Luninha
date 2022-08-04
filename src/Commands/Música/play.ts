@@ -10,8 +10,7 @@ export default class PlayCommand extends Command {
             name: "play",
             description: "Adiciona uma música à fila de espera.",
             usage: "<link | playlist | nome>",
-            category: "Música",
-            markAsUpdated: true
+            category: "Música"
         })
     }
 

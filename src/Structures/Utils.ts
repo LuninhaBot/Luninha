@@ -2,7 +2,7 @@ import { parse } from "path"
 import { promisify } from "util"
 import pkg from "glob"
 import { GuildMember } from "discord.js"
-import { Player } from "erela.js"
+import { LavalinkPlayer } from "../LavalinkManager/Player"
 
 import Command from "./Command"
 import Event from "./Event"
@@ -108,7 +108,7 @@ export default class Util {
 		return this.formatTime(duration)
 	}
 
-	getQueueDuration(player: Player) {
+	getQueueDuration(player: LavalinkPlayer) {
 		if (!player.queue.length) return player.queue.current?.duration ?? 0
 		// @ts-ignore
 		return player.queue.reduce((prev, curr) => prev + curr?.duration, 0) + player.queue.current?.duration
@@ -136,8 +136,7 @@ export default class Util {
 	}
 
 
-	resetVotes(player: Player) {
-		// @ts-ignore
+	resetVotes(player: LavalinkPlayer) {
 		player.skipVotes.splice(0)
 	}
 

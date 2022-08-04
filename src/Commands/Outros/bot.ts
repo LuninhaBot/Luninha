@@ -1,7 +1,6 @@
 import { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } from "discord.js"
 import Command, { RunCommand } from "../../Structures/Command"
 import EclipseClient from "../../Structures/EclipseClient"
-import fetch from "node-fetch"
 
 export default class InviteCommand extends Command {
     constructor(client: EclipseClient) {
@@ -10,7 +9,9 @@ export default class InviteCommand extends Command {
             subCommands: ["convite", "info"],
             description: "Veja algumas informações sobre mim.",
             category: "Outros",
-            markAsUpdated: true
+            marks: {
+                updated: true
+            }
         })
     }
 
@@ -47,9 +48,6 @@ export default class InviteCommand extends Command {
 
             const memory = await this.client.machine.broadcastEval("process.memoryUsage().rss") as number[]
 
-            const res = await fetch("https://api.github.com/repos/eclipse-labs/EclipseBot/commits") as any
-            const commits = await res.json()
-
             const embed = new EmbedBuilder()
             embed.setColor("#04c4e4")
             embed.setAuthor({ iconURL: this.client.user!.avatarURL({ size: 4096 }) ?? "", name: this.client.user!.username })
@@ -67,9 +65,7 @@ export default class InviteCommand extends Command {
                         `📚 Shards: **${allShards.toLocaleString()}**`,
                         `🎵 Players: **${allPlayers.toLocaleString()}**`,
                         `💾 Memória: **${this.client.utils.formatBytes(memory.flat(Infinity).reduce((a, b) => a + b, 0))}**`,
-                        `🕛 Uptime: **${this.client.utils.time(this.client!.uptime ?? 0)}**`,
-                        `<:github_logo:991215243139239966> Commit: **${commits[0].sha}**`,
-                        `⏰ Ultima atualização: **${new Date(commits[0].commit.committer.date).toLocaleString("pt-BR", { timeZone: "America/Sao_paulo" })}**`
+                        `🕛 Uptime: **${this.client.utils.time(this.client!.uptime ?? 0)}**`
                     ].join("\n")
                 }
             ])
