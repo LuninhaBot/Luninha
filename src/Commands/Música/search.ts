@@ -1,7 +1,7 @@
 import Command, { RunCommand } from "../../Structures/Command"
 import EclipseClient from "../../Structures/EclipseClient"
 import { LavalinkPlayer } from "../../LavalinkManager/Player"
-import { EmbedBuilder, ButtonBuilder, ActionRowBuilder, SelectMenuBuilder, ButtonStyle, SelectMenuInteraction, ButtonInteraction, ComponentType, Interaction, Message } from "discord.js"
+import { EmbedBuilder, ButtonBuilder, ActionRowBuilder, SelectMenuBuilder, ButtonStyle, SelectMenuInteraction, ButtonInteraction, ComponentType, Interaction, Message, VoiceState } from "discord.js"
 import { SearchResult, Track } from "erela.js"
 
 export default class SearchCommand extends Command {
@@ -18,35 +18,40 @@ export default class SearchCommand extends Command {
 
         await interaction.deferReply({ ephemeral: false, fetchReply: true })
 
-        const play = this.client.music.players.get(interaction.guild!.id) as LavalinkPlayer
+        const member = await interaction.guild?.members.fetch(interaction.user.id)
+        const { channel } = member?.voice as VoiceState
 
-        let member = await interaction.guild?.members.fetch(interaction.user.id)
-        const voice = member?.voice
-
-        if (!voice?.channel) return interaction.followUp(":x: | Você não está em um canal de voz.")
-
-        if (!play) {
-            const player = new LavalinkPlayer({
-                guild: interaction.guild!.id,
-                voiceChannel: voice.channel!.id,
-                textChannel: interaction.channel!.id,
-                selfDeafen: true
+        if (!channel) {
+            interaction.followUp({
+                content: ":x: | Você não está em um canal de voz."
             })
 
-            try {
-                player.connect()
-            } catch {
+            return;
+        }
+
+        if (!this.client.music.players.get(interaction.guild!.id)) {
+
+            console.log(channel.joinable)
+            if (!channel.joinable) {
+
                 interaction.followUp({
-                    content: ":x: | Não foi possível conectar ao canal de solicitado."
+                    content: ":x: | Não consigo entrar no canal de voz solicitado!" 
                 })
 
                 return;
             }
+
+            new LavalinkPlayer({
+                guild: interaction.guild!.id,
+                voiceChannel: channel!.id,
+                textChannel: interaction.channel!.id,
+                selfDeafen: true
+            }).connect()
         }
 
         const player = this.client.music.players.get(interaction.guild!.id) as LavalinkPlayer
 
-        if (player?.voiceChannel !== voice.channel.id) {
+        if (player?.voiceChannel !== channel.id) {
             interaction.followUp(`:x: | Estou tocando música em \`${interaction.guild?.channels.cache.get(player?.options.voiceChannel ?? "")}\``)
 
             return;
