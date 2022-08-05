@@ -27,6 +27,7 @@ export default class PlayCommand extends Command {
             interaction.followUp({
                 content: ":x: | Você não está em um canal de voz."
             })
+
             return;
         }
 
@@ -38,15 +39,15 @@ export default class PlayCommand extends Command {
                 selfDeafen: true,
             })
 
-            if (!voice.channel.joinable) {
+            try {
+                player.connect()
+            } catch {
                 interaction.followUp({
-                    content: ":x: | Não consigo entrar no canal de voz solicitado."
+                    content: ":x: | Não foi possível conectar ao canal de solicitado."
                 })
 
                 return;
             }
-
-            player.connect()
         }
 
         const player = this.client.music.players.get(interaction.guild!.id) as LavalinkPlayer

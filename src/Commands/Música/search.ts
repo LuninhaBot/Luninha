@@ -33,13 +33,15 @@ export default class SearchCommand extends Command {
                 selfDeafen: true
             })
 
-            if (!voice.channel.joinable) {
-                interaction.followUp(":x: | Não consigo entrar no canal de voz solicitado.")
+            try {
+                player.connect()
+            } catch {
+                interaction.followUp({
+                    content: ":x: | Não foi possível conectar ao canal de solicitado."
+                })
 
                 return;
             }
-
-            player.connect()
         }
 
         const player = this.client.music.players.get(interaction.guild!.id) as LavalinkPlayer
