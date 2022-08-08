@@ -31,7 +31,6 @@ export default class PlayCommand extends Command {
 
         if (!this.client.music.players.get(interaction.guild!.id)) {
 
-            console.log(channel.joinable)
             if (!channel.joinable) {
 
                 interaction.followUp({

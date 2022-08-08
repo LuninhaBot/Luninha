@@ -1,8 +1,7 @@
-import { Options } from "discord.js";
 import Command, { RunCommand } from "../../Structures/Command"
 import EclipseClient from "../../Structures/EclipseClient"
 
-export default class ShuffleCommand extends Command {
+export default class VolumeCommand extends Command {
     constructor(client: EclipseClient) {
         super(client, {
             name: "volume",
@@ -15,10 +14,10 @@ export default class ShuffleCommand extends Command {
 
     async run({ interaction }: RunCommand) {
 
-        
+        await interaction.deferReply({ fetchReply: true })
 
         const player = this.client.music.players.get(interaction.guild!.id)
-        const nvolume = player?.volume
+        const nVolume = player?.volume
     
         var sound;
         if (player?.volume ?? 100 > 50) {
@@ -32,7 +31,7 @@ export default class ShuffleCommand extends Command {
 
         if (!interaction.options.getNumber("volume")) {
             interaction.followUp({
-                content: `${sound} | Volume atual é \`${nvolume}\``
+                content: `${sound} | Volume atual é \`${nVolume}\``
             })
 
             return;
@@ -49,7 +48,7 @@ export default class ShuffleCommand extends Command {
         player?.setVolume(interaction.options.getNumber("volume", true))
 
         interaction.followUp({
-            content: `${sound} | Volume definido de \`${nvolume}\` para \`${interaction.options.getNumber("volume", true)}\``
+            content: `${sound} | Volume definido de \`${nVolume}\` para \`${interaction.options.getNumber("volume", true)}\``
         })
     }
 }

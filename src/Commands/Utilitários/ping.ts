@@ -6,8 +6,8 @@ export default class PingCommand extends Command {
     constructor(client: EclipseClient) {
         super(client, {
             name: "ping",
-            category: "Outros",
-            description: "Mostra o meu ping e o uptime.",
+            category: "Utilitários",
+            description: "Mostra o meu ping e o uptime."
         })
     }
 

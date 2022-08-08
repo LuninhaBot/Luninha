@@ -31,7 +31,6 @@ export default class EclipseClient extends Client {
             partials: [
                 Partials.User,
                 Partials.Channel,
-                Partials.Message,
                 Partials.GuildMember
             ],
             shardCount: Cluster.Client.getInfo().TOTAL_SHARDS,

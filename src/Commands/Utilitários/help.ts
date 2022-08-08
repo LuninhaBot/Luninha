@@ -6,12 +6,9 @@ export default class HelpCommand extends Command {
     constructor(client: EclipseClient) {
         super(client, {
             name: "help",
-            category: "Outros",
+            category: "Utilitários",
             description: "Mostra a lista de comandos.",
-            usage: "[comando]",
-            marks: {
-                updated: true
-            }
+            usage: "[comando]"
         })
     }
 
@@ -41,9 +38,9 @@ export default class HelpCommand extends Command {
             embed0.setTimestamp()
 
             const helpString = []
-            let categories = this.client.utils.removeDuplicates(this.client.commands.filter(cmd => cmd.category !== "Desenvolvedor").map(cmd => cmd.category))
-            for (let category of categories) {
-                helpString.push(this.client.commands.filter(cmd => cmd.category === category).map(cmd => `${cmd.marks?.beta ? "<:__BETA:1004429899223814154> | " : " "}${cmd.marks?.updated ? "<:Icon_UpdateDownload:1004258709658144818> | " : " "}${cmd.marks?.isNew ? "<:IconNew:1004244460961546290> | " : " "}\`/${cmd.name} ${cmd.subCommands?.join(" | ") ?? ""}\` → ${cmd.description}\n⤷ Modo de uso → \`${cmd.usage ?? "Não possui modo de uso"}\``))
+            const categories = this.client.utils.removeDuplicates(this.client.commands.filter(cmd => cmd.category !== "Desenvolvedor").map(cmd => cmd.category))
+            for (const category of categories) {
+                helpString.push(this.client.commands.filter(cmd => cmd.category === category && cmd.showInHelp === true).map(cmd => `${cmd.marks?.beta ? "<:__BETA:1004429899223814154> | " : " "}${cmd.marks?.updated ? "<:Icon_UpdateDownload:1004258709658144818> | " : " "}${cmd.marks?.isNew ? "<:IconNew:1004244460961546290> | " : " "}\`/${cmd.name} ${cmd.subCommands?.join(" | ") ?? ""}\` → ${cmd.description}\n⤷ Modo de uso → \`${cmd.usage ?? "Não possui modo de uso"}\``))
             }
 
             const pages = [embed0]
@@ -56,11 +53,11 @@ export default class HelpCommand extends Command {
                 embed.setTitle(`Categoria: ${categories[i]} [${this.client.commands.filter(cmd => cmd.category === categories[i]).size}]`)
                 embed.setTimestamp()
                 embed.setFooter({
-                    text: `Página ${i + 1} - ${helpString.length}`
+                    text: `Página ${i + 1}/${helpString.length}`
                 })
 
                 pages[0].setFooter({
-                    text: `Página 0 - ${helpString.length}`
+                    text: `Página 0/${helpString.length}`
                 })
 
                 pages.push(embed)
@@ -156,11 +153,12 @@ export default class HelpCommand extends Command {
                 iconURL: interaction.user.displayAvatarURL({ forceStatic: false, size: 4096 })
             })
 
-            embed.setColor("#80088b")
+            embed.setColor("#04c4e4")
             embed.setDescription([
-                `📚 | **Nome**: \`${command.name}\` → \`${command.description}\``,
+                `📚 | **Nome**: ${command.marks?.beta ? "<:__BETA:1004429899223814154> " : " "}${command.marks?.updated ? "<:Icon_UpdateDownload:1004258709658144818> " : " "}${command.marks?.isNew ? "<:IconNew:1004244460961546290> " : " "}\`${command.name}\` → \`${command.description}\``,
                 `📋 | **Uso**: \`${this.client.prefix}${command.name} ${command.usage}\``,
-                `📝 | Categoria: **${command.category}**`
+                `📝 | **Categoria**: \`${command.category}\``,
+                `${command.subCommands ? `📖 | **Sub comandos**: \`${command.subCommands.join(" | ")}\`` : ""}`
             ].join("\n"))
 
             embed.setFooter({

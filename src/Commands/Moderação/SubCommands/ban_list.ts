@@ -1,42 +1,41 @@
-import Command, { RunCommand } from "../../Structures/Command.js"
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType } from "discord.js"
-import EclipseClient from "../../Structures/EclipseClient.js"
-import { LavalinkPlayer } from "../../LavalinkManager/Player.js"
+import Command, { RunCommand } from "../../../Structures/Command"
+import EclipseClient from "../../../Structures/EclipseClient"
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType, EmbedBuilder } from "discord.js"
 
-export default class QueueCommand extends Command {
+export default class BanListSubCommand extends Command {
     constructor(client: EclipseClient) {
         super(client, {
-            name: "queue",
-            category: "Música",
-            description: "Mostra a fila de música.",
+            name: "ban_list",
+            description: "Lista os usuários banidos do servidor.",
+            category: "Moderação",
+            showInHelp: false,
         })
     }
 
     async run({ interaction }: RunCommand) {
 
-        await interaction.deferReply({ ephemeral: false, fetchReply: true })
-        
-        const player = this.client.music.players.get(interaction.guild!.id ?? "") as LavalinkPlayer
+        const banList = await interaction.guild!.bans.fetch().catch(() => { })
 
-        if (!player) return interaction.followUp(":x: | Não tem nada tocando no servidor.")
+        if (!banList || banList.size == 0) {
+            interaction.followUp(`:x: | Não foi localizado nenhum banimento`)
 
-        const parsedQueueDuration = this.client.utils.formatDuration(this.client.utils.getQueueDuration(player))
-        let pagesNum = Math.ceil(player.queue.length / 10)
+            return;
+        }
 
-        const songStrings = []
-        for (let i = 0; i < player.queue.length; i++) {
-            const song = player.queue[i]
-            // @ts-ignore
-            songStrings.push(`**${i + 1}º** \`[${this.client.utils.formatDuration(song?.duration)}]\` **${song?.title}** - <@${song.requester ? song.requester.id : null}>`)
+        let pagesNum = Math.ceil(banList.size / 10)
+        const banString = []
+
+        for (let i = 0; i < banList.size; i++) {
+            const ban = banList.map((user) => user)[i]
+            banString.push(`**${i + 1}º** ${ban.user.tag} \`(${ban.user.id})\`\n⤷ Motivo: **${ban.reason ?? "Nenhum motivo informado"}**`)
         }
 
         const pages: EmbedBuilder[] = []
         for (let i = 0; i < pagesNum; i++) {
-
-            const str = songStrings.slice(i * 10, i * 10 + 10).join("\n")
             const embed = new EmbedBuilder()
             embed.setColor("#04c4e4")
-            embed.setDescription(str)
+            embed.setTitle(`Lista de banimentos`)
+            embed.setDescription(banString.slice(i * 10, (i + 1) * 10).join("\n"))
             embed.setFooter({
                 text: `Página ${i + 1}/${pagesNum}`,
             })
@@ -56,12 +55,11 @@ export default class QueueCommand extends Command {
             style: ButtonStyle.Secondary
         })
 
-        let row = new ActionRowBuilder<ButtonBuilder>()
+        const row = new ActionRowBuilder<ButtonBuilder>()
         row.addComponents([backwardButton, forwardButton])
 
         const msg = await interaction.followUp({
-            content: `**[${player.queue.current!.title}](<${player.queue.current!.uri}>)** | ${player.queue.length} músicas ${parsedQueueDuration}`,
-            embeds: [pagesNum == 0 ? new EmbedBuilder().setDescription("Não há músicas na fila!").setColor("#04c4e4") : pages[0]],
+            embeds: [pagesNum == 0 ? new EmbedBuilder().setDescription("Não há nenhum banimento!").setColor("#04c4e4") : pages[0]],
             components: [row]
         })
 
@@ -69,7 +67,7 @@ export default class QueueCommand extends Command {
             filter: (i) => {
                 if (["forward", "backward"].includes(i.customId)) {
                     if (i.user.id !== interaction.user.id) {
-                        i.reply({ 
+                        i.reply({
                             content: ":x: | Apenas o autor pode usar os botões!",
                             ephemeral: true
                         })
@@ -93,7 +91,7 @@ export default class QueueCommand extends Command {
 
                 i.editReply({
                     embeds: [
-                        pagesNum == 0 ? new EmbedBuilder().setDescription("Não há músicas na fila!").setColor("#04c4e4") : pages[page]
+                        pagesNum == 0 ? new EmbedBuilder().setDescription("Não há nenhum banimento!").setColor("#04c4e4") : pages[page]
                     ],
                     components: [row]
                 })
@@ -106,10 +104,10 @@ export default class QueueCommand extends Command {
                 page = page > 0 ? --page : pages.length - 1
 
                 await i.deferUpdate().catch(() => { })
-                
+
                 i.editReply({
                     embeds: [
-                        pagesNum == 0 ? new EmbedBuilder().setDescription("Não há músicas na fila!").setColor("#04c4e4") : pages[page]
+                        pagesNum == 0 ? new EmbedBuilder().setDescription("Não há nenhum banimento!").setColor("#04c4e4") : pages[page]
                     ],
                     components: [row]
                 })

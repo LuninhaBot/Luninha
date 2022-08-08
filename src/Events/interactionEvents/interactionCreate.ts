@@ -14,6 +14,17 @@ export default class InteractionCreateEvent extends Event {
 
     async run(interaction: Interaction) {
 
+        if (interaction.isAutocomplete()) {
+
+            const command = this.client.commands.get(interaction.commandName)
+
+            if (!command) return;
+
+
+            command.runAutoComplete({ interaction })
+            return;
+        }
+
         if (interaction.isChatInputCommand()) {
 
             const command = this.client.commands.get(interaction.commandName) ?? this.client.commands.get(interaction.options.getSubcommand())
@@ -29,7 +40,7 @@ export default class InteractionCreateEvent extends Event {
                 }
 
                 const member = interaction.member as GuildMember
-                let role = interaction.guild?.roles.cache.get(db.get(`${interaction.guild?.id}.dj`))?.name ?? "DJ"
+                const role = interaction.guild?.roles.cache.get(db.get(`${interaction.guild?.id}.dj`))?.name ?? "DJ"
 
                 if (command.djOnly && !member?.roles.cache.has(db.get(`${interaction.guild?.id}.dj`))) {
                     await interaction.deferReply({ ephemeral: true })
@@ -90,7 +101,7 @@ export default class InteractionCreateEvent extends Event {
                 .toArray()
                 .map(p => p)
                 .join(', ')
-                
+
             interaction.reply({
                 content: `❌ | Você não pode usar esté comando pois está te faltando permissões \`${permissions.toString()}\``,
                 ephemeral: true
