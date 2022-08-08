@@ -72,6 +72,8 @@ export default class ReadyEvent extends Event {
                     url: hooks.status.errors
                 }).send({
                     content: await (this.client.utils.fetchOwners(this.client.owners, false)),
+                    username: this.client.user?.username,
+                    avatarURL: this.client.user!.displayAvatarURL(),
                     embeds: [{
                         title: `:warning: | Um erro aconteceu!`,
                         description: "```ts\n" + inspect(err, { depth: 0 }) + "```"

@@ -11,11 +11,11 @@ export default class GuildBanRemove extends Event {
 
     async run(ban: GuildBan) {
 
-        const date = new Date().toLocaleString("pt-BR", { 
+        const date = new Date().toLocaleString("pt-BR", {
             timeZone: "America/Sao_Paulo",
             hour: "2-digit",
             minute: "2-digit",
-            second: "2-digit" 
+            second: "2-digit"
         })
 
         const audit = await ban.guild.fetchAuditLogs({
@@ -31,9 +31,12 @@ export default class GuildBanRemove extends Event {
         ].join("\n"))
 
         const channel = this.client.channels.cache.get(db.get(`${ban.guild!.id}.modlogs`)) as TextChannel
-        channel.send({
-            content: `\`[${date}]\`\nUsuário ${ban.user.tag} (ID: ${ban.user.id}) foi desbanido`,
-            embeds: [embed]
-        })
+
+        if (channel) {
+            channel.send({
+                content: `\`[${date}]\`\nUsuário ${ban.user.tag} (ID: ${ban.user.id}) foi desbanido`,
+                embeds: [embed]
+            })
+        } else { return; }
     }
 }

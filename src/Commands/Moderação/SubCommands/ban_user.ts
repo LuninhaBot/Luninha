@@ -5,8 +5,8 @@ import { GuildMember } from "discord.js"
 export default class BanUserSubCommand extends Command {
     constructor(client: EclipseClient) {
         super(client, {
-            name: "ban_remove",
-            description: "Remove um banimento do servidor.",
+            name: "ban_user",
+            description: "Bane um usuário do servidor.",
             category: "Moderação",
             showInHelp: false,
         })
