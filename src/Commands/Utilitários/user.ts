@@ -24,8 +24,6 @@ export default class UserCommands extends Command {
 
         if (interaction.options.getSubcommand(true) == "banner") {
 
-            await interaction.deferReply({ ephemeral: false, fetchReply: true })
-
             this.client.commands.get("user_banner")!.run({ interaction })
 
             return;
