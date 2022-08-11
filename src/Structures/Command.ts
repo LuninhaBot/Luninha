@@ -38,7 +38,7 @@ export default class Command {
         this.name = options.name ?? "Não definido"
         this.description = options.description ?? "Não possui"
         this.subCommands = options.subCommands 
-        this.usage = options.usage ?? "Não possui"
+        this.usage = options.usage
         this.category = options.category ?? "Utilitários"
         this.userPerms = options.userPerms ?? []
         this.botPerms = options.botPerms ?? []

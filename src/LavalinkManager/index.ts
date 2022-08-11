@@ -1,7 +1,8 @@
 import { ChatInputCommandInteraction, EmbedBuilder, TextChannel } from "discord.js"
 import { Manager, Player, Track } from "erela.js"
+import Spotify from "better-erela.js-spotify"
 import EclipseClient from "../Structures/EclipseClient"
-import { lavalink } from "../Utils/Config"
+import { lavalink, spotify } from "../Utils/Config"
 import Logger from "../Utils/Logger"
 
 export default class EclipseLavalink extends Manager {
@@ -14,7 +15,18 @@ export default class EclipseLavalink extends Manager {
             send: (id, payload) => {
                 const guild = client.guilds.cache.get(id)
                 if (guild) guild.shard.send(payload)
-            }
+            },
+            plugins: [
+                new Spotify({ 
+                    albumPageLimit: 10,
+                    showPageLimit: 10,
+                    playlistPageLimit: 10,
+                    cacheTrack: true,
+                    countryMarket: "BR",
+                    clientId: spotify.clientId,
+                    clientSecret: spotify.clientSecret
+                })
+            ]
         })
 
         this.on("nodeConnect", (node) => Logger.ready(`Lavalink Node ${node.options.identifier} connected!`))

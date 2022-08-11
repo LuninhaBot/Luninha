@@ -37,4 +37,9 @@ export const lavalink = [
     }
 ]
 
+export const spotify = {
+    clientSecret: "",
+    clientId: ""
+}
+
 export const geniusToken = ""

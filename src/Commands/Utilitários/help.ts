@@ -40,7 +40,7 @@ export default class HelpCommand extends Command {
             const helpString = []
             const categories = this.client.utils.removeDuplicates(this.client.commands.filter(cmd => cmd.category !== "Desenvolvedor").map(cmd => cmd.category))
             for (const category of categories) {
-                helpString.push(this.client.commands.filter(cmd => cmd.category === category && cmd.showInHelp === true).map(cmd => `${cmd.marks?.beta ? "<:__BETA:1004429899223814154> | " : " "}${cmd.marks?.updated ? "<:Icon_UpdateDownload:1004258709658144818> | " : " "}${cmd.marks?.isNew ? "<:IconNew:1004244460961546290> | " : " "}\`/${cmd.name} ${cmd.subCommands?.join(" | ") ?? ""}\` → ${cmd.description}\n⤷ Modo de uso → \`${cmd.usage ?? "Não possui modo de uso"}\``))
+                helpString.push(this.client.commands.filter(cmd => cmd.category === category && cmd.showInHelp === true).map(cmd => `${cmd.marks?.beta ? "<:__BETA:1004429899223814154> | " : " "}${cmd.marks?.updated ? "<:Icon_UpdateDownload:1004258709658144818> | " : " "}${cmd.marks?.isNew ? "<:IconNew:1004244460961546290> | " : " "}\`/${cmd.name} ${cmd.subCommands?.join(" | ") ?? ""}\` → ${cmd.description}${cmd.usage ? `\n⤷ Modo de uso → \`${cmd.usage}\`` : ""}`))
             }
 
             const pages = [embed0]
@@ -78,7 +78,7 @@ export default class HelpCommand extends Command {
             const row = new ActionRowBuilder<ButtonBuilder>()
             row.addComponents([backwardButton, forwardButton,])
 
-            await interaction.followUp({
+            const msg = await interaction.followUp({
                 embeds: [embed0],
                 components: [row]
             })
@@ -137,6 +137,14 @@ export default class HelpCommand extends Command {
                     collector.resetTimer()
                     return;
                 }
+            })
+
+            collector.on("end", () => {
+                msg.edit({
+                    components: []
+                }).catch(() => { })
+    
+                return;
             })
         } else {
             let command = this.client.commands.get(interaction.options.getString("comando", true))
