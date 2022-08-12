@@ -1,6 +1,6 @@
-# 🤖 Eclipse Bot
+# 🤖 Luninha 
 
-> Eclipse is a brazilian [Discord](https://discord.com) bot, built with [Node.js](https://nodejs.org), [TypeScript](https://www.typescriptlang.org/) and [discord.js](https://discord.js.org).
+> Luninha is a brazilian [Discord](https://discord.com) bot, built with [Node.js](https://nodejs.org), [TypeScript](https://www.typescriptlang.org/) and [discord.js](https://discord.js.org).
 
 
 ## 💻 Self-Hosting
