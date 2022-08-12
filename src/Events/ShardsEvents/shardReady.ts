@@ -18,6 +18,8 @@ export default class ShardReady extends Event {
             new WebhookClient({
                 url: WebHooks.status.shards
             }).send({
+                username: this.client.user?.username,
+                avatarURL: this.client.user!.displayAvatarURL(),
                 embeds: [{
                     title: `Shard ${shard} => Cluster ${this.client.cluster.id} está online!`,
                 }]

@@ -1,8 +1,9 @@
 import Command, { RunCommand } from "../../Structures/Command"
 import LuninhaClient from "../../Structures/LuninhaClient"
 import { LavalinkPlayer } from "../../LavalinkManager/Player"
-import { EmbedBuilder, ButtonBuilder, ActionRowBuilder, SelectMenuBuilder, ButtonStyle, SelectMenuInteraction, ButtonInteraction, ComponentType, Interaction, Message, VoiceState } from "discord.js"
+import { EmbedBuilder, ButtonBuilder, ActionRowBuilder, SelectMenuBuilder, ButtonStyle, SelectMenuInteraction, ButtonInteraction, ComponentType, Interaction, Message, VoiceState, ChannelType } from "discord.js"
 import { SearchResult, Track } from "erela.js"
+import fetch from "node-fetch"
 
 export default class SearchCommand extends Command {
     constructor(client: LuninhaClient) {
@@ -46,6 +47,20 @@ export default class SearchCommand extends Command {
                 textChannel: interaction.channel!.id,
                 selfDeafen: true
             }).connect()
+
+            if (channel.type == ChannelType.GuildStageVoice) {
+                await fetch(`https://discord.com/api/v10/guilds/${interaction.guild!.id}/voice-states/@me`, {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bot ${this.client.token}`,
+                    },
+                    body: JSON.stringify({ 
+                        channel_id: channel.id,
+                        suppress: false 
+                    })
+                })
+            }
         }
 
         const player = this.client.music.players.get(interaction.guild!.id) as LavalinkPlayer

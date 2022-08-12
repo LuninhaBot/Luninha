@@ -5,7 +5,6 @@ import LuninhaClient from "../../Structures/LuninhaClient"
 import Logger from "../../Utils/Logger"
 import { WebHooks } from "../../Utils/Config"
 import { DatabaseManager } from "../../Database/index"
-import { webcrypto } from "crypto"
 
 declare global {
     var db: DatabaseManager
@@ -38,6 +37,8 @@ export default class ReadyEvent extends Event {
             new WebhookClient({
                 url: WebHooks.status.cluster
             }).send({
+                username: this.client.user?.username,
+                avatarURL: this.client.user!.displayAvatarURL(),
                 embeds: [{
                     title: `Cluster ${this.client.cluster.id} está online!`,
                     description: `Shards ${this.client.ws.shards.first()?.id} - ${this.client.ws.shards.last()?.id} estão operando!`,

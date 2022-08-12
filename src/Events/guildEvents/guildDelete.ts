@@ -19,7 +19,7 @@ export default class GuildDeleteEvent extends Event {
         db.delete(`${guild.id}.modlogs`)
 
         const embed = new EmbedBuilder()
-        embed.setTitle("Removido de um servidor!")
+        embed.setTitle("Removida de um servidor!")
         embed.setFields([
             {
                 name: "Informaçoes:",
