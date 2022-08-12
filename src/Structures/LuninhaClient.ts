@@ -1,6 +1,6 @@
 import { Shard } from "discord-cross-hosting"
 import Cluster from "discord-hybrid-sharding"
-import { Client, Collection, GatewayIntentBits, Partials, Options, PermissionResolvable } from "discord.js"
+import { Client, Collection, GatewayIntentBits, Partials, Options, PermissionResolvable, HexColorString } from "discord.js"
 import EclipseLavalink from "../LavalinkManager"
 import Command from "./Command"
 import Event from "./Event"
@@ -17,8 +17,9 @@ export default class EclipseClient extends Client {
     cluster: Cluster.Client
     machine: Shard
     music: EclipseLavalink
+    defaultColor: HexColorString
 
-    constructor(options = {} as { token: string, prefix: string, owners: string[], defaultPerms: PermissionResolvable[] }) {
+    constructor(options = {} as { token: string, prefix: string, owners: string[], defaultColor: HexColorString, defaultPerms: PermissionResolvable[] }) {
         super({
             intents: [
                 GatewayIntentBits.Guilds,
@@ -72,6 +73,8 @@ export default class EclipseClient extends Client {
         this.machine = new Shard(this.cluster)
 
         this.music = new EclipseLavalink(this)
+
+        this.defaultColor = options.defaultColor
 
         this.utils = new Utils(this)
     }

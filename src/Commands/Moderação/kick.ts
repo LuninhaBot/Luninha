@@ -1,9 +1,9 @@
 import Command, { RunCommand } from "../../Structures/Command"
-import EclipseClient from "../../Structures/EclipseClient"
+import LuninhaClient from "../../Structures/LuninhaClient"
 import { GuildMember, PermissionFlagsBits } from "discord.js"
 
 export default class BanCommands extends Command {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "kick",
             description: "Expulsa um usuário do servidor.",
@@ -29,7 +29,7 @@ export default class BanCommands extends Command {
 
         if (!member) {
             interaction.followUp({
-                content: ":x: | Não foi possível encontrar o usuário!",
+                content: ":x: » Não foi possível encontrar o usuário!",
             })
 
             return;
@@ -37,7 +37,7 @@ export default class BanCommands extends Command {
 
         if (member.id == this.client.user?.id) {
             interaction.followUp({
-                content: ":x: | Você não pode me punir!",
+                content: ":x: » Você não pode me punir!",
             })
 
             return;
@@ -45,7 +45,7 @@ export default class BanCommands extends Command {
 
         if (member.id == interaction.user.id) {
             interaction.followUp({
-                content: ":x: | Você não pode punir você mesmo!",
+                content: ":x: » Você não pode punir você mesmo!",
             })
 
             return;
@@ -54,7 +54,7 @@ export default class BanCommands extends Command {
         if (member.roles) {
             if (!member.kickable || member.roles.highest.position >= interaction.guild!.members.me!.roles.highest.position) {
                 interaction.followUp({
-                    content: ":x: | Esté usuário não pode ser expulso!",
+                    content: ":x: » Esté usuário não pode ser expulso!",
                 })
 
                 return;
@@ -62,7 +62,7 @@ export default class BanCommands extends Command {
 
             if (member.roles.highest.position <= member.roles.highest.position) {
                 interaction.followUp({
-                    content: `❌ | Não tenho permissão para expulsar este usuário!`
+                    content: `❌ » Não tenho permissão para expulsar este usuário!`
                 })
 
                 return;
@@ -71,12 +71,12 @@ export default class BanCommands extends Command {
 
         await member.kick(interaction.options.getString("motivo", false) ?? "Nenhum motivo foi fornecido.").catch(() => {
             interaction.followUp({
-                content: ":x: | Não foi possível expulsar este usuário!",
+                content: ":x: » Não foi possível expulsar este usuário!",
             })
         })
 
         interaction.followUp({
-            content: `✅ | Usuário ${member.user.tag} ( ID: ${member.id} ) expulso com sucesso!`
+            content: `✅ » Usuário ${member.user.tag} ( ID: ${member.id} ) expulso com sucesso!`
         })
     }
 }

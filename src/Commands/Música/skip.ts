@@ -1,10 +1,10 @@
 import { GuildMember } from "discord.js"
 import { LavalinkPlayer } from "../../LavalinkManager/Player"
 import Command, { RunCommand } from "../../Structures/Command"
-import EclipseClient from "../../Structures/EclipseClient"
+import LuninhaClient from "../../Structures/LuninhaClient"
 
 export default class skipCommand extends Command {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "skip",
             description: "Inicia uma votação para pular a música atual",
@@ -23,7 +23,7 @@ export default class skipCommand extends Command {
         if (memberCount === 1) {
             player?.stop()
             interaction.followUp({
-                content: `✅ | Pulando **${player?.queue.current?.title}**`
+                content: `✅ » Pulando **${player?.queue.current?.title}**`
             })
 
             return;
@@ -34,7 +34,7 @@ export default class skipCommand extends Command {
 
         if (player.skipVotes.includes(interaction.user.id)) {
             interaction.followUp({
-                content: `:x: | Você ja votou para pular está música \`[${player.skipVotes.length} votos, ${player.skipVotes.length}/${required} necessários]\``
+                content: `:x: » Você ja votou para pular está música \`[${player.skipVotes.length} votos, ${player.skipVotes.length}/${required} necessários]\``
             })
 
             return;
@@ -44,12 +44,12 @@ export default class skipCommand extends Command {
 
         var str = "";
 
-        str += `✅ | Você votou para pular a música \`[${player.skipVotes.length} votos, ${player.skipVotes.length}/${required} necessários]\`\n`;
+        str += `✅ » Você votou para pular a música \`[${player.skipVotes.length} votos, ${player.skipVotes.length}/${required} necessários]\`\n`;
 
         if (player.skipVotes.length >= required) {
             this.client.utils.resetVotes(player as LavalinkPlayer)
             player!.stop()
-            str += `✅ | Pulando **${player?.queue.current?.title}**`
+            str += `✅ » Pulando **${player?.queue.current?.title}**`
         }
 
         interaction.followUp({

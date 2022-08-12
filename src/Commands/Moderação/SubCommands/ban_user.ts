@@ -1,9 +1,9 @@
-import EclipseClient from "../../../Structures/EclipseClient"
+import LuninhaClient from "../../../Structures/LuninhaClient"
 import Command, { RunCommand } from "../../../Structures/Command"
 import { GuildMember } from "discord.js"
 
 export default class BanUserSubCommand extends Command {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "ban_user",
             description: "Bane um usuário do servidor.",
@@ -18,7 +18,7 @@ export default class BanUserSubCommand extends Command {
 
         if (user.id == this.client.user?.id) {
             interaction.followUp({
-                content: ":x: | Você não pode me punir!",
+                content: ":x: » Você não pode me punir!",
             })
 
             return;
@@ -26,7 +26,7 @@ export default class BanUserSubCommand extends Command {
 
         if (user.id == interaction.user.id) {
             interaction.followUp({
-                content: ":x: | Você não pode punir você mesmo!",
+                content: ":x: » Você não pode punir você mesmo!",
             })
 
             return;
@@ -36,12 +36,12 @@ export default class BanUserSubCommand extends Command {
             const guildMember = interaction.member as GuildMember
 
             if (!member.bannable || member.roles.highest.position >= interaction.guild!.members.me!.roles.highest.position) {
-                interaction.editReply(`:x: | Esté usuário não pode ser punido!`)
+                interaction.editReply(`:x: » Esté usuário não pode ser punido!`)
                 return;
             }
 
             if (guildMember.roles.highest.position <= member.roles.highest.position) {
-                interaction.editReply(`:x: | Não tenho permissão para punir este usuário!`)
+                interaction.editReply(`:x: » Não tenho permissão para punir este usuário!`)
 
                 return;
             }
@@ -52,12 +52,12 @@ export default class BanUserSubCommand extends Command {
         }).catch(() => {
 
             interaction.followUp({
-                content: ":x: | Não foi possível punir este usuário!"
+                content: ":x: » Não foi possível punir este usuário!"
             })
 
             return;
         })
 
-        interaction.followUp(`✅ | Usuário ${user.tag} ( ID: ${user.id} ) banido com sucesso!`)
+        interaction.followUp(`✅ » Usuário ${user.tag} ( ID: ${user.id} ) banido com sucesso!`)
     }
 }

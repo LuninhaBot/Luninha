@@ -1,8 +1,8 @@
 import Command, { RunCommand } from "../../../Structures/Command"
-import EclipseClient from "../../../Structures/EclipseClient"
+import LuninhaClient from "../../../Structures/LuninhaClient"
 
 export default class ConfigAutoRoleSubCommand extends Command {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "config_autorole",
             category: "Admin",
@@ -25,7 +25,7 @@ export default class ConfigAutoRoleSubCommand extends Command {
 
         if (filter.length == 0 && !db.get(`${interaction.guild?.id}.autorole`)) {
             interaction.followUp({
-                content: ":x: | Você não definiu nenhum cargo para o autorole!",
+                content: ":x: » Você não definiu nenhum cargo para o autorole!",
             })
 
             return;
@@ -34,7 +34,7 @@ export default class ConfigAutoRoleSubCommand extends Command {
         if (filter.length == 0 && db.get(`${interaction.guild?.id}.autorole`)) {
             db.delete(`${interaction.guild?.id}.autorole`)
             interaction.followUp({
-                content: ":white_check_mark: | Cargo de autorole removido com sucesso!",
+                content: ":white_check_mark: » Cargo de autorole removido com sucesso!",
             })
 
             return;
@@ -42,7 +42,7 @@ export default class ConfigAutoRoleSubCommand extends Command {
 
         db.set(`${interaction.guild?.id}.autorole`, arrayRoles.filter(r => typeof r !== "undefined"))
         interaction.followUp({
-            content: ":white_check_mark: | Autorole definido com sucesso!",
+            content: ":white_check_mark: » Autorole definido com sucesso!",
         })
     }
 }

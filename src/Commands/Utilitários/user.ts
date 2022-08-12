@@ -1,8 +1,8 @@
 import Command, { RunCommand } from "../../Structures/Command"
-import EclipseClient from "../../Structures/EclipseClient"
+import LuninhaClient from "../../Structures/LuninhaClient"
 
 export default class UserCommands extends Command {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "user",
             description: "Mostra algumas coisas uteis sobre um usuário.",

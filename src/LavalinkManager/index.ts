@@ -1,15 +1,15 @@
 import { ChatInputCommandInteraction, EmbedBuilder, TextChannel } from "discord.js"
 import { Manager, Player, Track } from "erela.js"
-import Spotify from "better-erela.js-spotify"
-import EclipseClient from "../Structures/EclipseClient"
-import { lavalink, spotify } from "../Utils/Config"
+import SpotifyPlugin from "better-erela.js-spotify"
+import LuninhaClient from "../../Structures/LuninhaClient"
+import { LavaLink, Spotify } from "../Utils/Config"
 import Logger from "../Utils/Logger"
 
 export default class EclipseLavalink extends Manager {
 
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super({
-            nodes: lavalink,
+            nodes: LavaLink,
             autoPlay: true,
             clientName: "Eclipse",
             send: (id, payload) => {
@@ -17,14 +17,14 @@ export default class EclipseLavalink extends Manager {
                 if (guild) guild.shard.send(payload)
             },
             plugins: [
-                new Spotify({ 
+                new SpotifyPlugin({ 
                     albumPageLimit: 10,
                     showPageLimit: 10,
                     playlistPageLimit: 10,
                     cacheTrack: true,
                     countryMarket: "BR",
-                    clientId: spotify.clientId,
-                    clientSecret: spotify.clientSecret
+                    clientId: Spotify.clientId,
+                    clientSecret: Spotify.clientSecret
                 })
             ]
         })
@@ -49,7 +49,7 @@ export default class EclipseLavalink extends Manager {
         this.on("playingNow", (player: Player, track: Track, interaction: ChatInputCommandInteraction) => {
             let embed = new EmbedBuilder()
             embed.setDescription(`:musical_note: | Tocando agora **${track.title}**`)
-            embed.setColor("#04c4e4")
+            embed.setColor(client.defaultColor)
 
             mostPlayed.set(track.identifier, {
                 title: track.title,
@@ -74,7 +74,7 @@ export default class EclipseLavalink extends Manager {
             })
 
             let embed = new EmbedBuilder()
-            embed.setColor("#04c4e4")
+            embed.setColor(client.defaultColor)
             embed.setDescription(`:musical_note: | Tocando agora **${track.title}**`)
 
             channel.send({

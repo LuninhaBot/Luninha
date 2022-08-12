@@ -1,9 +1,9 @@
 import { inspect } from "util"
-import EclipseClient from "../../Structures/EclipseClient"
+import LuninhaClient from "../../Structures/LuninhaClient"
 import Command, { RunCommand } from "../../Structures/Command"
 
 export default class EvalCommand extends Command {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "eval",
             description: "Executa código typescript",

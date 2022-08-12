@@ -1,8 +1,8 @@
 import Command, { RunCommand } from "../../../Structures/Command"
-import EclipseClient from "../../../Structures/EclipseClient"
+import LuninhaClient from "../../../Structures/LuninhaClient"
 
 export default class BotInviteSubCommand extends Command {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "bot_invite",
             category: "Utilitários",
@@ -13,7 +13,7 @@ export default class BotInviteSubCommand extends Command {
     async run({ interaction }: RunCommand) {
 
         interaction.followUp({
-            content: "Que bom que gostou das minhas funcionalidades -> [Convite aqui](https://discord.com/api/oauth2/authorize?client_id=683040461434388501&permissions=8&scope=bot%20applications.commands)",
+            content: "<:owoPoiHappy:1007511781930962974> » Que bom que gostou das minhas funcionalidades -> [Convite aqui](https://discord.com/api/oauth2/authorize?client_id=683040461434388501&permissions=8&scope=bot%20applications.commands)",
             ephemeral: true
         })
 

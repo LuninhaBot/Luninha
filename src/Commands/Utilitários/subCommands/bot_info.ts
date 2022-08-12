@@ -1,9 +1,9 @@
 import Command, { RunCommand } from "../../../Structures/Command"
-import EclipseClient from "../../../Structures/EclipseClient"
+import LuninhaClient from "../../../Structures/LuninhaClient"
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } from "discord.js"
 
 export default class BotInfoSubCommand extends Command {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "bot_info",
             category: "Utilitários",
@@ -28,11 +28,11 @@ export default class BotInfoSubCommand extends Command {
         const memory = await this.client.machine.broadcastEval("process.memoryUsage().rss") as number[]
 
         const embed = new EmbedBuilder()
-        embed.setColor("#04c4e4")
+        embed.setColor(this.client.defaultColor)
         embed.setAuthor({ iconURL: this.client.user!.avatarURL({ size: 4096 }) ?? "", name: this.client.user!.username })
         embed.setDescription([
-            `Heyo, eu sou o **${this.client.user!.username}**! um bot de música e moderação que está em desenvolvimento.`,
-            `Fui criado <t:${~~(this.client.user!.createdTimestamp / 1000)}:R> ( <t:${~~(this.client.user!.createdTimestamp / 1000)}:F> )`,
+            `Heyo, eu sou a **${this.client.user!.username}**! um bot de música e moderação que está em desenvolvimento.`,
+            `Fui criada <t:${~~(this.client.user!.createdTimestamp / 1000)}:R> ( <t:${~~(this.client.user!.createdTimestamp / 1000)}:F> )`,
         ].join("\n"))
 
         embed.addFields([

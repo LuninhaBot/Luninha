@@ -1,14 +1,14 @@
 import { Client } from "discord-cross-hosting"
 import Cluster from "discord-hybrid-sharding"
 import { WebhookClient } from "discord.js"
-import { clusterManager, hooks, bot } from "./Utils/Config"
+import { ClusterManager, WebHooks, ClientConfig } from "./Utils/Config"
 import Logger from "./Utils/Logger"
 
 const client = new Client({
     agent: "bot",
-    host: clusterManager.host,
+    host: ClusterManager.host,
     port: 3000,
-    authToken: clusterManager.authToken,
+    authToken: ClusterManager.authToken,
     rollingRestarts: false
 })
 
@@ -17,7 +17,7 @@ client.connect()
 const manager = new Cluster.Manager(`${__dirname}/index.js`, {
     totalShards: "auto",
     totalClusters: "auto",
-    token: bot.token,
+    token: ClientConfig.token,
     restarts: {
         max: 5,
         interval: 60000 * 60
@@ -29,14 +29,14 @@ manager.on("clusterCreate", (cluster) => {
 
     cluster.on("death", async (machine) => {
         const shards = cluster.manager.shardList
-        if (hooks.status.sendLogs) {
+        if (WebHooks.status.sendLogs) {
             new WebhookClient({
-                url: hooks.status.cluster
+                url: WebHooks.status.cluster
             }).send({
                 embeds: [{
                     title: `Cluster ${cluster.id} morreu com o código ${machine.exitCode}. Reiniciando...`,
                     // @ts-ignore
-                    description: `Shards ${shards[cluster.id][0]} - ${shards[cluster.id].pop()}  serão reiniciadas!`,
+                    description: `Shards ${shards[cluster.id][0] ?? 0} - ${shards[cluster.id].pop() ?? 0}  serão reiniciadas!`,
                 }]
             })
         }

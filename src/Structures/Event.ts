@@ -1,5 +1,5 @@
 import { Awaitable } from "discord.js"
-import EclipseClient from "./EclipseClient"
+import EclipseClient from "./LuninhaClient"
 
 export default class Event {
 

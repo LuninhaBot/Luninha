@@ -1,8 +1,8 @@
 import Command, { RunCommand } from "../../../Structures/Command"
-import EclipseClient from "../../../Structures/EclipseClient"
+import LuninhaClient from "../../../Structures/LuninhaClient"
 
 export default class ConfigModLogsSubCommand extends Command {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "config_modlogs",
             category: "Admin",
@@ -16,7 +16,7 @@ export default class ConfigModLogsSubCommand extends Command {
 
         if (!channel && !db.get(`${interaction.guild?.id}.modlogs`)) {
             interaction.followUp({
-                content: ":x: | Você não definiu um canal de logs de moderação!",
+                content: ":x: » Você não definiu um canal de logs de moderação!",
             })
 
             return;
@@ -25,7 +25,7 @@ export default class ConfigModLogsSubCommand extends Command {
         if (!channel && db.get(`${interaction.guild?.id}.modlogs`)) {
             db.delete(`${interaction.guild?.id}.modlogs`)
             interaction.followUp({
-                content: ":white_check_mark: | Canal de logs de moderação removido com sucesso!",
+                content: ":white_check_mark: » Canal de logs de moderação removido com sucesso!",
             })
 
             return;
@@ -34,7 +34,7 @@ export default class ConfigModLogsSubCommand extends Command {
         db.set(`${interaction.guild?.id}.modlogs`, channel?.id)
 
         interaction.followUp({
-            content: ":white_check_mark: | Canal de logs de moderação definido com sucesso!",
+            content: ":white_check_mark: » Canal de logs de moderação definido com sucesso!",
         })
     }
 }

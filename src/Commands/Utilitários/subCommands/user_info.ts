@@ -1,9 +1,9 @@
 import Command, { RunCommand } from "../../../Structures/Command"
-import EclipseClient from "../../../Structures/EclipseClient"
+import EclipseClient from "../../../Structures/LuninhaClient"
 import { EmbedBuilder, GuildMember } from "discord.js"
 
 export default class UserInfoSubCommand extends Command {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "user_info",
             category: "Utilitários",
@@ -63,11 +63,11 @@ export default class UserInfoSubCommand extends Command {
             `Ordem de entrada: ${sort.slice(startingValue, endingValue).map(u => u.tag).join(" > ")}`
         ].join("\n"))
 
-        embed.setColor(m?.roles.highest.color ?? "#04c4e4")
+        embed.setColor(m?.roles.highest.color ?? this.client.defaultColor)
         embed.setThumbnail(m?.displayAvatarURL({ forceStatic: false }) ?? "https://cdn.discordapp.com/embed/avatars/0.png")
 
         interaction.followUp({
-            content: `${m?.user.bot ? "🤖" : "👤"} | Informações de **${m?.user.tag}**`,
+            content: `${m?.user.bot ? "🤖" : "👤"} » Informações de **${m?.user.tag}**`,
             embeds: [embed]
         })
 

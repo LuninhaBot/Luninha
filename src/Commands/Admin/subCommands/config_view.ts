@@ -1,9 +1,9 @@
 import Command, { RunCommand } from "../../../Structures/Command"
-import EclipseClient from "../../../Structures/EclipseClient"
+import LuninhaClient from "../../../Structures/LuninhaClient"
 import { EmbedBuilder } from "discord.js"
 
 export default class ConfigViewSubCommand extends Command {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "config_view",
             category: "Admin",
@@ -20,7 +20,7 @@ export default class ConfigViewSubCommand extends Command {
             `**Autorole**: ${db.get(`${interaction.guild!.id}.autorole`)?.map((r: string) => `<@&${r}>`).join(", ") ?? "Nenhum cargo definido"}`,
             `**Canal de logs de moderação**: ${db.get(`${interaction.guild!.id}.modlogs`) ? `<#${db.get(`${interaction.guild!.id}.modlogs`)}>` : "Nenhum canal definido"}`,
         ].join("\n"))
-        embed.setColor("#04c4e4")
+        embed.setColor(this.client.defaultColor)
 
         interaction.followUp({
             embeds: [embed]

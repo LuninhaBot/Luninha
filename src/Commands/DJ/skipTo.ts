@@ -1,8 +1,8 @@
 import Command, { RunCommand } from "../../Structures/Command"
-import EclipseClient from "../../Structures/EclipseClient"
+import LuninhaClient from "../../Structures/LuninhaClient"
 
 export default class ForceSkipCommand extends Command {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "skipto",
             description: "Pula para uma música especifica.",
@@ -23,7 +23,7 @@ export default class ForceSkipCommand extends Command {
         // @ts-ignore
         if (arg > player?.queue.totalSize || (arg && !player?.queue[arg - 1])) {
             interaction.followUp({
-                content: `:x: | A posição deve ser um número entre 1 e ${player?.queue.totalSize}`
+                content: `:x: » A posição deve ser um número entre 1 e ${player?.queue.totalSize}`
             })
             return;
         }
@@ -35,7 +35,7 @@ export default class ForceSkipCommand extends Command {
         player?.stop()
         
         interaction.followUp({
-            content: `✅ | Pulado para **${song}**`
+            content: `✅ » Pulado para **${song}**`
         })
     }
 }

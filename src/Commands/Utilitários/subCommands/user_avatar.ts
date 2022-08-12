@@ -1,9 +1,9 @@
 import Command, { RunCommand } from "../../../Structures/Command"
-import EclipseClient from "../../../Structures/EclipseClient"
+import LuninhaClient from "../../../Structures/LuninhaClient"
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, GuildMember } from "discord.js"
 
 export default class UserAvatarSubCommand extends Command {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "user_avatar",
             category: "Utilitários",
@@ -31,7 +31,7 @@ export default class UserAvatarSubCommand extends Command {
         const embed = new EmbedBuilder()
         embed.setDescription(`🖼️ | Avatar de **${user?.tag}**`)
         embed.setImage(user?.displayAvatarURL({ size: 4096, forceStatic: false }) ?? "https://cdn.discordapp.com/embed/avatars/0.png")
-        embed.setColor("#04c4e4")
+        embed.setColor(this.client.defaultColor)
         interaction.followUp({
             embeds: [embed],
             components: member?.avatar ? [row] : []
@@ -43,7 +43,7 @@ export default class UserAvatarSubCommand extends Command {
                 filter: (i) => {
                     if (["guildAvatar"].includes(i.customId)) {
                         if (i.user.id !== interaction.user.id) {
-                            i.reply(":x: | Apenas o autor pode usar este botão!")
+                            i.reply(":x: » Apenas o autor pode usar este botão!")
                             return false
                         }
                         return true
@@ -56,7 +56,7 @@ export default class UserAvatarSubCommand extends Command {
             const newEmbed = new EmbedBuilder()
             newEmbed.setDescription(`🖼️ | Avatar de **${member?.user.tag}**`)
             newEmbed.setImage(member?.displayAvatarURL({ size: 4096, forceStatic: false }) ?? "https://cdn.discordapp.com/embed/avatars/0.png")
-            newEmbed.setColor("#04c4e4")
+            newEmbed.setColor(this.client.defaultColor)
             interaction.editReply({
                 embeds: [newEmbed],
                 components: []

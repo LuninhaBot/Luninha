@@ -1,5 +1,5 @@
 import { PermissionResolvable, ChatInputCommandInteraction, Awaitable, AutocompleteInteraction } from "discord.js"
-import EclipseClient from "./EclipseClient"
+import LuninhaClient from "./LuninhaClient"
 
 
 interface CommandOptions {
@@ -18,7 +18,7 @@ interface CommandOptions {
 }
 
 export default class Command {
-    client: EclipseClient
+    client: LuninhaClient
     name: string
     description?: string
     subCommands?: unknown[]
@@ -32,7 +32,7 @@ export default class Command {
     marks?: { beta?: boolean, updated?: boolean, isNew?: boolean }
     showInHelp?: boolean
 
-    constructor(client: EclipseClient, options: CommandOptions) {
+    constructor(client: LuninhaClient, options: CommandOptions) {
 
         this.client = client
         this.name = options.name ?? "Não definido"

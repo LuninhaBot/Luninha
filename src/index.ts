@@ -1,4 +1,4 @@
-import { bot } from "./Utils/Config"
-import EclipseClient from "./Structures/EclipseClient"
+import { ClientConfig } from "./Utils/Config"
+import LuninhaClient from "./Structures/LuninhaClient"
 
-new EclipseClient(bot).start()
+new LuninhaClient(ClientConfig).start()

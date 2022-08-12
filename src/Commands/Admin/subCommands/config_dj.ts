@@ -1,8 +1,8 @@
 import Command, { RunCommand } from "../../../Structures/Command"
-import EclipseClient from "../../../Structures/EclipseClient"
+import LuninhaClient from "../../../Structures/LuninhaClient"
 
 export default class ConfigDjSubCommand extends Command {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "config_dj",
             category: "Admin",
@@ -17,7 +17,7 @@ export default class ConfigDjSubCommand extends Command {
 
         if (!role && !db.get(`${interaction.guild?.id}.dj`)) {
             interaction.followUp({
-                content: ":x: | Você não tem cargo de DJ definido!",
+                content: ":x: » Você não tem cargo de DJ definido!",
             })
             return;
         }
@@ -25,7 +25,7 @@ export default class ConfigDjSubCommand extends Command {
         if (!role && db.get(`${interaction.guild?.id}.dj`)) {
             db.delete(`${interaction.guild?.id}.dj`)
             interaction.followUp({
-                content: ":white_check_mark: | Cargo de DJ removido com sucesso!",
+                content: ":white_check_mark: » Cargo de DJ removido com sucesso!",
             })
             return;
         }
@@ -33,7 +33,7 @@ export default class ConfigDjSubCommand extends Command {
         if (role) {
             db.set(`${interaction.guild?.id}.dj`, role.id)
             interaction.followUp({
-                content: ":white_check_mark: | Cargo de DJ definido com sucesso!",
+                content: ":white_check_mark: » Cargo de DJ definido com sucesso!",
             })
 
             return;

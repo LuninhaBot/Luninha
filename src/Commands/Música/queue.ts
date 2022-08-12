@@ -1,10 +1,10 @@
 import Command, { RunCommand } from "../../Structures/Command.js"
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType } from "discord.js"
-import EclipseClient from "../../Structures/EclipseClient.js"
+import EclipseClient from "../../Structures/LuninhaClient.js"
 import { LavalinkPlayer } from "../../LavalinkManager/Player.js"
 
 export default class QueueCommand extends Command {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "queue",
             category: "Música",
@@ -16,9 +16,9 @@ export default class QueueCommand extends Command {
 
         await interaction.deferReply({ ephemeral: false, fetchReply: true })
         
-        const player = this.client.music.players.get(interaction.guild!.id ?? "") as LavalinkPlayer
+        const player = this.client.music.players.get(interaction.guild!.id) as LavalinkPlayer
 
-        if (!player) return interaction.followUp(":x: | Não tem nada tocando no servidor.")
+        if (!player) return interaction.followUp(":x: » Não tem nada tocando no servidor.")
 
         const parsedQueueDuration = this.client.utils.formatDuration(this.client.utils.getQueueDuration(player))
         let pagesNum = Math.ceil(player.queue.length / 10)
@@ -35,7 +35,7 @@ export default class QueueCommand extends Command {
 
             const str = songStrings.slice(i * 10, i * 10 + 10).join("\n")
             const embed = new EmbedBuilder()
-            embed.setColor("#04c4e4")
+            embed.setColor(this.client.defaultColor)
             embed.setDescription(str)
             embed.setFooter({
                 text: `Página ${i + 1}/${pagesNum}`,
@@ -70,7 +70,7 @@ export default class QueueCommand extends Command {
                 if (["forward", "backward"].includes(i.customId)) {
                     if (i.user.id !== interaction.user.id) {
                         i.reply({ 
-                            content: ":x: | Apenas o autor pode usar os botões!",
+                            content: ":x: » Apenas o autor pode usar os botões!",
                             ephemeral: true
                         })
                         return false

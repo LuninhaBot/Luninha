@@ -1,10 +1,10 @@
-import EclipseClient from "../../../Structures/EclipseClient"
+import LuninhaClient from "../../../Structures/LuninhaClient"
 import Command, { RunCommand, RunAutoComplete } from "../../../Structures/Command"
 import { EmbedBuilder, PermissionFlagsBits } from "discord.js"
 
 
 export default class BanInfoSubCommand extends Command {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "ban_info",
             description: "Mostra informações sobre um usuário banido.",
@@ -20,7 +20,7 @@ export default class BanInfoSubCommand extends Command {
         const id = interaction.options.getString("usuario", true)
 
         if (id == "undefined") {
-            interaction.followUp(`:x: | Não foi localizado nenhum banimento`)
+            interaction.followUp(`:x: » Não foi localizado nenhum banimento`)
 
             return;
         }
@@ -28,13 +28,13 @@ export default class BanInfoSubCommand extends Command {
         const ban = await interaction.guild!.bans.fetch(id).catch(() => { })
 
         if (!ban) {
-            interaction.followUp(`:x: | Não foi localizado nenhum banimento`)
+            interaction.followUp(`:x: » Não foi localizado nenhum banimento`)
 
             return;
         }
 
         const embed = new EmbedBuilder()
-        embed.setColor("#04c4e4")
+        embed.setColor(this.client.defaultColor)
         embed.setTitle(`Informações do banimento`)
         embed.setDescription([
             `Usuário: **${ban.user.tag}** ( ID: ${ban.user.id} )`,

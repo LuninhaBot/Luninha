@@ -1,8 +1,8 @@
 import Command, { RunCommand } from "../../../Structures/Command"
-import EclipseClient from "../../../Structures/EclipseClient"
+import LuninhaClient from "../../../Structures/LuninhaClient"
 
 export default class LoopTrackSubCommand extends Command {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "loop_track",
             category: "DJ",
@@ -17,7 +17,7 @@ export default class LoopTrackSubCommand extends Command {
         if (!player) { 
 
             interaction.followUp({
-                content: ":x: | Não tem nenhuma música tocando no momento."
+                content: ":x: » Não tem nenhuma música tocando no momento."
             })
 
             return;
@@ -26,7 +26,7 @@ export default class LoopTrackSubCommand extends Command {
         player.setTrackRepeat(!player.trackRepeat)
 
         await interaction.followUp({
-            content: `:white_check_mark: | Loop de música ${player.trackRepeat ? "**ATIVADO**" : "**DESATIVADO**"}.`
+            content: `:white_check_mark: » Loop de música ${player.trackRepeat ? "**ATIVADO**" : "**DESATIVADO**"}.`
         })
 
     }

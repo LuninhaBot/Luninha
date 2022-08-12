@@ -1,12 +1,12 @@
 import Event from "../../Structures/Event"
-import EclipseClient from "../../Structures/EclipseClient"
+import LuninhaClient from "../../Structures/LuninhaClient"
 import Logger from "../../Utils/Logger"
-import { hooks } from "../../Utils/Config"
+import { WebHooks } from "../../Utils/Config"
 import { CloseEvent, WebhookClient } from "discord.js"
 
 export default class ShardDisconnect extends Event {
 
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "shardDisconnect",
         })
@@ -14,9 +14,9 @@ export default class ShardDisconnect extends Event {
 
     async run(close: CloseEvent, shard: number) {
 
-        if (hooks.status.sendLogs) {
+        if (WebHooks.status.sendLogs) {
             new WebhookClient({
-                url: hooks.status.shards
+                url: WebHooks.status.shards
             }).send({
                 embeds: [{
                     title: `Shard ${shard} => Cluster ${this.client.cluster.id} se desconectou com o código ${close.code}!`,

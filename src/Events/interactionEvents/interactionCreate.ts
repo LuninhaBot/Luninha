@@ -1,12 +1,12 @@
 import Event from "../../Structures/Event"
 import { Interaction, GuildMember, ChatInputCommandInteraction, PermissionsBitField } from "discord.js"
 import Command, { RunCommand } from "../../Structures/Command"
-import EclipseClient from "../../Structures/EclipseClient"
+import LuninhaClient from "../../Structures/LuninhaClient"
 
 export default class InteractionCreateEvent extends Event {
 
 
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "interactionCreate",
         })
@@ -34,7 +34,7 @@ export default class InteractionCreateEvent extends Event {
                 if (command.ownerOnly && !this.client.utils.checkOwner(interaction.user.id)) {
                     await interaction.deferReply({ ephemeral: true })
 
-                    interaction.followUp(":x: | Você não pode usar este comando!")
+                    interaction.followUp(":x: » Você não pode usar este comando!")
 
                     return;
                 }
@@ -46,7 +46,7 @@ export default class InteractionCreateEvent extends Event {
                     await interaction.deferReply({ ephemeral: true })
 
                     interaction.followUp({
-                        content: `:x: | Apenas pessoas com o cargo \`${role}\` podem usar este comando!`,
+                        content: `:x: » Apenas pessoas com o cargo \`${role}\` podem usar este comando!`,
                     })
 
                     return;
@@ -55,7 +55,7 @@ export default class InteractionCreateEvent extends Event {
                 if (!interaction?.inGuild()) {
                     await interaction.deferReply({ ephemeral: true })
 
-                    interaction.followUp(":x: | Esté comando não pode ser usado fora de um servidor!")
+                    interaction.followUp(":x: » Esté comando não pode ser usado fora de um servidor!")
 
                     return;
                 }
@@ -70,7 +70,7 @@ export default class InteractionCreateEvent extends Event {
                 } catch (error) {
                     await interaction.deferReply({ ephemeral: true })
 
-                    interaction.followUp(`⚠️ | Um erro aconteceu\n\`\`\`js\n${error}\`\`\``)
+                    interaction.followUp(`⚠️ » Um erro aconteceu\n\`\`\`js\n${error}\`\`\``)
 
                     return;
                 }
@@ -86,7 +86,7 @@ export default class InteractionCreateEvent extends Event {
                 .map(p => p)
                 .join(', ')
             interaction.reply({
-                content: `❌ | Está me faltando permissões para rodar o comando \`${permissions.toString()}\``,
+                content: `❌ » Está me faltando permissões para rodar o comando \`${permissions.toString()}\``,
                 ephemeral: true
             })
             return false;
@@ -103,7 +103,7 @@ export default class InteractionCreateEvent extends Event {
                 .join(', ')
 
             interaction.reply({
-                content: `❌ | Você não pode usar esté comando pois está te faltando permissões \`${permissions.toString()}\``,
+                content: `❌ » Você não pode usar esté comando pois está te faltando permissões \`${permissions.toString()}\``,
                 ephemeral: true
             })
             return false;

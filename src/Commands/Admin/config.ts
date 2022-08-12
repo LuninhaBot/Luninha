@@ -1,10 +1,10 @@
 import { EmbedBuilder } from "discord.js"
 import Command, { RunCommand } from "../../Structures/Command"
-import EclipseClient from "../../Structures/EclipseClient"
+import LuninhaClient from "../../Structures/LuninhaClient"
 import { PermissionFlagsBits } from "discord.js"
 
 export default class ConfigCommand extends Command {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "config",
             description: "Configura algumas coisas do bot.",

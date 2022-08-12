@@ -1,8 +1,8 @@
 import Command, { RunCommand } from "../../Structures/Command"
-import EclipseClient from "../../Structures/EclipseClient"
+import LuninhaClient from "../../Structures/LuninhaClient"
 
 export default class ForceSkipCommand extends Command {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "force",
             description: "Skipa a música tocando no momento.",
@@ -23,7 +23,7 @@ export default class ForceSkipCommand extends Command {
         
         player?.stop()
         interaction.followUp({
-            content: `✅ | **${player?.queue.current?.title}** Pulada (Solicitado por **${interaction.user.username}**)`
+            content: `✅ » **${player?.queue.current?.title}** Pulada (Por **${interaction.user.username}**)`
         })
     }
 }

@@ -1,9 +1,9 @@
 import Event from "../../Structures/Event"
-import EclipseClient from "../../Structures/EclipseClient"
+import LuninhaClient from "../../Structures/LuninhaClient"
 import { Message, EmbedBuilder, TextChannel, escapeMarkdown } from "discord.js"
 
 export default class MessageUpdateEvent extends Event {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "messageUpdate"
         })
@@ -28,7 +28,7 @@ export default class MessageUpdateEvent extends Event {
             })
     
             const embed = new EmbedBuilder()
-            embed.setColor("#04c4e4")
+            embed.setColor(this.client.defaultColor)
             embed.setDescription(`[Link da mensagem](${newMessage.url})`)
             embed.addFields([
                 { name: "Mensagem antiga", value: escapeMarkdown(oldMessage?.content.slice(0, 2000) ?? "Falha ao obter mensagem") },

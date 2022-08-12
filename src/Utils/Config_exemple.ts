@@ -1,18 +1,18 @@
 import { PermissionResolvable } from "discord.js";
 
-export const bot = {
+export const ClientConfig = {
     token: "",
     prefix: "/",
     owners: [],
     defaultPerms: [] as PermissionResolvable[],
 }
 
-export const clusterManager = {
+export const ClusterManager = {
     authToken: "",
     host: "",
 }
 
-export const hooks = {
+export const WebHooks = {
     guildCreate: {
         url: ""
     },
@@ -27,7 +27,7 @@ export const hooks = {
     }
 }
 
-export const lavalink = [
+export const LavaLink = [
     {
         host: "localhost",
         password: "",
@@ -37,9 +37,9 @@ export const lavalink = [
     }
 ]
 
-export const spotify = {
+export const Spotify = {
     clientSecret: "",
     clientId: ""
 }
 
-export const geniusToken = ""
+export const GeniusToken = ""

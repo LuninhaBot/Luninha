@@ -1,11 +1,11 @@
 import { EmbedBuilder, VoiceState } from "discord.js"
 import { SearchResult } from "erela.js"
 import Command, { RunCommand } from "../../Structures/Command"
-import EclipseClient from "../../Structures/EclipseClient"
+import LuninhaClient from "../../Structures/LuninhaClient"
 import { LavalinkPlayer } from "../../LavalinkManager/Player"
 
 export default class PlayCommand extends Command {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "play",
             description: "Adiciona uma música à fila de espera.",
@@ -23,7 +23,7 @@ export default class PlayCommand extends Command {
 
         if (!channel) {
             interaction.followUp({
-                content: ":x: | Você não está em um canal de voz."
+                content: ":x: » Você não está em um canal de voz."
             })
 
             return;
@@ -34,7 +34,7 @@ export default class PlayCommand extends Command {
             if (!channel.joinable) {
 
                 interaction.followUp({
-                    content: ":x: | Não consigo entrar no canal de voz solicitado!" 
+                    content: ":x: » Não consigo entrar no canal de voz solicitado!" 
                 })
 
                 return;
@@ -51,7 +51,7 @@ export default class PlayCommand extends Command {
         const player = this.client.music.players.get(interaction.guild!.id) as LavalinkPlayer
 
         if (player?.voiceChannel !== channel.id) {
-            interaction.followUp(`:x: | Estou tocando música em \`${interaction.guild?.channels.cache.get(player?.options.voiceChannel ?? "")?.name}\``)
+            interaction.followUp(`:x: » Estou tocando música em \`${interaction.guild?.channels.cache.get(player?.options.voiceChannel ?? "")?.name}\``)
             return;
         }
 
@@ -68,7 +68,7 @@ export default class PlayCommand extends Command {
 
         } catch (err) {
             if (!player.queue.current) player.destroy()
-            return interaction.followUp(`:x: | Aconteceu um erro ao tentar tocar a música: \`${err}\``)
+            return interaction.followUp(`:x: » Aconteceu um erro ao tentar tocar a música: \`${err}\``)
         }
 
         let embed = new EmbedBuilder()
@@ -76,7 +76,7 @@ export default class PlayCommand extends Command {
 
         if (res.loadType == "NO_MATCHES") {
             if (!player.queue.current) player.destroy()
-            interaction.followUp(":x: | Não foi possivel encontrar nenhuma música.")
+            interaction.followUp(":x: » Não foi possivel encontrar nenhuma música.")
 
             return;
         }
@@ -89,8 +89,8 @@ export default class PlayCommand extends Command {
 
             if (player.queue.size >= 1) {
                 let embed = new EmbedBuilder()
-                embed.setColor("#04c4e4")
-                embed.setDescription(`:musical_note: | Adicionado a lista de espera **${res.tracks[0].title}**`)
+                embed.setColor(this.client.defaultColor)
+                embed.setDescription(`:musical_note: » Adicionado a lista de espera **${res.tracks[0].title}**`)
 
                 interaction.followUp({
                     embeds: [embed],
@@ -112,7 +112,7 @@ export default class PlayCommand extends Command {
             if (!player.playing && !player.paused && player.queue.totalSize === res.tracks.length) player.play()
 
             embed2.setColor("#04c4e4")
-            embed2.setDescription(`:musical_note: | Adicionado a fila de espera a playlist **${res.playlist?.name}** e tocando a música **${res.tracks[0].title}**`)
+            embed2.setDescription(`:musical_note: » Adicionado a fila de espera a playlist **${res.playlist?.name}** e tocando a música **${res.tracks[0].title}**`)
 
             interaction.followUp({
                 embeds: [embed2]
@@ -127,8 +127,8 @@ export default class PlayCommand extends Command {
 
             if (!player.playing && !player.paused && !player.queue.length) player.play()
 
-            embed.setColor("#04c4e4")
-            embed.setDescription(`:musical_note: | Adicionado a lista de espera **${res.tracks[0].title}**`)
+            embed.setColor(this.client.defaultColor)
+            embed.setDescription(`:musical_note: » Adicionado a lista de espera **${res.tracks[0].title}**`)
 
             if (player.queue.size >= 1) {
 

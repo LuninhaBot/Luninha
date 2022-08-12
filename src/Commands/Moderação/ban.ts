@@ -1,9 +1,9 @@
 import Command, { RunCommand } from "../../Structures/Command"
-import EclipseClient from "../../Structures/EclipseClient"
+import LuninhaClient from "../../Structures/LuninhaClient"
 import { PermissionFlagsBits } from "discord.js"
 
 export default class BanCommands extends Command {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "ban",
             description: "Banir um usuário do servidor.",

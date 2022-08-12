@@ -1,10 +1,11 @@
 import { WebhookClient } from "discord.js"
 import { inspect } from "util"
 import Event from "../../Structures/Event"
-import EclipseClient from "../../Structures/EclipseClient"
+import LuninhaClient from "../../Structures/LuninhaClient"
 import Logger from "../../Utils/Logger"
-import { hooks } from "../../Utils/Config"
+import { WebHooks } from "../../Utils/Config"
 import { DatabaseManager } from "../../Database/index"
+import { webcrypto } from "crypto"
 
 declare global {
     var db: DatabaseManager
@@ -16,7 +17,7 @@ global.db = new DatabaseManager("db")
 
 export default class ReadyEvent extends Event {
 
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "ready",
         })
@@ -33,9 +34,9 @@ export default class ReadyEvent extends Event {
         })
 
 
-        if (hooks.status.sendLogs) {
+        if (WebHooks.status.sendLogs) {
             new WebhookClient({
-                url: hooks.status.cluster
+                url: WebHooks.status.cluster
             }).send({
                 embeds: [{
                     title: `Cluster ${this.client.cluster.id} está online!`,
@@ -49,9 +50,9 @@ export default class ReadyEvent extends Event {
         process.on("unhandledRejection", async (err) => {
             console.log(err)
 
-            if (hooks.status.sendLogs) {
+            if (WebHooks.status.sendLogs) {
                 new WebhookClient({
-                    url: hooks.status.errors
+                    url: WebHooks.status.errors
                 }).send({
                     content: await (this.client.utils.fetchOwners(this.client.owners, false)),
                     username: this.client.user?.username,
@@ -67,9 +68,9 @@ export default class ReadyEvent extends Event {
         process.on("uncaughtException", async (err) => {
             console.log(err)
 
-            if (hooks.status.sendLogs) {
+            if (WebHooks.status.sendLogs) {
                 new WebhookClient({
-                    url: hooks.status.errors
+                    url: WebHooks.status.errors
                 }).send({
                     content: await (this.client.utils.fetchOwners(this.client.owners, false)),
                     username: this.client.user?.username,

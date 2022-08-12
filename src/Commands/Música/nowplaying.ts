@@ -1,9 +1,9 @@
 import Command, { RunCommand } from "../../Structures/Command"
-import EclipseClient from "../../Structures/EclipseClient"
+import LuninhaClient from "../../Structures/LuninhaClient"
 import { EmbedBuilder, GuildMember } from "discord.js"
 
 export default class nowPlayingCommand extends Command {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "now",
             description: "Mostra a música que está tocando no momento.",
@@ -20,7 +20,7 @@ export default class nowPlayingCommand extends Command {
 
         if (!player) {
             interaction.followUp({
-                content: ":x: | Não estou tocando nenhuma música."
+                content: ":x: » Não estou tocando nenhuma música."
             })
             
             return;
@@ -46,7 +46,7 @@ export default class nowPlayingCommand extends Command {
         embed.setAuthor({ name: user.tag, iconURL: user.displayAvatarURL({ forceStatic: false }) })
         embed.setDescription(`**[${player?.queue.current?.title}](${player?.queue.current?.uri})**\n${uni} ${repeat} \`${parsedCurrentDuration}/${parsedDuration}\` ${sound}`)
         embed.setFooter({ text: `De ${player?.queue.current?.author}` })
-        embed.setColor("#04c4e4")
+        embed.setColor(this.client.defaultColor)
 
         const member = interaction.member as GuildMember
         interaction.followUp({

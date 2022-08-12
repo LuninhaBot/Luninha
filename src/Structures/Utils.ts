@@ -6,15 +6,15 @@ import { LavalinkPlayer } from "../LavalinkManager/Player"
 
 import Command from "./Command"
 import Event from "./Event"
-import EclipseClient from "./EclipseClient"
+import LuninhaClient from "./LuninhaClient"
 import Logger from "../Utils/Logger"
 
 const glob = promisify(pkg)
 
 export default class Util {
 
-	client: EclipseClient
-	constructor(client: EclipseClient) {
+	client: LuninhaClient
+	constructor(client: LuninhaClient) {
 		this.client = client
 	}
 

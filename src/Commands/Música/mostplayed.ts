@@ -1,9 +1,9 @@
 import { EmbedBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle, GuildMember } from "discord.js"
-import EclipseClient from "../../Structures/EclipseClient"
+import LuninhaClient from "../../Structures/LuninhaClient"
 import Command, { RunCommand } from "../../Structures/Command"
 
 export default class MostPlayedCommand extends Command {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "most",
             category: "Música",
@@ -15,7 +15,7 @@ export default class MostPlayedCommand extends Command {
     async run({ interaction }: RunCommand) {
 
         const embed = new EmbedBuilder()
-        embed.setColor("#04c4e4")
+        embed.setColor(this.client.defaultColor)
         embed.setTitle("Músicas mais tocadas")
 
         const sort = mostPlayed.all().sort((a, b) => b.data.playedCount - a.data.playedCount)
@@ -31,7 +31,7 @@ export default class MostPlayedCommand extends Command {
             await interaction.deferReply({ ephemeral: true, fetchReply: true })
 
             interaction.followUp({
-                content: ":x: | Nenhuma música foi tocada nesse mês ainda!",
+                content: ":x: » Nenhuma música foi tocada nesse mês ainda!",
             })
 
             return;

@@ -1,11 +1,11 @@
 import Command, { RunCommand } from "../../../Structures/Command"
-import EclipseClient from "../../../Structures/EclipseClient"
+import LuninhaClient from "../../../Structures/LuninhaClient"
 import { EmbedBuilder } from "discord.js"
 import fetch from "node-fetch"
-import { bot } from "../../../Utils/Config"
+import { ClientConfig } from "../../../Utils/Config"
 
 export default class UserBannerSubCommand extends Command {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "user_banner",
             category: "Utilitários",
@@ -20,7 +20,7 @@ export default class UserBannerSubCommand extends Command {
 
         const fe = await fetch(`https://discord.com/api/v10/users/${id}`, {
             headers: {
-                "Authorization": `Bot ${bot.token}`,
+                "Authorization": `Bot ${ClientConfig.token}`,
                 "Content-Type": "application/json"
             }
         })
@@ -41,7 +41,7 @@ export default class UserBannerSubCommand extends Command {
 
             await interaction.deferReply({ ephemeral: true, fetchReply: true })
             interaction.followUp({
-                content: `:x: | Esté usuário não possui um banner.`,
+                content: `:x: » Esté usuário não possui um banner.`,
             })
 
             return;
@@ -50,8 +50,8 @@ export default class UserBannerSubCommand extends Command {
         await interaction.deferReply({ ephemeral: false, fetchReply: true })
 
         const embed = new EmbedBuilder()
-        embed.setColor("#04c4e4")
-        embed.setDescription(`🖼️ | Banner de **${m?.user.tag}**`)
+        embed.setColor(this.client.defaultColor)
+        embed.setDescription(`🖼️ | Banner de **${json.username}#${json.discriminator}**`)
         embed.setImage(`https://cdn.discordapp.com/banners/${json.id}/${json.banner}.${json.banner.startsWith("a_") ? "gif" : "png"}?size=4096`)
 
         interaction.followUp({

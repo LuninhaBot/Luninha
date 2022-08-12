@@ -1,9 +1,9 @@
 import Event from "../../Structures/Event"
-import EclipseClient from "../../Structures/EclipseClient"
+import LuninhaClient from "../../Structures/LuninhaClient"
 import { Message, EmbedBuilder, TextChannel, escapeMarkdown } from "discord.js"
 
 export default class MessageDeleteEvent extends Event {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "messageDelete"
         })
@@ -29,7 +29,7 @@ export default class MessageDeleteEvent extends Event {
             })
     
             const embed = new EmbedBuilder()
-            embed.setColor("#04c4e4")
+            embed.setColor(this.client.defaultColor)
             embed.setDescription(escapeMarkdown(message?.content.slice(0, 2000) ?? "Falha ao obter mensagem"))
 
             

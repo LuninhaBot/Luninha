@@ -1,8 +1,8 @@
 import Command, { RunCommand } from "../../Structures/Command"
-import EclipseClient from "../../Structures/EclipseClient"
+import LuninhaClient from "../../Structures/LuninhaClient"
 
 export default class VolumeCommand extends Command {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "volume",
             description: "Define ou mostra o volume.",
@@ -31,7 +31,7 @@ export default class VolumeCommand extends Command {
 
         if (!interaction.options.getNumber("volume")) {
             interaction.followUp({
-                content: `${sound} | Volume atual é \`${nVolume}\``
+                content: `${sound} » Volume atual é \`${nVolume}\``
             })
 
             return;
@@ -39,7 +39,7 @@ export default class VolumeCommand extends Command {
 
         if (interaction.options.getNumber("volume", true) < 0 || interaction.options.getNumber("volume", true) > 150) {
             interaction.followUp({
-                content: ":x: | O volume deve ser um número válido entre 0 e 150!"
+                content: ":x: » O volume deve ser um número válido entre 0 e 150!"
             })
 
             return;
@@ -48,7 +48,7 @@ export default class VolumeCommand extends Command {
         player?.setVolume(interaction.options.getNumber("volume", true))
 
         interaction.followUp({
-            content: `${sound} | Volume definido de \`${nVolume}\` para \`${interaction.options.getNumber("volume", true)}\``
+            content: `${sound} » Volume definido de \`${nVolume}\` para \`${interaction.options.getNumber("volume", true)}\``
         })
     }
 }

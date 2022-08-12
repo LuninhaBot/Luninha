@@ -1,10 +1,10 @@
 import Event from "../Structures/Event"
-import EclipseClient from "../Structures/EclipseClient"
+import LuninhaClient from "../../Structures/LuninhaClient"
 import { VoicePacket } from "erela.js"
 
 export default class RawEvent extends Event {
 
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "raw"
         })

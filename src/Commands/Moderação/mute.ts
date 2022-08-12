@@ -1,11 +1,11 @@
 import Command, { RunCommand } from "../../Structures/Command"
-import EclipseClient from "../../Structures/EclipseClient"
+import LuninhaClient from "../../Structures/LuninhaClient"
 import { GuildMember, PermissionFlagsBits } from "discord.js"
 import dayjs from "dayjs"
 import ms from "ms"
 
 export default class MuteCommand extends Command {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "mute",
             description: "Muta um usuário do servidor.",
@@ -33,14 +33,14 @@ export default class MuteCommand extends Command {
 
         if (member.user.id == this.client.user?.id) {
             interaction.followUp({
-                content: ":x: | Você não pode me punir!",
+                content: ":x: » Você não pode me punir!",
             })
 
             return;
         }
         if (member.user.id == interaction.user.id) {
             interaction.followUp({
-                content: ":x: | Você não pode punir você mesmo!",
+                content: ":x: » Você não pode punir você mesmo!",
             })
 
             return;
@@ -49,12 +49,12 @@ export default class MuteCommand extends Command {
             const guildMember = interaction.member as GuildMember
 
             if (!member.moderatable || member.roles.highest.position >= interaction.guild!.members.me!.roles.highest.position) {
-                interaction.editReply(`:x: | Esté usuário não pode ser punido!`)
+                interaction.editReply(`:x: » Esté usuário não pode ser punido!`)
                 return;
             }
 
             if (guildMember.roles.highest.position <= member.roles.highest.position) {
-                interaction.editReply(`:x: | Não tenho permissão para punir este usuário!`)
+                interaction.editReply(`:x: » Não tenho permissão para punir este usuário!`)
 
                 return;
             }
@@ -67,16 +67,14 @@ export default class MuteCommand extends Command {
             communicationDisabledUntil: finalDate
         }).catch(() => {
             interaction.followUp({
-                content:
-                    `:x: | Não foi possível mutar este usuário!`
+                content: `:x: » Não foi possível mutar este usuário!`
             })
 
             return;
         })
 
         interaction.followUp({
-            content:
-                `:white_check_mark: | O usuário ${member.user.tag} ( ID: ${member.id} ) foi mutado com sucesso!`
+            content: `:white_check_mark: » O usuário ${member.user.tag} ( ID: ${member.id} ) foi mutado com sucesso!`
         })
 
     }

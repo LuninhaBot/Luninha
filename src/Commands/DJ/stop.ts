@@ -1,8 +1,8 @@
 import Command, { RunCommand } from "../../Structures/Command"
-import EclipseClient from "../../Structures/EclipseClient"
+import LuninhaClient from "../../Structures/LuninhaClient"
 
 export default class StopCommand extends Command {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "stop",
             description: "Para de tocar as músicas no servidor.",
@@ -21,7 +21,7 @@ export default class StopCommand extends Command {
         if (!player) {
             await interaction.deferReply({ ephemeral: true })
 
-            interaction.followUp(":x: | Não há nada tocando nada no momento.")
+            interaction.followUp(":x: » Não há nada tocando nada no momento.")
 
             return;
         }
@@ -30,7 +30,7 @@ export default class StopCommand extends Command {
 
         await interaction.deferReply({ ephemeral: false })
         interaction.followUp({
-            content: ":white_check_mark: | Parei de tocar e a fila de música foi limpa."
+            content: ":white_check_mark: » Parei de tocar e a fila de música foi limpa."
         })
     }
 }

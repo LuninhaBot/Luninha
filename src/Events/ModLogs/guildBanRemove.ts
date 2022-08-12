@@ -1,9 +1,9 @@
 import Event from "../../Structures/Event"
-import EclipseClient from "../../Structures/EclipseClient"
+import LuninhaClient from "../../Structures/LuninhaClient"
 import { AuditLogEvent, EmbedBuilder, GuildBan, TextChannel } from "discord.js"
 
 export default class GuildBanRemove extends Event {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "guildBanRemove"
         })
@@ -28,7 +28,7 @@ export default class GuildBanRemove extends Event {
             })
     
             const embed = new EmbedBuilder()
-            embed.setColor("#04c4e4")
+            embed.setColor(this.client.defaultColor)
             embed.setDescription([
                 `Motivo: **${ban.reason ?? "Nenhum motivo informado"}**`,
                 `Desbanido por: **${audit.entries.first()?.executor?.tag}** (ID: ${audit.entries.first()?.executor?.id})`

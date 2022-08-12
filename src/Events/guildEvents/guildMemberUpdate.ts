@@ -1,9 +1,9 @@
 import Event from "../../Structures/Event"
-import EclipseClient from "../../Structures/EclipseClient"
-import { EmbedBuilder, GuildMember, TextChannel } from "discord.js"
+import LuninhaClient from "../../Structures/LuninhaClient"
+import { GuildMember } from "discord.js"
 
 export default class GuildMemberUpdateEvent extends Event {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "guildMemberUpdate"
         })

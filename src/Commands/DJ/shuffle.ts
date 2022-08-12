@@ -1,8 +1,8 @@
 import Command, { RunCommand } from "../../Structures/Command"
-import EclipseClient from "../../Structures/EclipseClient"
+import LuninhaClient from "../../Structures/LuninhaClient"
 
 export default class ShuffleCommand extends Command {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "shuffle",
             description: "Embaralha a fila de música.",
@@ -16,9 +16,10 @@ export default class ShuffleCommand extends Command {
         await interaction.deferReply({ ephemeral: false, fetchReply: true })
 
         const player = this.client.music.players.get(interaction.guild!.id)
+        
         if (player?.queue.length == 0) {
             interaction.followUp({
-                content: `:x: | Não tem nenhuma música na fila para embaralhar!`
+                content: `:x: » Não tem nenhuma música na fila para embaralhar!`
             })
 
             return;
@@ -27,7 +28,7 @@ export default class ShuffleCommand extends Command {
         player?.queue.shuffle()
 
         interaction.followUp({
-            content: `✅ | Embaralhado com sucesso ${player?.queue.length} músicas.`
+            content: `✅ » Embaralhado com sucesso ${player?.queue.length} músicas.`
         })
     }
 }

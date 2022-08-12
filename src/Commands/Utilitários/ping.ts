@@ -1,13 +1,13 @@
 import Command from "../../Structures/Command"
-import EclipseClient from "../../Structures/EclipseClient"
+import LuninhaClient from "../../Structures/LuninhaClient"
 import { RunCommand } from "../../Structures/Command"
 
 export default class PingCommand extends Command {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "ping",
             category: "Utilitários",
-            description: "Mostra o meu ping e o uptime."
+            description: "Mostra o ping e o uptime."
         })
     }
 

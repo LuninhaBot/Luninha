@@ -1,11 +1,11 @@
 import Command, { RunCommand } from "../../Structures/Command"
-import EclipseClient from "../../Structures/EclipseClient"
-import { geniusToken } from "../../Utils/Config"
+import LuninhaClient from "../../Structures/LuninhaClient"
+import { GeniusToken } from "../../Utils/Config"
 import { EmbedBuilder } from "discord.js"
 import { Client } from "genius-lyrics"
 
 export default class LyricsCommand extends Command {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "lyrics",
             category: "Música",
@@ -16,12 +16,16 @@ export default class LyricsCommand extends Command {
 
     async run({ interaction }: RunCommand) {
         await interaction.deferReply({ ephemeral: false, fetchReply: true })
-        
-        const client = new Client(geniusToken)
 
-        const player = this.client.music.players.get(interaction.guild?.id ?? "")
+        const client = new Client(GeniusToken)
 
-        if (!player && !interaction.options.getString("query")) return interaction.followUp(":x: | Não tem nada tocando no servidor!")
+        const player = this.client.music.players.get(interaction.guild!.id)
+
+        if (!player && !interaction.options.getString("query")) {
+            interaction.followUp(":x: » Não tem nada tocando no servidor!")
+
+            return;
+        }
 
         let song = interaction.options.getString("query", false) ?? player?.queue.current?.title
 
@@ -29,7 +33,7 @@ export default class LyricsCommand extends Command {
             await client.songs.search(song ?? "")
         } catch (e) {
             interaction.followUp({
-                content: `:x: | Não foi localizado músicas!`
+                content: `:x: » Não foi localizado músicas!`
             })
 
             return;
@@ -40,7 +44,7 @@ export default class LyricsCommand extends Command {
             await searches[0].lyrics()
         } catch (e) {
             interaction.followUp({
-                content: `:x: | Não foi possível encontrar letras para a música \`${song}\`!`
+                content: `:x: » Não foi possível encontrar letras para a música \`${song}\`!`
             })
 
             return;
@@ -49,11 +53,11 @@ export default class LyricsCommand extends Command {
         const lyrics = await searches[0].lyrics()
 
         let embed = new EmbedBuilder()
-        embed.setColor("#04c4e4")
+        embed.setColor(this.client.defaultColor)
         embed.setDescription(lyrics.slice(0, 2044) + "...")
 
         interaction.followUp({
-            content: `✅ | Letra de **${searches[0].fullTitle}**:`,
+            content: `✅ » Letra de **${searches[0].fullTitle}**:`,
             embeds: [embed]
         })
     }

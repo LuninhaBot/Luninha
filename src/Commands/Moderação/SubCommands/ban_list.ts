@@ -1,9 +1,9 @@
 import Command, { RunCommand } from "../../../Structures/Command"
-import EclipseClient from "../../../Structures/EclipseClient"
+import LuninhaClient from "../../../Structures/LuninhaClient"
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType, EmbedBuilder } from "discord.js"
 
 export default class BanListSubCommand extends Command {
-    constructor(client: EclipseClient) {
+    constructor(client: LuninhaClient) {
         super(client, {
             name: "ban_list",
             description: "Lista os usuários banidos do servidor.",
@@ -17,7 +17,7 @@ export default class BanListSubCommand extends Command {
         const banList = await interaction.guild!.bans.fetch().catch(() => { })
 
         if (!banList || banList.size == 0) {
-            interaction.followUp(`:x: | Não foi localizado nenhum banimento`)
+            interaction.followUp(`:x: » Não foi localizado nenhum banimento`)
 
             return;
         }
@@ -33,7 +33,7 @@ export default class BanListSubCommand extends Command {
         const pages: EmbedBuilder[] = []
         for (let i = 0; i < pagesNum; i++) {
             const embed = new EmbedBuilder()
-            embed.setColor("#04c4e4")
+            embed.setColor(this.client.defaultColor)
             embed.setTitle(`Lista de banimentos`)
             embed.setDescription(banString.slice(i * 10, (i + 1) * 10).join("\n"))
             embed.setFooter({
@@ -68,7 +68,7 @@ export default class BanListSubCommand extends Command {
                 if (["forward", "backward"].includes(i.customId)) {
                     if (i.user.id !== interaction.user.id) {
                         i.reply({
-                            content: ":x: | Apenas o autor pode usar os botões!",
+                            content: ":x: » Apenas o autor pode usar os botões!",
                             ephemeral: true
                         })
                         return false
