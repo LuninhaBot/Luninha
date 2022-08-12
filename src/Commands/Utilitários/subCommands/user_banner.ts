@@ -18,8 +18,6 @@ export default class UserBannerSubCommand extends Command {
         const options = interaction.options.getString("usuário", false)
         const id = options?.match(/\d+/g)?.join("") ?? interaction.user.id
 
-        const m = await interaction.guild!.members.fetch(id)
-
         const fe = await fetch(`https://discord.com/api/v10/users/${id}`, {
             headers: {
                 "Authorization": `Bot ${bot.token}`,
