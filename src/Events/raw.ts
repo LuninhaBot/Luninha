@@ -1,5 +1,5 @@
 import Event from "../Structures/Event"
-import LuninhaClient from "../../Structures/LuninhaClient"
+import LuninhaClient from "../Structures/LuninhaClient"
 import { VoicePacket } from "erela.js"
 
 export default class RawEvent extends Event {

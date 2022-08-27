@@ -1,17 +1,17 @@
 import { ChatInputCommandInteraction, EmbedBuilder, TextChannel } from "discord.js"
 import { Manager, Player, Track } from "erela.js"
 import SpotifyPlugin from "better-erela.js-spotify"
-import LuninhaClient from "../../Structures/LuninhaClient"
+import LuninhaClient from "../Structures/LuninhaClient"
 import { LavaLink, Spotify } from "../Utils/Config"
 import Logger from "../Utils/Logger"
 
-export default class EclipseLavalink extends Manager {
+export class LuninhaLavalink extends Manager {
 
     constructor(client: LuninhaClient) {
         super({
             nodes: LavaLink,
             autoPlay: true,
-            clientName: "Eclipse",
+            clientName: "Luninha",
             send: (id, payload) => {
                 const guild = client.guilds.cache.get(id)
                 if (guild) guild.shard.send(payload)
@@ -40,7 +40,7 @@ export default class EclipseLavalink extends Manager {
         })
 
         this.on("socketClosed", (player, payload) => {
-            if (payload?.byRemote) {
+            if (payload.byRemote) {
                 return player.destroy()
             }
         })
@@ -82,11 +82,17 @@ export default class EclipseLavalink extends Manager {
             }).then(msg => player.set("message", msg))
         })
 
+        this.on("playerMove", (player, oldChannel, newChannel) => {
+            if (newChannel == oldChannel) return;
+
+            player.setVoiceChannel(newChannel)
+        })
+
         this.on("trackError", async (player, track, payload) => {
             const channel = client.channels.cache.get(player.textChannel ?? "") as TextChannel
 
             channel.send({
-                content: `:x: | Encontrei um erro ao tocar a música **${track.title}**\n\`\`\`${payload.error}\`\`\``
+                content: `:x: » Encontrei um erro ao tocar a música **${track.title}**\n\`\`\`${payload.error}\`\`\``
             })
         })
 
@@ -94,7 +100,7 @@ export default class EclipseLavalink extends Manager {
             const channel = client.channels.cache.get(player.textChannel ?? "") as TextChannel
 
             channel.send({
-                content: "👋 | A fila de reprodução acabou!",
+                content: "👋 » A fila de reprodução acabou!",
             })
 
             player.destroy()

@@ -14,6 +14,8 @@ export default class InteractionCreateEvent extends Event {
 
     async run(interaction: Interaction) {
 
+        if (!interaction.guild?.available) return;
+
         if (interaction.isAutocomplete()) {
 
             const command = this.client.commands.get(interaction.commandName)
