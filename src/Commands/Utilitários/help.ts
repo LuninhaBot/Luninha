@@ -83,12 +83,14 @@ export default class HelpCommand extends Command {
                 components: [row]
             })
 
-            var page = 0
             const collector = interaction.channel!.createMessageComponentCollector({
                 filter: (i) => {
                     if (["forward", "backward"].includes(i.customId)) {
                         if (i.user.id !== interaction.user.id) {
-                            i.reply(":x: | Apenas o autor pode usar os botões!")
+                            i.reply({
+                                content: ":x: | Apenas o autor pode usar os botões!",
+                                ephemeral: true
+                            })
                             return false
                         }
                         return true
@@ -99,16 +101,8 @@ export default class HelpCommand extends Command {
                 time: 60000
             })
 
+            var page = 0
             collector.on("collect", async (i) => {
-
-                if (i.user.id !== interaction.user.id) {
-                    await i.deferReply({ ephemeral: true })
-
-                    i.editReply({
-                        content: ":x: | Você não pode mudar de página.",
-                    })
-                    return;
-                }
 
                 if (i.customId == "forward") {
                     page = page + 1 < pages.length ? ++page : 0
@@ -143,7 +137,7 @@ export default class HelpCommand extends Command {
                 msg.edit({
                     components: []
                 }).catch(() => { })
-    
+
                 return;
             })
         } else {

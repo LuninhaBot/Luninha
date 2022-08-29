@@ -79,13 +79,7 @@ export class LuninhaLavalink extends Manager {
 
             channel.send({
                 embeds: [embed]
-            }).then(msg => player.set("message", msg))
-        })
-
-        this.on("playerMove", (player, oldChannel, newChannel) => {
-            if (newChannel == oldChannel) return;
-
-            player.setVoiceChannel(newChannel)
+            }).then(msg => player.set("message", msg)).catch(() => { })
         })
 
         this.on("trackError", async (player, track, payload) => {
@@ -93,7 +87,7 @@ export class LuninhaLavalink extends Manager {
 
             channel.send({
                 content: `:x: » Encontrei um erro ao tocar a música **${track.title}**\n\`\`\`${payload.error}\`\`\``
-            })
+            }).catch(() => { })
         })
 
         this.on("queueEnd", async (player, track) => {
@@ -101,7 +95,7 @@ export class LuninhaLavalink extends Manager {
 
             channel.send({
                 content: "👋 » A fila de reprodução acabou!",
-            })
+            }).catch(() => { })
 
             player.destroy()
         })

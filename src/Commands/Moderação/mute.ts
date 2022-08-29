@@ -16,17 +16,13 @@ export default class MuteCommand extends Command {
             ],
             botPerms: [
                 PermissionFlagsBits.ModerateMembers
-            ],
-            marks: {
-                isNew: true
-            }
+            ]
         })
     }
 
     async run({ interaction }: RunCommand) {
 
-        await interaction.deferReply({ ephemeral: false, fetchReply: true })
-
+        await interaction.deferReply({ ephemeral: true, fetchReply: true })
 
         const member = interaction.options.getMember("usuario") as GuildMember
         const date = ms(interaction.options.getString("tempo", true))

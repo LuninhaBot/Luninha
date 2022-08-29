@@ -13,6 +13,7 @@ export default class BanUserSubCommand extends Command {
     }
 
     async run({ interaction }: RunCommand) {
+        
         const member = interaction.options.getMember("usuario") as GuildMember
         const user = member.user ?? interaction.options.getUser("user", true)
 

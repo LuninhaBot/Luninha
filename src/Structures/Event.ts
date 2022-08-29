@@ -1,12 +1,12 @@
 import { Awaitable } from "discord.js"
-import EclipseClient from "./LuninhaClient"
+import LuninhaClient from "./LuninhaClient"
 
 export default class Event {
 
-    client: EclipseClient
+    client: LuninhaClient
 	name: string
 
-	constructor(client: EclipseClient, options = {} as { name: string }) {
+	constructor(client: LuninhaClient, options = {} as { name: string }) {
 		this.name = options.name
 		this.client = client
 	}

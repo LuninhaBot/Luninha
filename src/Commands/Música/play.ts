@@ -35,7 +35,7 @@ export default class PlayCommand extends Command {
             if (!channel.joinable) {
 
                 interaction.followUp({
-                    content: ":x: » Não consigo entrar no canal de voz solicitado!" 
+                    content: ":x: » Não consigo entrar no canal de voz solicitado!"
                 })
 
                 return;
@@ -55,9 +55,9 @@ export default class PlayCommand extends Command {
                         "Content-Type": "application/json",
                         "Authorization": `Bot ${this.client.token}`,
                     },
-                    body: JSON.stringify({ 
+                    body: JSON.stringify({
                         channel_id: channel.id,
-                        suppress: false 
+                        request_to_speak_timestamp: Date.now()
                     })
                 })
             }
@@ -126,8 +126,12 @@ export default class PlayCommand extends Command {
 
             if (!player.playing && !player.paused && player.queue.totalSize === res.tracks.length) player.play()
 
-            embed2.setColor("#04c4e4")
-            embed2.setDescription(`:musical_note: » Adicionado a fila de espera a playlist **${res.playlist?.name}** e tocando a música **${res.tracks[0].title}**`)
+            embed2.setColor(this.client.defaultColor)
+            if (player.playing) {
+                embed2.setDescription(`:musical_note: » Adicionado a fila de espera a playlist **${res.playlist?.name}** e tocando a música **${res.tracks[0].title}**`)
+            } else {
+                embed2.setDescription(`:musical_note: » Adicionado a fila de espera a playlist **${res.playlist?.name}**`)
+            }
 
             interaction.followUp({
                 embeds: [embed2]

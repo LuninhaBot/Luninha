@@ -1,6 +1,6 @@
 import Command, { RunCommand } from "../../Structures/Command.js"
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType } from "discord.js"
-import EclipseClient from "../../Structures/LuninhaClient.js"
+import LuninhaClient from "../../Structures/LuninhaClient.js"
 import { LavalinkPlayer } from "../../LavalinkManager/Player.js"
 
 export default class QueueCommand extends Command {

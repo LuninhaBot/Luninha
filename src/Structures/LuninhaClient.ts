@@ -6,7 +6,7 @@ import Command from "./Command"
 import Event from "./Event"
 import Utils from "./Utils"
 
-export default class EclipseClient extends Client {
+export default class LuninhaClient extends Client {
 
     owners: string[]
     prefix: string = "/"

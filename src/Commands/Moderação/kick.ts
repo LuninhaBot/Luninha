@@ -14,16 +14,13 @@ export default class BanCommands extends Command {
             ],
             botPerms: [
                 PermissionFlagsBits.KickMembers
-            ],
-            marks: {
-                isNew: true
-            }
+            ]
         })
     }
 
     async run({ interaction }: RunCommand) {
 
-        await interaction.deferReply({ fetchReply: true })
+        await interaction.deferReply({ ephemeral: true, fetchReply: true })
 
         const member = interaction.options.getMember("usuario") as GuildMember
 

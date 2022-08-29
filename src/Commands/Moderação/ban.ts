@@ -15,16 +15,13 @@ export default class BanCommands extends Command {
             botPerms: [
                 PermissionFlagsBits.BanMembers
             ],
-            subCommands: ["user", "info", "remove", "list"],
-            marks: {
-                isNew: true
-            }
+            subCommands: ["user", "info", "remove", "list"]
         })
     }
 
     async run({ interaction }: RunCommand) {
 
-        await interaction.deferReply({ ephemeral: false, fetchReply: true })
+        await interaction.deferReply({ fetchReply: true })
 
 
         if (interaction.options.getSubcommand(true) == "user") {

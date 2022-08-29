@@ -1,5 +1,5 @@
 import Command, { RunCommand } from "../../../Structures/Command"
-import EclipseClient from "../../../Structures/LuninhaClient"
+import LuninhaClient from "../../../Structures/LuninhaClient"
 import { EmbedBuilder, GuildMember } from "discord.js"
 
 export default class UserInfoSubCommand extends Command {
