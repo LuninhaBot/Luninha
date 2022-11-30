@@ -8,10 +8,8 @@ import { DatabaseManager } from "../../Database/index"
 
 declare global {
     var db: DatabaseManager
-    var mostPlayed: DatabaseManager
 }
 
-global.mostPlayed = new DatabaseManager("mostPlayed")
 global.db = new DatabaseManager("db")
 
 export default class ReadyEvent extends Event {
@@ -24,27 +22,11 @@ export default class ReadyEvent extends Event {
 
     async run() {
 
-        this.client.music.init(this.client.user!.id)
-
         this.client.user?.setPresence({
             activities: [{
                 name: `Shard ${this.client.ws.shards.first()?.id} - ${this.client.ws.shards.last()?.id}`,
             }]
         })
-
-
-        if (WebHooks.status.sendLogs) {
-            new WebhookClient({
-                url: WebHooks.status.cluster
-            }).send({
-                username: this.client.user?.username,
-                avatarURL: this.client.user!.displayAvatarURL(),
-                embeds: [{
-                    title: `Cluster ${this.client.cluster.id} está online!`,
-                    description: `Shards ${this.client.ws.shards.first()?.id} - ${this.client.ws.shards.last()?.id} estão operando!`,
-                }]
-            })
-        }
 
         Logger.ready("Client is ready!")
 

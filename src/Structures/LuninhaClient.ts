@@ -1,7 +1,4 @@
-import { Shard } from "discord-cross-hosting"
-import Cluster from "discord-hybrid-sharding"
 import { Client, Collection, GatewayIntentBits, Partials, Options, PermissionResolvable, HexColorString } from "discord.js"
-import { LuninhaLavalink } from "../LavalinkManager"
 import Command from "./Command"
 import Event from "./Event"
 import Utils from "./Utils"
@@ -14,9 +11,6 @@ export default class LuninhaClient extends Client {
     commands: Collection<string, Command>
     events: Collection<string, Event>
     utils: Utils
-    cluster: Cluster.Client
-    machine: Shard
-    music: LuninhaLavalink
     defaultColor: HexColorString
 
     constructor(options = {} as { token: string, prefix: string, owners: string[], defaultColor: HexColorString, defaultPerms: PermissionResolvable[] }) {
@@ -34,8 +28,6 @@ export default class LuninhaClient extends Client {
                 Partials.Channel,
                 Partials.GuildMember
             ],
-            shardCount: Cluster.Client.getInfo().TOTAL_SHARDS,
-            shards: Cluster.Client.getInfo().SHARD_LIST,
             makeCache: Options.cacheWithLimits({
                 GuildInviteManager: 0,
                 GuildStickerManager: 0,
@@ -62,12 +54,6 @@ export default class LuninhaClient extends Client {
         this.commands = new Collection()
 
         this.events = new Collection()
-
-        this.cluster = new Cluster.Client(this)
-
-        this.machine = new Shard(this.cluster)
-
-        this.music = new LuninhaLavalink(this)
 
         this.defaultColor = options.defaultColor
 

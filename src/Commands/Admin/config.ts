@@ -1,7 +1,6 @@
-import { EmbedBuilder } from "discord.js"
+import { EmbedBuilder, PermissionFlagsBits } from "discord.js"
 import Command, { RunCommand } from "../../Structures/Command"
 import LuninhaClient from "../../Structures/LuninhaClient"
-import { PermissionFlagsBits } from "discord.js"
 
 export default class ConfigCommand extends Command {
     constructor(client: LuninhaClient) {
@@ -12,7 +11,7 @@ export default class ConfigCommand extends Command {
                 PermissionFlagsBits.ManageGuild,
                 PermissionFlagsBits.ManageChannels
             ],
-            subCommands: ["dj", "autorole", "modlogs", "view"],
+            subCommands: ["autorole", "modlogs", "view"],
             category: "Admin",
             marks: {
                 updated: true
@@ -30,11 +29,6 @@ export default class ConfigCommand extends Command {
             return;
         }
 
-        if (interaction.options.getSubcommand(true) == "dj") {
-            this.client.commands.get("config_dj")!.run({ interaction } as RunCommand)
-
-            return;
-        }
 
         if (interaction.options.getSubcommand(true) == "modlogs") {
             this.client.commands.get("config_modlogs")!.run({ interaction } as RunCommand)

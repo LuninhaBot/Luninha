@@ -7,11 +7,6 @@ export const ClientConfig = {
     defaultPerms: [] as PermissionResolvable[],
 }
 
-export const ClusterManager = {
-    authToken: "",
-    host: "",
-}
-
 export const WebHooks = {
     guildCreate: {
         url: ""
@@ -21,25 +16,6 @@ export const WebHooks = {
     },
     status: {
         sendLogs: false,
-        cluster: "",
-        shards: "",
         errors: ""
     }
 }
-
-export const LavaLink = [
-    {
-        host: "localhost",
-        password: "",
-        port: 2333,
-        identifier: "",
-        retryDelay: 500,
-    }
-]
-
-export const Spotify = {
-    clientSecret: "",
-    clientId: ""
-}
-
-export const GeniusToken = ""

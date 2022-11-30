@@ -39,7 +39,7 @@ export default class UserAvatarSubCommand extends Command {
 
         if (member?.avatar) {
 
-            await interaction.channel!.awaitMessageComponent({
+            const collector = interaction.channel!.createMessageComponentCollector({
                 filter: (i) => {
                     if (["guildAvatar"].includes(i.customId)) {
                         if (i.user.id !== interaction.user.id) {
@@ -53,16 +53,20 @@ export default class UserAvatarSubCommand extends Command {
                 time: 60000
             })
 
-            const newEmbed = new EmbedBuilder()
-            newEmbed.setDescription(`🖼️ | Avatar de **${member?.user.tag}**`)
-            newEmbed.setImage(member?.displayAvatarURL({ size: 4096, forceStatic: false }) ?? "https://cdn.discordapp.com/embed/avatars/0.png")
-            newEmbed.setColor(this.client.defaultColor)
-            interaction.editReply({
-                embeds: [newEmbed],
-                components: []
+            collector.on("collect", (i) => {
+                
+                const newEmbed = new EmbedBuilder()
+                newEmbed.setDescription(`🖼️ | Avatar de **${member?.user.tag}**`)
+                newEmbed.setImage(member?.displayAvatarURL({ size: 4096, forceStatic: false }) ?? "https://cdn.discordapp.com/embed/avatars/0.png")
+                newEmbed.setColor(this.client.defaultColor)
+                
+                interaction.editReply({
+                    embeds: [newEmbed],
+                    components: []
+                })
+    
+                return;
             })
-
-            return;
         }
     }
 }
