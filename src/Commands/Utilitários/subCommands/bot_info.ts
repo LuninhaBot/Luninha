@@ -12,20 +12,7 @@ export default class BotInfoSubCommand extends Command {
     }
 
     async run({ interaction }: RunCommand) {
-        
-        const servers = await this.client.machine.broadcastEval("this.guilds.cache.size") as number[]
-        const allServers = servers.flat(Infinity).reduce((a, b) => a + b)
-
-        const users = await this.client.machine.broadcastEval("this.guilds.cache.map(g => g.memberCount).reduce((a, g) => a + g, 0)") as number[]
-        const allUsers = users.flat(Infinity).reduce((a, b) => a + b)
-
-        const shards = await this.client.machine.broadcastEval("this.ws.shards.map(s => s.id).reduce((a, g) => a + g, 0)") as number[]
-        const allShards = shards.flat(Infinity).reduce((a, b) => a + b)
-
-        const players = await this.client.machine.broadcastEval("this.music.players.size") as number[]
-        const allPlayers = players.flat(Infinity).reduce((a, b) => a + b)
-
-        const memory = await this.client.machine.broadcastEval("process.memoryUsage().rss") as number[]
+    
 
         const embed = new EmbedBuilder()
         embed.setColor(this.client.defaultColor)
@@ -39,11 +26,10 @@ export default class BotInfoSubCommand extends Command {
             {
                 name: "Estatísticas",
                 value: [
-                    `🖥️ Servidores: **${allServers.toLocaleString()}**`,
-                    `🤖 Usuários: **${allUsers.toLocaleString()}**`,
-                    `📚 Shards: **${allShards.toLocaleString()}**`,
-                    `🎵 Players: **${allPlayers.toLocaleString()}**`,
-                    `💾 Memória: **${this.client.utils.formatBytes(memory.flat(Infinity).reduce((a, b) => a + b, 0))}**`,
+                    `🖥️ Servidores: **${this.client.guilds.cache.size.toLocaleString()}**`,
+                    `🤖 Usuários: **${this.client.guilds.cache.map(g => g.memberCount).reduce((a, g) => a + g, 0).toLocaleString()}**`,
+                    `📚 Shards: **${this.client.ws.shards.size.toLocaleString()}**`,
+                    `💾 Memória: **${this.client.utils.formatBytes(process.memoryUsage().rss)}**`,
                     `🕛 Uptime: **${this.client.utils.time(this.client!.uptime ?? 0)}**`
                 ].join("\n")
             }
@@ -64,7 +50,7 @@ export default class BotInfoSubCommand extends Command {
         const sourceButton = new ButtonBuilder({
             style: ButtonStyle.Link,
             label: "Código fonte",
-            url: "https://github.com/eclipse-labs"
+            url: "https://github.com/luninha-lab"
         })
 
 

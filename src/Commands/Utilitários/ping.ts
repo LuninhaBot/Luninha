@@ -14,12 +14,13 @@ export default class PingCommand extends Command {
     async run({ interaction }: RunCommand) {
         await interaction.deferReply({ ephemeral: true, fetchReply: true })
 
-        const start = Date.now()
-        await interaction.followUp({ content: "🏓" })
-        const apiPing = Date.now() - start
+        const msg = await interaction.followUp({ content: "🏓" })
 
         await interaction.editReply({
-            content: `**Pong!** (Shard ${this.client.ws.shards.first()?.id} - ${this.client.ws.shards.last()?.id})\nMeu ping é de \`${this.client.ws.ping}ms\`. A latencia da API é \`${apiPing}ms\`\n**Uptime:** ${this.client.utils.time(this.client?.uptime ?? 0)}`
+            content: [
+                `💗 ${msg.createdTimestamp - interaction.createdTimestamp}ms`,
+                `🏓 ${this.client.ws.ping}ms`
+            ].join("\n")
         })
     }
 }

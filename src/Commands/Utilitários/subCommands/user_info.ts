@@ -30,21 +30,22 @@ export default class UserInfoSubCommand extends Command {
 
 
         const emojis = {
-            Staff: "<:staff:978173420036575243>",
-            Partner: "<:partner:978173517243764796>",
-            Hypesquad: "<:hyperevent:978175869875003434>",
-            BugHunterLevel1: "<:bughunter1:978175450801143818>",
-            HypeSquadOnlineHouse1: "<:bravery:978176210762870795>",
-            HypeSquadOnlineHouse2: "<:brilance:978176210934853632>",
-            HypeSquadOnlineHouse3: "<:balance:978176210578333697>",
-            PremiumEarlySupporter: "<:early:978176210922254406>",
-            TeamPseudoUser: "<:bestfriends:978176903125028866>",
-            BugHunterLevel2: "<:bughunter2:978175450377519134>",
-            VerifiedBot: "<:verifedbot:978177522057502731>",
-            VerifiedDeveloper: "<:dev:978175250967719956>",
-            CertifiedModerator: "<:mod:978174836025196594>",
-            BotHTTPInteractions: "<:slash:978177497701183508>",
-            Spammer: "<:ASpam:978185720214724628>",
+            Staff: "<:new_staff:1047396681538351184>",
+            ActiveDeveloper: "<:active_dev:1047394244878401596>",
+            Partner: "<:new_partner:1047394391821647953>",
+            Hypesquad: "<:Badge_HypeSquad_Events:1047395810087804950>",
+            BugHunterLevel1: "<:badge_bug_hunter_lvl1:1047394853635498045>",
+            HypeSquadOnlineHouse1: "<:bravery:1047395314656612403>",
+            HypeSquadOnlineHouse2: "<:brilliance:1047395517895823400>",
+            HypeSquadOnlineHouse3: "<:balance:1047395197253857391>",
+            PremiumEarlySupporter: "<:earlysupporter:1047394925878202450>",
+            TeamPseudoUser: "🫂",
+            BugHunterLevel2: "<:Badge_Bug_Hunter_Lvl2:1047394887517089903>",
+            VerifiedBot: "<:verified_bot:1047396347797573692>",
+            VerifiedDeveloper: "<:Badge_EarlyVerified_BotDeveloper:1047394464769003541>",
+            CertifiedModerator: "<:certified_mod:1047396490936602644>",
+            BotHTTPInteractions: "<:slash:1047397383954235462>",
+            Spammer: "<:ASpam:1047395596094410752>",
             Quarantined: "😷"
         }
 

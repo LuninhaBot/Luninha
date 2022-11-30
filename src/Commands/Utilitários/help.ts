@@ -1,5 +1,5 @@
 import { ButtonBuilder, ButtonStyle, ComponentType, EmbedBuilder, ActionRowBuilder } from "discord.js"
-import Command, { RunCommand } from "../../Structures/Command"
+import Command, { RunAutoComplete, RunCommand } from "../../Structures/Command"
 import LuninhaClient from "../../Structures/LuninhaClient"
 
 export default class HelpCommand extends Command {
@@ -23,16 +23,16 @@ export default class HelpCommand extends Command {
                 iconURL: interaction.user.displayAvatarURL({ forceStatic: false, size: 4096 })
             })
 
-            embed0.setColor("#04c4e4")
+            embed0.setColor(this.client.defaultColor)
 
             embed0.setDescription([
                 `👋 | Eu tenho atualmente **${this.client.commands.size}** comandos.`,
                 `:tools: | Você pode pedir suporte e ficar por dentro das novidades no meu [servidor](https://discord.gg/Ce2EhRkYe6).`,
                 `:question: | Você pode pedir ajuda para um comando específico, usando \`${this.client.prefix}help [comando]\`.`,
                 `⚙️ | Clique nos emojis abaixo para ver os comandos de cada categoria.`,
-                `<:github_logo:991215243139239966> | Você pode me ajudar a melhorar, fazendo uma contribuição no meu [repositório](https://github.com/eclipse-labs)`,
+                `<:github_logo:1047399812347211796> | Você pode me ajudar a melhorar, fazendo uma contribuição no meu [repositório](https://github.com/eclipse-labs)`,
                 ``,
-                `👑 | Fui desenvolvido por ${await (this.client.utils.fetchOwners(this.client.owners, true))}.`,
+                `👑 | Fui desenvolvida por ${await (this.client.utils.fetchOwners(this.client.owners, true))}.`,
             ].join("\n"))
 
             embed0.setTimestamp()
@@ -65,13 +65,13 @@ export default class HelpCommand extends Command {
 
             const forwardButton = new ButtonBuilder({
                 label: "Proxima página",
-                customId: "forward",
+                customId: `backward__${interaction.user.id}`,
                 style: ButtonStyle.Primary
             })
 
             const backwardButton = new ButtonBuilder({
                 label: "Página anterior",
-                customId: "backward",
+                customId: `forward_${interaction.user.id}`,
                 style: ButtonStyle.Primary
             })
 
@@ -85,7 +85,7 @@ export default class HelpCommand extends Command {
 
             const collector = interaction.channel!.createMessageComponentCollector({
                 filter: (i) => {
-                    if (["forward", "backward"].includes(i.customId)) {
+                    if ([`forward_${interaction.user.id}`, `backward__${interaction.user.id}`].includes(i.customId)) {
                         if (i.user.id !== interaction.user.id) {
                             i.reply({
                                 content: ":x: | Apenas o autor pode usar os botões!",
@@ -104,7 +104,7 @@ export default class HelpCommand extends Command {
             var page = 0
             collector.on("collect", async (i) => {
 
-                if (i.customId == "forward") {
+                if (i.customId == `forward_${interaction.user.id}`) {
                     page = page + 1 < pages.length ? ++page : 0
 
                     await i.deferUpdate()
@@ -118,7 +118,7 @@ export default class HelpCommand extends Command {
                     return;
                 }
 
-                if (i.customId == "backward") {
+                if (i.customId == `backward__${interaction.user.id}`) {
                     page = page > 0 ? --page : pages.length - 1
 
                     await i.deferUpdate()
@@ -171,5 +171,18 @@ export default class HelpCommand extends Command {
                 embeds: [embed]
             })
         }
+    }
+
+    async runAutoComplete({ interaction }: RunAutoComplete) {
+        
+        const commandsList = this.client.commands.filter(cmd => cmd.showInHelp === true && cmd.category !== "Desenvolvedor")
+
+        if (!commandsList || commandsList.size == 0) {
+            interaction.respond([{ value: "undefined", name: `Não foi localizado nenhum comando` }]);
+            return;
+        }
+
+        interaction.respond(commandsList.map(cmd => ({ value: cmd.name, name: cmd.name })));
+
     }
 }

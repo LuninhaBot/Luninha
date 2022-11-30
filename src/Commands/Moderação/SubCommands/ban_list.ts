@@ -45,13 +45,13 @@ export default class BanListSubCommand extends Command {
 
         const forwardButton = new ButtonBuilder({
             emoji: "➡️",
-            customId: "forward",
+            customId: `${interaction.user.id}-forward`,
             style: ButtonStyle.Secondary
         })
 
         const backwardButton = new ButtonBuilder({
             emoji: "⬅️",
-            customId: "backward",
+            customId: `${interaction.user.id}-backard`,
             style: ButtonStyle.Secondary
         })
 
@@ -65,7 +65,7 @@ export default class BanListSubCommand extends Command {
 
         const collector = interaction.channel!.createMessageComponentCollector({
             filter: (i) => {
-                if (["forward", "backward"].includes(i.customId)) {
+                if ([`${interaction.user.id}-forward`, `${interaction.user.id}-backard`].includes(i.customId)) {
                     if (i.user.id !== interaction.user.id) {
                         i.reply({
                             content: ":x: » Apenas o autor pode usar os botões!",
@@ -84,7 +84,7 @@ export default class BanListSubCommand extends Command {
         var page = 0
         collector.on("collect", async (i) => {
 
-            if (i.customId == "forward") {
+            if (i.customId == `${interaction.user.id}-forward`) {
                 page = page + 1 < pages.length ? ++page : 0
 
                 await i.deferUpdate().catch(() => { })
@@ -100,7 +100,7 @@ export default class BanListSubCommand extends Command {
                 return;
             }
 
-            if (i.customId == "backward") {
+            if (i.customId == `${interaction.user.id}-backard`) {
                 page = page > 0 ? --page : pages.length - 1
 
                 await i.deferUpdate().catch(() => { })

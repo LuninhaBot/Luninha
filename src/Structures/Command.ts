@@ -12,8 +12,6 @@ interface CommandOptions {
     botPerms?: PermissionResolvable[]
     ownerOnly?: boolean
     ephemeral?: boolean
-    djOnly?: boolean
-    marks?: { beta?: boolean, updated?: boolean, isNew?: boolean }
     showInHelp?: boolean
 }
 
@@ -28,8 +26,6 @@ export default class Command {
     botPerms: PermissionResolvable[]
     ownerOnly: boolean
     ephemeral: boolean
-    djOnly: boolean
-    marks?: { beta?: boolean, updated?: boolean, isNew?: boolean }
     showInHelp?: boolean
 
     constructor(client: LuninhaClient, options: CommandOptions) {
@@ -44,8 +40,6 @@ export default class Command {
         this.botPerms = options.botPerms ?? []
         this.ownerOnly = options.ownerOnly ?? false
         this.ephemeral = options.ephemeral ?? false
-        this.djOnly = options.djOnly ?? false
-        this.marks = options.marks ?? {}
         this.showInHelp = options.showInHelp ?? true
     }
 
