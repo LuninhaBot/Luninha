@@ -2,7 +2,6 @@ import { parse } from "path"
 import { promisify } from "util"
 import pkg from "glob"
 import { GuildMember } from "discord.js"
-import { LavalinkPlayer } from "../LavalinkManager/Player"
 
 import Command from "./Command"
 import Event from "./Event"
@@ -108,12 +107,6 @@ export default class Util {
 		return this.formatTime(duration)
 	}
 
-	getQueueDuration(player: LavalinkPlayer) {
-		if (!player.queue.length) return player.queue.current?.duration ?? 0
-		// @ts-ignore
-		return player.queue.reduce((prev, curr) => prev + curr?.duration, 0) + player.queue.current?.duration
-	}
-
 	time(s: number) {
 		function pad(n: number, z?: number) {
 			z = z ?? 2
@@ -133,11 +126,6 @@ export default class Util {
 		days = Number(days % 30)
 
 		return (meses > 0 ? pad(meses) + "m, " : "") + (days > 0 ? pad(days) + "d, " : "") + (hrs > 0 ? pad(hrs) + "h, " : "") + (mins > 0 ? pad(mins) + "m " : "") + (pad(secs) + "s")
-	}
-
-
-	resetVotes(player: LavalinkPlayer) {
-		player.skipVotes.splice(0)
 	}
 
 	async loadCommands() {

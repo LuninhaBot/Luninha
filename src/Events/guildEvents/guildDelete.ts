@@ -39,7 +39,7 @@ export default class GuildDeleteEvent extends Event {
             }
         ])
         embed.setColor("Red")
-        embed.setFooter({ text: `Cluster => ${this.client.cluster.id} (Shard => ${guild.shardId})` })
+        embed.setFooter({ text: `Cluster => 0 (Shard => ${guild.shardId})` })
         embed.setThumbnail(guild.iconURL({ size: 2048, forceStatic: false }) ?? "https://cdn.discordapp.com/embed/avatars/0.png")
 
         new WebhookClient({

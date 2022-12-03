@@ -41,19 +41,6 @@ export default class InteractionCreateEvent extends Event {
                     return;
                 }
 
-                const member = interaction.member as GuildMember
-                const role = interaction.guild?.roles.cache.get(db.get(`${interaction.guild?.id}.dj`))?.name ?? "DJ"
-
-                if (command.djOnly && !member?.roles.cache.has(db.get(`${interaction.guild?.id}.dj`))) {
-                    await interaction.deferReply({ ephemeral: true })
-
-                    interaction.followUp({
-                        content: `:x: » Apenas pessoas com o cargo \`${role}\` podem usar este comando!`,
-                    })
-
-                    return;
-                }
-
                 if (!interaction?.inGuild()) {
                     await interaction.deferReply({ ephemeral: true })
 
