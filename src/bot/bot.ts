@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 
 dotenv.config({path: `../../.env`});
 
-type ClientProperties = {
+type CustomClient = Client & {
   cluster: ClusterClient;
 };
 
@@ -14,7 +14,7 @@ const client = new Client({
   shards: clusterInfo.SHARD_LIST,
   shardCount: clusterInfo.TOTAL_SHARDS,
   intents: 0,
-}) as Client & ClientProperties;
+}) as CustomClient;
 
 client.cluster = new ClusterClient(client);
-client.login('');
+client.login(process.env.BOT_TOKEN);
