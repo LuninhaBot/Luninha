@@ -2,10 +2,12 @@ lockfileVersion: 5.4
 
 specifiers:
   '@prisma/client': ^4.7.1
+  '@types/node': ^18.11.15
   '@typescript-eslint/eslint-plugin': ^5.46.1
   '@typescript-eslint/parser': ^5.46.1
   discord-hybrid-sharding: ^1.7.5
   discord.js: ^14.7.1
+  dotenv: ^16.0.3
   eslint: ^8.29.0
   eslint-config-google: ^0.14.0
   prettier: ^2.8.1
@@ -16,9 +18,11 @@ dependencies:
   '@prisma/client': 4.7.1
   discord-hybrid-sharding: 1.7.5
   discord.js: 14.7.1
+  dotenv: 16.0.3
   tslib: 2.4.1
 
 devDependencies:
+  '@types/node': 18.11.15
   '@typescript-eslint/eslint-plugin': 5.46.1_imrg37k3svwu377c6q7gkarwmi
   '@typescript-eslint/parser': 5.46.1_ha6vam6werchizxrnqvarmz2zu
   eslint: 8.29.0
@@ -167,7 +171,6 @@ packages:
 
   /@types/node/18.11.15:
     resolution: {integrity: sha512-VkhBbVo2+2oozlkdHXLrb3zjsRkpdnaU2bXmX8Wgle3PUi569eLRaHGlgETQHR7lLL1w7GiG3h9SnePhxNDecw==}
-    dev: false
 
   /@types/semver/7.3.13:
     resolution: {integrity: sha512-21cFJr9z3g5dW8B0CVI9g2O9beqaThGQ6ZFBqHfwhzLDKUxaqTIy3vnfah/UPkfOiF2pLq+tGz+W8RyCskuslw==}
@@ -476,6 +479,11 @@ packages:
     dependencies:
       esutils: 2.0.3
     dev: true
+
+  /dotenv/16.0.3:
+    resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==}
+    engines: {node: '>=12'}
+    dev: false
 
   /escape-string-regexp/4.0.0:
     resolution: {integrity: sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==}

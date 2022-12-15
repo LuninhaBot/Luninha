@@ -2,14 +2,15 @@
   "name": "luninha",
   "description": "Luninha is an open source Discord bot.",
   "version": "0.0.1",
-  "main": "dist/index.js",
+  "main": "dist/bot/cluster.js",
+  "type": "module",
   "author": {
     "email": "davipatricio@pm.me",
     "name": "Davi Patricio"
   },
   "scripts": {
     "build": "pnpm tsc",
-    "start": "pnpm node dist/index.js",
+    "start": "pnpm node dist/bot/cluster.js",
     "lint": "pnpm eslint src --ext .ts"
   },
   "contributors": [],
@@ -24,9 +25,11 @@
     "@prisma/client": "^4.7.1",
     "discord-hybrid-sharding": "^1.7.5",
     "discord.js": "^14.7.1",
+    "dotenv": "^16.0.3",
     "tslib": "^2.4.1"
   },
   "devDependencies": {
+    "@types/node": "^18.11.15",
     "@typescript-eslint/eslint-plugin": "^5.46.1",
     "@typescript-eslint/parser": "^5.46.1",
     "eslint": "^8.29.0",
