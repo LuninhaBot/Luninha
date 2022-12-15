@@ -1,0 +1,30 @@
+{
+    "clusterCount": 1,
+    "shardCount": 1,
+    "webhooks": {
+        "commandLogs": {
+            "enable": false,
+            "url": ""
+        },
+        "serverLogs": {
+            "enable": false,
+            "url": ""
+        }
+    },
+    "interactions": {
+        "publicKey": "",
+        "webserver": {
+            "enable": false,
+            "port": 3000
+        }
+    },
+    "features": {
+        "publishBotlistStats": true
+    },
+    "urls": {
+        "website": "https://example.com/",
+        "invite": "https://example.com/invite",
+        "vote": "https://example.com/vote",
+        "support": "https://example.com/support"
+    }
+}

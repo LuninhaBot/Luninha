@@ -1,0 +1,63 @@
+datasource db {
+    url      = env("DATABASE_URL")
+    provider = "postgresql"
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+model Giveaway {
+    messageId    String   @id @unique
+    guildId      String
+    channelId    String
+    creatorId    String
+    title        String
+    description  String
+    // A array of user ids
+    participants String[]
+    endDate      Int
+    roleRewardId String?
+}
+
+model reactionRoleReaction {
+    reactionId            String        @id @unique
+    roleId                String
+    ReactionRole          ReactionRole? @relation(fields: [reactionRoleMessageId], references: [messageId])
+    reactionRoleMessageId String?
+}
+
+model ReactionRole {
+    messageId String                 @id
+    guildId   String
+    channelId String
+    reactions reactionRoleReaction[]
+}
+
+model Embed {
+    id                    String          @id @default(uuid())
+    title                 String?
+    description           String?
+    color                 String?
+    imageURL              String?
+    footerText            String?
+    footerIconURL         String?
+    WelcomeMessage        WelcomeMessage? @relation(fields: [welcomeMessageGuildId], references: [guildId])
+    welcomeMessageGuildId String?
+    LeaveMessage          LeaveMessage?   @relation(fields: [leaveMessageGuildId], references: [guildId])
+    leaveMessageGuildId   String?
+}
+
+model WelcomeMessage {
+    guildId   String  @id @unique
+    channelId String
+    message   String?
+    embeds    Embed[]
+}
+
+model LeaveMessage {
+    guildId   String  @id @unique
+    channelId String
+    message   String?
+    embeds    Embed[]
+}
