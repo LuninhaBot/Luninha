@@ -126,6 +126,14 @@
             {
                 "fixToUnknown": true
             }
+        ],
+        "quotes": [
+            "error",
+            "single",
+            {
+                "allowTemplateLiterals": false,
+                "avoidEscape": true
+            }
         ]
     },
     "ignorePatterns": [
