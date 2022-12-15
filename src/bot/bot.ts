@@ -1,12 +1,14 @@
 import {Client as ClusterClient} from 'discord-hybrid-sharding';
 import {Client} from 'discord.js';
+import dotenv from 'dotenv';
+
+dotenv.config({path: `../../.env`});
 
 type ClientProperties = {
-    cluster: ClusterClient;
-}
+  cluster: ClusterClient;
+};
 
 const clusterInfo = ClusterClient.getInfo();
-
 
 const client = new Client({
   shards: clusterInfo.SHARD_LIST,

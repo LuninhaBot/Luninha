@@ -1,9 +1,14 @@
 import {Manager} from 'discord-hybrid-sharding';
+import dotenv from 'dotenv';
+// @ts-ignore | Sometimes config.json may not exist
+import Configuration from '../../config.json';
 
-const manager = new Manager(`${__dirname}/bot.js`, {
+dotenv.config({path: `../../.env`});
+
+const manager = new Manager(`./bot.js`, {
   token: '',
-  totalShards: 1,
-  totalClusters: 1,
+  totalShards: Configuration.shardCount,
+  totalClusters: Configuration.clusterCount,
   mode: 'process',
 });
 
