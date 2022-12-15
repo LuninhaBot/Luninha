@@ -28,6 +28,7 @@
         "inlineSourceMap": false,
         "outDir": "dist",
         "newLine": "lf",
+        "noEmitHelpers": true,
         // Interop Constraints
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,
