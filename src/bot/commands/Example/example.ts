@@ -10,7 +10,7 @@ export class ExampleCommand extends Command {
     });
   }
 
-  override run({interaction}: CommandRunOptions) {
+  run({interaction}: CommandRunOptions) {
     interaction.reply('Hello, world!');
   }
 }

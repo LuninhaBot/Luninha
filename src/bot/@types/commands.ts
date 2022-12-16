@@ -40,10 +40,8 @@ export interface CommandOptions {
 /**
  * Interface for a command.
  */
-export class Command {
+export abstract class Command {
   data!: CommandOptions;
   constructor(_options: CommandOptions) {}
-  run(_options: CommandRunOptions): Promise<unknown> | unknown {
-    return {};
-  }
+  abstract run(_options: CommandRunOptions): Promise<unknown> | unknown;
 }
