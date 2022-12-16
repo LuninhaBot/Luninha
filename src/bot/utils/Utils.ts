@@ -10,6 +10,9 @@ import {readdir} from 'fs/promises';
  */
 export class Utils {
   constructor(public client: CustomClient) {
+    client.commands = new Map();
+    client.modules = new Map();
+
     this.run();
   }
 
