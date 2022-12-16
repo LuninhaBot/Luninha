@@ -13,6 +13,9 @@
     "start": "cd dist && node bot/cluster.js",
     "lint": "pnpm eslint src --ext .ts"
   },
+  "imports": {
+    "#types/*": "./dist/bot/@types/*"
+  },
   "contributors": [],
   "homepage": "https://github.com/LuninhaBot/Luninha",
   "repository": {
@@ -37,8 +40,9 @@
     "prettier": "^2.8.1",
     "typescript": "^4.9.4"
   },
-  "imports": {
-    "#types/*": "./dist/bot/@types/*"
+  "optionalDependencies": {
+    "bufferutil": "^4.0.7",
+    "utf-8-validate": "^5.0.10"
   },
   "packageManager": "pnpm@7.18.0"
 }
