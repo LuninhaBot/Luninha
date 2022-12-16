@@ -21,6 +21,9 @@
         "moduleResolution": "Node",
         "resolveJsonModule": true,
         "rootDir": "src",
+        "paths": {
+            "#types/*": ["./src/bot/@types/*"],
+        },
         // Emit
         "declaration": false,
         "importHelpers": true,
