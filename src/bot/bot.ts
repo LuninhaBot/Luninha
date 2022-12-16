@@ -2,6 +2,7 @@ import {CustomClient} from '#types/CustomClient';
 import {Client as ClusterClient} from 'discord-hybrid-sharding';
 import {Client} from 'discord.js';
 import dotenv from 'dotenv';
+import {Utils} from './utils/Utils';
 
 dotenv.config({path: '../../.env'});
 
@@ -14,4 +15,6 @@ const client = new Client({
 }) as CustomClient;
 
 client.cluster = new ClusterClient(client);
-client.login(process.env.BOT_TOKEN);
+
+client.utils = new Utils(client);
+client.utils.connect(process.env.BOT_TOKEN);
