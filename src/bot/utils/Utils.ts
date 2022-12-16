@@ -1,7 +1,7 @@
-import {Command as CommandClass} from '#types/commands';
 import {CustomClient} from '#types/CustomClient';
 import Cluster from 'discord-hybrid-sharding';
-import {readdir} from 'fs/promises';
+import {CommandManager} from '../managers/CommandManager.js';
+import {EventManager} from '../managers/EventManager.js';
 
 /**
  * Class that contains all the utility functions, like:
@@ -13,51 +13,31 @@ import {readdir} from 'fs/promises';
 export class Utils {
   constructor(public client: CustomClient) {
     client.cluster = new Cluster.Client(client);
-    client.commands = new Map();
     client.modules = new Map();
+    client.managers = {
+      commands: new CommandManager(client),
+      events: new EventManager(client),
+    };
 
     this.run();
   }
 
-  async run() {
-    this.loadCommands();
-    this.loadEvents();
-  }
-
-  async loadCommands() {
-    const commandCategories = await readdir('./bot/commands/');
-    for await (const category of commandCategories) {
-      const commandFiles = await readdir(`./bot/commands/${category}/`);
-      for await (const file of commandFiles) {
-        const {default: Command} = await import(`../commands/${category}/${file}`);
-        const command: CommandClass = new Command();
-        this.client.commands.set(command.data.name, command);
-      }
-    }
-  }
-
-  async loadEvents() {
-    const eventFiles = await readdir('./bot/events/');
-    for await (const file of eventFiles) {
-      const {default: Event} = await import(`../events/${file}`);
-      const event = new Event();
-      this.client.on(event.name, event.run.bind(null, this.client));
+  async run(isReload = false) {
+    this.client.managers.commands.loadCommands();
+    this.client.managers.events.loadEvents();
+    if (!isReload) {
+      // TODO: Load databases, locales, etc.
     }
   }
 
   async reloadCommands() {
-    this.client.commands.clear();
-    this.loadCommands();
+    this.client.managers.commands.clear();
+    this.run(true);
   }
 
   async reloadEvents() {
     this.client.removeAllListeners();
-    this.loadEvents();
-  }
-
-  async reloadAll() {
-    this.reloadCommands();
-    this.reloadEvents();
+    this.run(true);
   }
 
   connect(token: string) {
