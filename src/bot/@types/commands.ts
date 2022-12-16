@@ -42,6 +42,8 @@ export interface CommandOptions {
  */
 export abstract class Command {
   data!: CommandOptions;
-  constructor(_options: CommandOptions) {}
+  constructor(_options: CommandOptions) {
+    this.data = _options;
+  }
   abstract run(_options: CommandRunOptions): Promise<unknown> | unknown;
 }

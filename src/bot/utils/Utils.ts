@@ -29,7 +29,7 @@ export class Utils {
     for await (const category of commandCategories) {
       const commandFiles = await readdir(`./bot/commands/${category}/`);
       for await (const file of commandFiles) {
-        const Command = await import(`../commands/${category}/${file}`);
+        const {default: Command} = await import(`../commands/${category}/${file}`);
         const command: CommandClass = new Command();
         this.client.commands.set(command.data.name, command);
       }
@@ -39,7 +39,7 @@ export class Utils {
   async loadEvents() {
     const eventFiles = await readdir('./bot/events/');
     for await (const file of eventFiles) {
-      const Event = await import(`../events/${file}`);
+      const {default: Event} = await import(`../events/${file}`);
       const event = new Event();
       this.client.on(event.name, event.run.bind(null, this.client));
     }
