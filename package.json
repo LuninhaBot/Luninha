@@ -10,7 +10,7 @@
   },
   "scripts": {
     "build": "pnpm tsc",
-    "start": "pnpm node dist/bot/cluster.js",
+    "start": "cd dist && node bot/cluster.js",
     "lint": "pnpm eslint src --ext .ts"
   },
   "contributors": [],
@@ -36,6 +36,9 @@
     "eslint-config-google": "^0.14.0",
     "prettier": "^2.8.1",
     "typescript": "^4.9.4"
+  },
+  "imports": {
+    "#types/*": "./dist/bot/@types/*"
   },
   "packageManager": "pnpm@7.18.0"
 }
