@@ -14,7 +14,5 @@ const client = new Client({
   intents: 0,
 }) as CustomClient;
 
-client.cluster = new ClusterClient(client);
-
 client.utils = new Utils(client);
 client.utils.connect(process.env.BOT_TOKEN);

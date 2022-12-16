@@ -1,4 +1,5 @@
 import {CustomClient} from '#types/CustomClient';
+import {Client as ClusterClient} from 'discord-hybrid-sharding';
 import {readdir} from 'fs/promises';
 
 /**
@@ -10,6 +11,7 @@ import {readdir} from 'fs/promises';
  */
 export class Utils {
   constructor(public client: CustomClient) {
+    client.cluster = new ClusterClient(client);
     client.commands = new Map();
     client.modules = new Map();
 
