@@ -26,6 +26,7 @@
         },
         // Emit
         "declaration": false,
+        "target": "ESNext",
         "importHelpers": true,
         "importsNotUsedAsValues": "remove",
         "inlineSourceMap": false,
