@@ -1,5 +1,6 @@
+import {Command as CommandClass} from '#types/commands';
 import {CustomClient} from '#types/CustomClient';
-import {Client as ClusterClient} from 'discord-hybrid-sharding';
+import Cluster from 'discord-hybrid-sharding';
 import {readdir} from 'fs/promises';
 
 /**
@@ -11,7 +12,7 @@ import {readdir} from 'fs/promises';
  */
 export class Utils {
   constructor(public client: CustomClient) {
-    client.cluster = new ClusterClient(client);
+    client.cluster = new Cluster.Client(client);
     client.commands = new Map();
     client.modules = new Map();
 
@@ -24,10 +25,14 @@ export class Utils {
   }
 
   async loadCommands() {
-    const commandFiles = await readdir('./bot/commands/');
-    for await (const file of commandFiles) {
-      const command = await import(`../commands/${file}`);
-      this.client.commands.set(command.name, command);
+    const commandCategories = await readdir('./bot/commands/');
+    for await (const category of commandCategories) {
+      const commandFiles = await readdir(`./bot/commands/${category}/`);
+      for await (const file of commandFiles) {
+        const Command = await import(`../commands/${category}/${file}`);
+        const command: CommandClass = new Command();
+        this.client.commands.set(command.data.name, command);
+      }
     }
   }
 

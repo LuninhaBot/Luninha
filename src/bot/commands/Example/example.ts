@@ -1,6 +1,6 @@
-import {Command, CommandRunOptions} from '#types/commands';
+import {Command, CommandRunOptions} from '#types/commands.js';
 
-export class ExampleCommand extends Command {
+export default class ExampleCommand extends Command {
   constructor() {
     super({
       name: 'example',

@@ -1,7 +1,7 @@
 import {CustomClient} from '#types/CustomClient';
-import {Event} from '#types/events';
+import {Event} from '#types/events.js';
 
-export class ReadyEvent extends Event<'ready'> {
+export default class ReadyEvent extends Event<'ready'> {
   get name() {
     return 'ready' as const;
   }
