@@ -14,7 +14,8 @@
     "lint": "pnpm eslint src --ext .ts"
   },
   "imports": {
-    "#types/*": "./dist/bot/@types/*"
+    "#types/*": "./dist/bot/@types/*",
+    "#locales/*": "./dist/locales/*"
   },
   "contributors": [],
   "homepage": "https://github.com/LuninhaBot/Luninha",

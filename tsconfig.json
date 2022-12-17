@@ -22,6 +22,7 @@
         "resolveJsonModule": true,
         "rootDir": "src",
         "paths": {
+            "#locales/*": ["./src/locales/*"],
             "#types/*": ["./src/bot/@types/*"],
         },
         // Emit
