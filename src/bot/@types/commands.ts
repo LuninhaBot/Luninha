@@ -1,5 +1,5 @@
 import {ChatInputCommandInteraction} from 'discord.js';
-import {CommandCategoriesKeys, CommandDescriptionsKeys} from '../managers/LocaleManager';
+import {CommandCategoriesKeys, CommandDescriptionsKeys, CommandNamesKeys} from '../managers/LocaleManager';
 import {CustomClient} from './CustomClient';
 
 /**
@@ -31,7 +31,7 @@ export type CommandAutoReplyOptions =
   | CommandAutoReplyOptionsAutoDefer;
 
 export interface CommandOptions {
-  name: string;
+  name: CommandNamesKeys | '';
   description: CommandDescriptionsKeys | '';
   category: CommandCategoriesKeys | '';
   ownerOnly: boolean;
