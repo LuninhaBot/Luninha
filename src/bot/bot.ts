@@ -4,7 +4,7 @@ import {Client} from 'discord.js';
 import dotenv from 'dotenv';
 import {Utils} from './utils/Utils.js';
 
-dotenv.config({path: '../../.env'});
+dotenv.config({path: '../.env'});
 
 const clusterInfo = Cluster.Client.getInfo();
 
