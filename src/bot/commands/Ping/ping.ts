@@ -3,7 +3,7 @@ import {Command, CommandRunOptions} from '#types/commands.js';
 export default class PingCommand extends Command {
   constructor() {
     super({
-      name: 'example',
+      name: 'ping',
       description: 'Example command',
       category: 'Example',
       ownerOnly: false,
