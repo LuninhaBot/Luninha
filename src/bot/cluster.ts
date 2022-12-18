@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 // @ts-ignore | Sometimes config.json may not exist
 import Configuration from '../../config.json' assert {type: 'json'};
 
-dotenv.config({path: '../../.env'});
+dotenv.config({path: '../.env'});
 
 const manager = new Manager('./bot/bot.js', {
   token: '',
