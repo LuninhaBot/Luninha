@@ -7,9 +7,14 @@ export class EventManager {
   async loadEvents() {
     const eventFiles = await readdir('./bot/events/');
     for await (const file of eventFiles) {
-      const {default: Event} = await import(`../events/${file}`);
-      const event = new Event();
-      this.client.on(event.name, event.run.bind(null, this.client));
+      const {default: EventClass} = await import(`../events/${file}`);
+      // set type to new EventClass() to make sure it's an Event
+      const event = new EventClass();
+
+      // If the event should only be executed once
+      if (event.data.once) {
+        this.client.once(event.data.name, event.run.bind(null, this.client));
+      } else this.client.on(event.data.name, event.run.bind(null, this.client));
     }
   }
 
