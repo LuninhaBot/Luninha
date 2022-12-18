@@ -3,8 +3,8 @@ import {Event} from '#types/events.js';
 import {Interaction} from 'discord.js';
 
 export default class ChatInputCommandInteractionEvent extends Event<'interactionCreate'> {
-  get name() {
-    return 'interactionCreate' as const;
+  constructor() {
+    super({name: 'interactionCreate'});
   }
 
   run(client: CustomClient, interaction: Interaction) {
