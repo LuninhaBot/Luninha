@@ -3,6 +3,7 @@ import {ClusterClient} from 'discord-hybrid-sharding';
 import {Utils} from '../utils/Utils';
 import {CommandManager} from '../managers/CommandManager';
 import {EventManager} from '../managers/EventManager';
+import {LocaleManager} from '../managers/LocaleManager';
 
 type CustomClient = Client & {
   cluster: ClusterClient;
@@ -10,6 +11,7 @@ type CustomClient = Client & {
   managers: {
     commands: CommandManager;
     events: EventManager;
+    languages: LocaleManager;
   };
   utils: Utils;
 };

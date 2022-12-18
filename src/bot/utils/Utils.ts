@@ -2,6 +2,7 @@ import {CustomClient} from '#types/CustomClient';
 import Cluster from 'discord-hybrid-sharding';
 import {CommandManager} from '../managers/CommandManager.js';
 import {EventManager} from '../managers/EventManager.js';
+import {LocaleManager} from '../managers/LocaleManager.js';
 
 /**
  * Class that contains all the utility functions, like:
@@ -17,6 +18,7 @@ export class Utils {
     client.managers = {
       commands: new CommandManager(client),
       events: new EventManager(client),
+      languages: new LocaleManager(client),
     };
 
     this.run();
@@ -27,6 +29,7 @@ export class Utils {
     this.client.managers.events.loadEvents();
     if (!isReload) {
       // TODO: Load databases, locales, etc.
+      this.client.managers.languages.loadLocales();
     }
   }
 
