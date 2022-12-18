@@ -24,23 +24,20 @@ export class Utils {
     this.run();
   }
 
-  async run(isReload = false) {
+  async run() {
+    this.client.managers.languages.loadLocales();
     this.client.managers.commands.loadCommands();
     this.client.managers.events.loadEvents();
-    if (!isReload) {
-      // TODO: Load databases, locales, etc.
-      this.client.managers.languages.loadLocales();
-    }
   }
 
   async reloadCommands() {
     this.client.managers.commands.clear();
-    this.run(true);
+    this.client.managers.commands.loadCommands();
   }
 
   async reloadEvents() {
     this.client.removeAllListeners();
-    this.run(true);
+    this.client.managers.events.loadEvents();
   }
 
   connect(token: string) {
