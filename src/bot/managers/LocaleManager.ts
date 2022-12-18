@@ -48,7 +48,7 @@ export class LocaleManager {
       )) as LocaleCategories[];
 
       for (const category of categories) {
-        const data = await import(`#locales/${locale}/${category}/data.json`);
+        const data = await import(`#locales/${locale}/${category}/data.json`, {assert: {type: 'json'}});
 
         // Check if the category exists in the cache
         // @ts-expect-error We are initializing the locale object if it doesn't exist
