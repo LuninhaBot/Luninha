@@ -11,7 +11,7 @@
   "scripts": {
     "build": "pnpm tsc",
     "start": "cd dist && node bot/cluster.js",
-    "lint": "pnpm eslint src --ext .ts"
+    "lint": "pnpm eslint src --fix --ext .ts"
   },
   "imports": {
     "#types/*": "./dist/bot/@types/*",
