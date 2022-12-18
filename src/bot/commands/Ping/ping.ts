@@ -4,8 +4,8 @@ export default class PingCommand extends Command {
   constructor() {
     super({
       name: 'ping',
-      description: 'Example command',
-      category: 'Example',
+      description: '',
+      category: '',
       ownerOnly: false,
     });
   }
