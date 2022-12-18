@@ -1,1 +1,5 @@
-{}
+{
+    "ping/calculation": "Calculating ping...",
+    "ping/calculated": "My ping is {{ping}}ms."
+  }
+  
