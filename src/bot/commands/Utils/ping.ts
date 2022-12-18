@@ -5,7 +5,7 @@ export default class PingCommand extends Command {
     super({
       name: 'ping',
       description: '',
-      category: '',
+      category: 'utils',
       ownerOnly: false,
     });
   }
