@@ -47,3 +47,9 @@ export abstract class Command {
   }
   abstract run(_options: CommandRunOptions): Promise<unknown> | unknown;
 }
+
+export interface CommandClass extends Command {
+  data: CommandOptions;
+  new (): Command;
+  run(_options: CommandRunOptions): Promise<unknown> | unknown;
+}

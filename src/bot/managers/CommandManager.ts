@@ -1,8 +1,8 @@
 import {CustomClient} from '#types/CustomClient';
-import {Command as CommandClass} from '#types/commands';
+import {CommandClass, Command as AbstractCommand} from '#types/commands';
 import {readdir} from 'fs/promises';
 
-export class CommandManager extends Map<string, CommandClass> {
+export class CommandManager extends Map<string, AbstractCommand> {
   constructor(public client: CustomClient) {
     super();
   }
@@ -16,15 +16,15 @@ export class CommandManager extends Map<string, CommandClass> {
       for await (const file of commandFiles) {
         const {default: Command} = await import(
             `../commands/${category}/${file}`
-        );
+        ) as {default: CommandClass};
 
-        const command: CommandClass = new Command();
+        const command = new Command();
         this.set(command.data.name, command);
       }
     }
   }
 
-  async reloadCommands() {
+  reloadCommands() {
     this.clear();
     this.loadCommands();
   }

@@ -48,7 +48,7 @@ export class LocaleManager {
       )) as LocaleCategories[];
 
       for (const category of categories) {
-        const data = await import(`#locales/${locale}/${category}/data.json`, {assert: {type: 'json'}});
+        const data = await import(`#locales/${locale}/${category}/data.json`, {assert: {type: 'json'}}) as Record<string, string>;
 
         // Check if the category exists in the cache
         // @ts-expect-error We are initializing the locale object if it doesn't exist
@@ -87,7 +87,7 @@ export class LocaleManager {
       if (!args.length) return locale;
 
       // Use regex to replace {{strings}} with the provided arguments
-      return locale.replace(/{{(\d+)}}/g, (_, index) => args[index] as string);
+      return locale.replace(/{{(\d+)}}/g, (_, index: number) => args[index] as string);
     }
 
     return `!!{${category}.${key}}!!`;

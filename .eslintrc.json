@@ -3,9 +3,15 @@
     "extends": [
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking",
         "google"
     ],
     "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "project": [
+            "./tsconfig.json"
+        ]
+    },
     "plugins": [
         "@typescript-eslint"
     ],
@@ -142,10 +148,11 @@
                 "fixToUnknown": true
             }
         ],
+        "@typescript-eslint/no-floating-promises": "off",
         "max-len": [
             "error",
             {
-                "code": 80,
+                "code": 110,
                 "ignoreComments": true,
                 "ignoreRegExpLiterals": true,
                 "ignoreStrings": true,

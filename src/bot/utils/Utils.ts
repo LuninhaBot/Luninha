@@ -24,18 +24,18 @@ export class Utils {
     this.run();
   }
 
-  async run() {
+  run() {
     this.client.managers.languages.loadLocales();
     this.client.managers.commands.loadCommands();
     this.client.managers.events.loadEvents();
   }
 
-  async reloadCommands() {
+  reloadCommands() {
     this.client.managers.commands.clear();
     this.client.managers.commands.loadCommands();
   }
 
-  async reloadEvents() {
+  reloadEvents() {
     this.client.removeAllListeners();
     this.client.managers.events.loadEvents();
   }
