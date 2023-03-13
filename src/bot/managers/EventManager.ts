@@ -10,8 +10,13 @@ export class EventManager {
     for await (const file of eventFiles) {
       const {default: Event} = await import(`../events/${file}`) as {default: EventClass};
       const event = new Event();
-      // @ts-expect-error | Because Event is a generic class, we can't use the name property.
-      this.client.on(event.name, event.run.bind(null, this.client));
+
+      // If the event should only be executed once
+      if (event.data.once) {
+        // @ts-expect-error | Because Event is a generic class, we can't use the name property.
+        this.client.once(event.data.name, event.run.bind(null, this.client));
+        // @ts-expect-error | Because Event is a generic class, we can't use the name property.
+      } else this.client.on(event.data.name, event.run.bind(null, this.client));
     }
   }
 

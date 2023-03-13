@@ -1,11 +1,11 @@
 import {Command, CommandRunOptions} from '#types/commands.js';
 
-export default class ExampleCommand extends Command {
+export default class PingCommand extends Command {
   constructor() {
     super({
-      name: 'example',
-      description: 'Example command',
-      category: 'Example',
+      name: 'ping',
+      description: '',
+      category: 'utils',
       ownerOnly: false,
     });
   }
